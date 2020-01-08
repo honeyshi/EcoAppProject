@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#53A687</color>
+    <color name="colorAccent">#F2B855</color>
+    <color name="colorExtraGreen">#C1D96C</color>
+    <color name="colorExtraGrey">#E5E5E5</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorActivityBackground">#E8FAF4</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorBlack50">#808080</color>
+    <color name="colorBlack30">#A2AFAB</color>
+</resources>

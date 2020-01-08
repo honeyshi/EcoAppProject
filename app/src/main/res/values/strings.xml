@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Begree</string>
+    <string name="title_menu_home">Home</string>
+    <string name="title_menu_analyze">Analyze</string>
+    <string name="title_menu_map">Map</string>
+    <string name="title_menu_user">User</string>
+</resources>
