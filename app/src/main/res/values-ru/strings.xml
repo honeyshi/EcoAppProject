@@ -5,4 +5,7 @@
     <string name="title_menu_analyze">Анализ</string>
     <string name="title_menu_map">Карта</string>
     <string name="title_menu_user">Профиль</string>
+
+    <string name="toast_text_add_to_favourites">Добавлено в Избранное</string>
+    <string name="toast_text_delete_from_favourites">Удалено из Избранного</string>
 </resources>

@@ -52,6 +52,38 @@ object ArticleObject {
     fun getArticleIsFavouriteFromDictionary(articleName: String?) : Boolean? =
         articleItemIsFavourite[articleName]
 
+    fun setArticleIsFavourite(context: Context,
+                              articleName: String?,
+                              isFavourite: String){
+        Log.w(ContentValues.TAG, "Start changing value in database")
+        FirebaseApp.initializeApp(context)
+        val articlesDatabase = FirebaseDatabase.getInstance()
+        val articlesReference = articlesDatabase.reference
+        val editArticleItem = articlesReference.child(ARTICLES_DATABASE)
+        editArticleItem.addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (editArticle in dataSnapshot.children){
+                    if (editArticle.child(ARTICLES_DATABASE_HEADER).value.toString() == articleName){
+                        Log.w(ContentValues.TAG, "Change value!")
+                        editArticle.ref.child(ARTICLES_DATABASE_IS_FAVOURITE).setValue(isFavourite)
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Failed to read value
+                Log.w(ContentValues.TAG, "Failed to read value.", error.toException())
+            }
+        })
+
+        articleItemIsFavourite[articleName] = isFavourite.toBoolean()
+    }
+
+    fun clearArticleItemList() {
+        articleItemList.clear()
+    }
+
     private fun initRecyclerView(context: Context, recyclerView: RecyclerView, itemClickListener: OnItemClickListener){
         Log.w(ContentValues.TAG, "Initialize recycler view")
         articlesRecyclerView = recyclerView
@@ -67,7 +99,7 @@ object ArticleObject {
         FirebaseApp.initializeApp(context)
         val articlesDatabase = FirebaseDatabase.getInstance()
         val articlesReference = articlesDatabase.reference
-        articlesReference.child(ARTICLES_DATABASE).addValueEventListener(object :
+        articlesReference.child(ARTICLES_DATABASE).addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (article in dataSnapshot.children) {

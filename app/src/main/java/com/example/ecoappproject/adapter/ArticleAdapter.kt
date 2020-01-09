@@ -1,14 +1,18 @@
 package com.example.ecoappproject.adapter
 
+import android.content.ContentValues
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ecoappproject.R
 import com.example.ecoappproject.interfaces.OnItemClickListener
 import com.example.ecoappproject.items.ArticleItem
+import com.example.ecoappproject.objects.ArticleObject
 
 class ArticleAdapter (private val articleItems : ArrayList<ArticleItem>,
                       private val itemClickListener: OnItemClickListener
@@ -27,7 +31,27 @@ class ArticleAdapter (private val articleItems : ArrayList<ArticleItem>,
                 favouriteButton.setImageResource(R.drawable.ic_star_pressed)
                 else favouriteButton.setImageResource(R.drawable.ic_star_normal)
 
+            favouriteButton.setOnClickListener{
+                if (articleItem.isFavourite) {
+                    Log.w(ContentValues.TAG, "Delete from favourites")
+                    favouriteButton.setImageResource(R.drawable.ic_star_normal)
+                    ArticleObject.setArticleIsFavourite(itemView.context,
+                        articleItem.header,
+                        "false")
+                    Toast.makeText(itemView.context, R.string.toast_text_delete_from_favourites, Toast.LENGTH_LONG).show()
+                }
+                else{
+                    Log.w(ContentValues.TAG, "Add to favourites")
+                    favouriteButton.setImageResource(R.drawable.ic_star_pressed)
+                    ArticleObject.setArticleIsFavourite(itemView.context,
+                        articleItem.header,
+                        "true")
+                    Toast.makeText(itemView.context, R.string.toast_text_add_to_favourites, Toast.LENGTH_LONG).show()
+                }
+            }
+
             itemView.setOnClickListener {
+                Log.w(ContentValues.TAG, "Set on item click listener")
                 itemClickListener.onItemClicked(articleItem)
             }
         }

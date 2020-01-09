@@ -4,4 +4,7 @@
     <string name="title_menu_analyze">Analyze</string>
     <string name="title_menu_map">Map</string>
     <string name="title_menu_user">User</string>
+
+    <string name="toast_text_add_to_favourites">Added to Favourites</string>
+    <string name="toast_text_delete_from_favourites">Deleted from Favourites</string>
 </resources>
