@@ -5,6 +5,10 @@
     <string name="title_menu_map">Map</string>
     <string name="title_menu_user">User</string>
 
+    <string name="text_view_first_time_header">Welcome to Begree</string>
+    <string name="text_view_first_time_description">An app to help you start caring for the environment</string>
+    <string name="text_view_first_time_button_text">Start</string>
+
     <string name="toast_text_add_to_favourites">Added to Favourites</string>
     <string name="toast_text_delete_from_favourites">Deleted from Favourites</string>
 </resources>
