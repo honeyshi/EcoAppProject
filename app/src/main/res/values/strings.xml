@@ -7,7 +7,15 @@
 
     <string name="text_view_first_time_header">Welcome to Begree</string>
     <string name="text_view_first_time_description">An app to help you start caring for the environment</string>
-    <string name="text_view_first_time_button_text">Start</string>
+    <string name="text_view_analyze_one_header">Search for individual ingredient</string>
+    <string name="text_view_analyze_whole_header">Analyze cosmetics composition</string>
+
+    <string name="edit_text_analyze_one">Input title</string>
+    <string name="edit_text_analyze_whole">Enter a comma separated list of ingredients</string>
+
+    <string name="button_first_time_button_text">Start</string>
+    <string name="button_analyze_one_button_text">Search</string>
+    <string name="button_analyze_whole_button_text">Check composition</string>
 
     <string name="toast_text_add_to_favourites">Added to Favourites</string>
     <string name="toast_text_delete_from_favourites">Deleted from Favourites</string>

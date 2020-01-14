@@ -8,7 +8,15 @@
 
     <string name="text_view_first_time_header">Добро пожаловать в Begree</string>
     <string name="text_view_first_time_description">Приложение, которое поможет вам начать заботиться об окружающей среде</string>
-    <string name="text_view_first_time_button_text">Начать</string>
+    <string name="text_view_analyze_one_header">Поиск отдельного ингредиента</string>
+    <string name="text_view_analyze_whole_header">Анализ состава косметики</string>
+
+    <string name="edit_text_analyze_one">Введите название</string>
+    <string name="edit_text_analyze_whole">Введите список ингредиентов, разделенный запятой</string>
+
+    <string name="button_first_time_button_text">Начать</string>
+    <string name="button_analyze_one_button_text">Найти</string>
+    <string name="button_analyze_whole_button_text">Проверить</string>
 
     <string name="toast_text_add_to_favourites">Добавлено в Избранное</string>
     <string name="toast_text_delete_from_favourites">Удалено из Избранного</string>

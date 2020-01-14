@@ -22,10 +22,7 @@ class AnalyzeFragment : Fragment() {
         analyzeViewModel =
             ViewModelProviders.of(this).get(AnalyzeViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_analyze, container, false)
-        val textView: TextView = root.findViewById(R.id.text_analyze)
-        analyzeViewModel.text.observe(this, Observer {
-            textView.text = it
-        })
+
         return root
     }
 }

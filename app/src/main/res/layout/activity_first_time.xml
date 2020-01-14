@@ -60,7 +60,7 @@
         android:layout_marginRight="25dp"
         android:background="@drawable/shape_button_start"
         android:onClick="onButtonStartButtonClick"
-        android:text="@string/text_view_first_time_button_text"
+        android:text="@string/button_first_time_button_text"
         android:textAllCaps="false"
         android:textColor="@color/colorWhite"
         android:textSize="24sp"
