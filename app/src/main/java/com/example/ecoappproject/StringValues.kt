@@ -6,6 +6,7 @@ const val ARTICLES_DATABASE_IS_FAVOURITE = "isFavourite"
 const val ARTICLES_DATABASE_READING_TIME = "readingTime"
 const val ARTICLES_DATABASE_DESCRIPTION = "longDescription"
 
-const val ARTICLES_INTENT_HEADER = "com.example.ecoappproject.ARTICLE_HEADER"
-const val ARTICLES_INTENT_DESCRIPTION = "com.example.ecoappproject.ARTICLE_LONG_DESCRIPTION"
-const val ARTICLES_INTENT_READING_TIME = "com.example.ecoappproject.ARTICLE_READING_TIME"
+const val INGREDIENTS_DATABASE = "IngredientsList"
+const val INGREDIENTS_DATABASE_NO_INGREDIENT = "Ингредиент не найден. Проверьте корректность ввода"
+
+const val MESSAGES_DATABASE = "MessagesList"

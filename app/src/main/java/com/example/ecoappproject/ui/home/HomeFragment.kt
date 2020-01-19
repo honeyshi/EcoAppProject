@@ -32,10 +32,6 @@ class HomeFragment : Fragment(), OnItemClickListener {
         val root = inflater.inflate(R.layout.fragment_home, container, false)
         ArticleObject.clearArticleItemList()
         ArticleObject.getArticles(activity!!.applicationContext, root.findViewById(R.id.home_recycler_view), this)
-        val textView: TextView = root.findViewById(R.id.text_home)
-        homeViewModel.text.observe(this, Observer {
-            textView.text = it
-        })
         return root
     }
 
