@@ -9,6 +9,8 @@
     <string name="text_view_first_time_description">An app to help you start caring for the environment</string>
     <string name="text_view_analyze_one_header">Search for individual ingredient</string>
     <string name="text_view_analyze_whole_header">Analyze cosmetics composition</string>
+    <string name="text_view_one_ingredient_result_not_found_message">
+        Ingredient not found. Please check the spelling</string>
 
     <string name="edit_text_analyze_one">Input title</string>
     <string name="edit_text_analyze_whole">Enter a comma separated list of ingredients</string>

@@ -10,6 +10,8 @@
     <string name="text_view_first_time_description">Приложение, которое поможет вам начать заботиться об окружающей среде</string>
     <string name="text_view_analyze_one_header">Поиск отдельного ингредиента</string>
     <string name="text_view_analyze_whole_header">Анализ состава косметики</string>
+    <string name="text_view_one_ingredient_result_not_found_message">
+        Компонент не найден. Проверьте правильность ввода</string>
 
     <string name="edit_text_analyze_one">Введите название</string>
     <string name="edit_text_analyze_whole">Введите список ингредиентов, разделенный запятой</string>

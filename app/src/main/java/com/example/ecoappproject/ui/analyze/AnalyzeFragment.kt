@@ -59,6 +59,18 @@ class AnalyzeFragment : Fragment() {
         transaction.commit()
     }
 
+    private fun startNotFoundIngredientFragment(ingredientName: String){
+        analyzeViewModel.setIngredientNameEN(ingredientName)
+
+        /* Start another fragment */
+        Log.w(ContentValues.TAG, "Start ingredient not found fragment")
+        val analyzeIngredientNotFoundFragment = AnalyzeIngredientNotFoundFragment()
+        val transaction: FragmentTransaction = fragmentManager!!.beginTransaction()
+        transaction.replace(R.id.nav_host_fragment, analyzeIngredientNotFoundFragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
+
     private fun getIngredientInfo(ingredientName: String) {
         Log.w(ContentValues.TAG, ingredientName)
 
@@ -79,7 +91,7 @@ class AnalyzeFragment : Fragment() {
                     // Create empty ingredient
                     else{
                         ingredientItem = IngredientItem(name_en = ingredientName)
-                        startOneIngredientFragment()
+                        startNotFoundIngredientFragment(ingredientName)
                     }
                 }
 
