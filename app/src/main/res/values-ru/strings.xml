@@ -12,6 +12,14 @@
     <string name="text_view_analyze_whole_header">Анализ состава косметики</string>
     <string name="text_view_one_ingredient_result_not_found_message">
         Компонент не найден. Проверьте правильность ввода</string>
+    <string name="text_view_whole_analysis_result_header">Результат проверки</string>
+    <string name="text_view_whole_analysis_result_approved_message">Состав одобрен</string>
+    <string name="text_view_whole_analysis_result_not_approved_message">
+        Состав не одобрен. Найдены компоненты с оценкой ниже 3 или мы не смогли распознать компоненты</string>
+    <string name="text_view_whole_analysis_result_not_found_message">
+        Следующие компоненты не были найдены:
+    </string>
+
 
     <string name="edit_text_analyze_one">Введите название</string>
     <string name="edit_text_analyze_whole">Введите список ингредиентов, разделенный запятой</string>

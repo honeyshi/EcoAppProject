@@ -10,8 +10,11 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.ecoappproject.*
 import com.example.ecoappproject.R
+import com.example.ecoappproject.adapter.CompositionAnalysisAdapter
 import com.example.ecoappproject.items.IngredientItem
 import com.google.firebase.FirebaseApp
 import com.google.firebase.database.*
@@ -22,8 +25,14 @@ import kotlin.collections.ArrayList
 class AnalyzeFragment : Fragment() {
 
     private lateinit var analyzeViewModel: AnalyzeViewModel
-    private var ingredientItemList = ArrayList<IngredientItem?>()
     private var ingredientItem : IngredientItem? = IngredientItem(name_en = "")
+    private val ingredientItemList = ArrayList<IngredientItem?>()
+    private val notFoundIngredientList = ArrayList<String>()
+    private var ratingCount = 0
+    private var isApproved = true
+
+    private val ingredientsDatabase = FirebaseDatabase.getInstance()
+    private val ingredientsReference = ingredientsDatabase.reference
 
     @kotlin.ExperimentalStdlibApi
     override fun onCreateView(
@@ -39,9 +48,15 @@ class AnalyzeFragment : Fragment() {
             val ingredientText = edit_text_analyze_one.text.toString().toLowerCase(Locale.getDefault())
             getIngredientInfo(ingredientText)
         }
+        root.findViewById<Button>(R.id.button_analyze_whole).setOnClickListener{
+            /* Split input */
+            val inputIngredientList = edit_text_analyze_whole.text.toString().split(", ").toTypedArray()
+            getCompositionInfo(inputIngredientList)
+        }
         return root
     }
 
+    /* Starting fragments */
     private fun startOneIngredientFragment(){
         /* Send values to another fragment */
         Log.w(ContentValues.TAG, "Set values")
@@ -59,6 +74,24 @@ class AnalyzeFragment : Fragment() {
         transaction.commit()
     }
 
+    private fun startWholeAnalysisFragment(){
+        /* Send ingredients list for recycler view */
+        analyzeViewModel.setIngredientItemList(ingredientItemList)
+
+        /* Set approval details */
+        analyzeViewModel.setIsApproved(isApproved)
+        if (notFoundIngredientList.isEmpty()) analyzeViewModel.setIsNotFound(false) else analyzeViewModel.setIsNotFound(true)
+        analyzeViewModel.setNotFoundIngredients(notFoundIngredientList.joinToString(separator = " "))
+
+        /* Start another fragment */
+        Log.w(ContentValues.TAG, "Start whole composition fragment")
+        val analyzeCompositionResultFragment = AnalyzeCompositionResultFragment()
+        val transaction: FragmentTransaction = fragmentManager!!.beginTransaction()
+        transaction.replace(R.id.nav_host_fragment, analyzeCompositionResultFragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
+
     private fun startNotFoundIngredientFragment(ingredientName: String){
         analyzeViewModel.setIngredientNameEN(ingredientName)
 
@@ -71,19 +104,18 @@ class AnalyzeFragment : Fragment() {
         transaction.commit()
     }
 
+    /* Get information from database*/
     private fun getIngredientInfo(ingredientName: String) {
         Log.w(ContentValues.TAG, ingredientName)
 
         /* Start getting data from DataBase */
         FirebaseApp.initializeApp(activity!!.applicationContext)
-        val ingredientsDatabase = FirebaseDatabase.getInstance()
-        val ingredientsReference = ingredientsDatabase.reference
         ingredientsReference.child(INGREDIENTS_DATABASE).addListenerForSingleValueEvent(
             object : ValueEventListener{
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     // if ingredient exists - get information
                     if (dataSnapshot.hasChild(ingredientName)){
-                        Log.w(ContentValues.TAG, "Ingredient in database")
+                        Log.w(ContentValues.TAG, "Ingredient $ingredientName in database")
                         ingredientItem =
                             dataSnapshot.child(ingredientName).getValue(IngredientItem::class.java)
                         startOneIngredientFragment()
@@ -93,6 +125,53 @@ class AnalyzeFragment : Fragment() {
                         ingredientItem = IngredientItem(name_en = ingredientName)
                         startNotFoundIngredientFragment(ingredientName)
                     }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Failed to read value
+                    Log.w(ContentValues.TAG, "Failed to read value.", error.toException())
+                }
+            }
+        )
+    }
+
+    private fun getCompositionInfo(ingredientList : Array<String>){
+        Log.w(ContentValues.TAG, "Get composition data from Database")
+
+        FirebaseApp.initializeApp(activity!!.applicationContext)
+        ingredientsReference.child(INGREDIENTS_DATABASE).addListenerForSingleValueEvent(
+            object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (ingredientName in ingredientList){
+                        /* If ingredient in database add it to list */
+                        if (dataSnapshot.hasChild(ingredientName)) {
+                            Log.w(ContentValues.TAG, "Ingredient $ingredientName in database")
+                            val ingredientItem =
+                                dataSnapshot.child(ingredientName).getValue(IngredientItem::class.java)
+                            ingredientItemList.add(ingredientItem)
+                            /* Check rating of ingredient */
+                            if (ingredientItem!!.rating!! < 3){
+                                ratingCount++
+                            }
+                        }
+                        /* If ingredient in database add it to not found list */
+                        else{
+                            notFoundIngredientList.add(ingredientName)
+                        }
+                    }
+                    Log.w(ContentValues.TAG, "Rating is: $ratingCount")
+                    /* If there are items with low rating
+                    *  then composition is not approved */
+                    if (ratingCount != 0){
+                        isApproved = false
+                    }
+                    /* If there are items which were not found
+                    *  then composition is not approved */
+                    if (notFoundIngredientList.isNotEmpty()){
+                        isApproved = false
+                    }
+                    Log.w(ContentValues.TAG, "Approval status: $isApproved")
+                    startWholeAnalysisFragment()
                 }
 
                 override fun onCancelled(error: DatabaseError) {

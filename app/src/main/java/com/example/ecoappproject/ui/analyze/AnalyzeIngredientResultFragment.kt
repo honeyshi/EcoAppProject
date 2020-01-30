@@ -27,8 +27,7 @@ class AnalyzeIngredientResultFragment : Fragment() {
             root.findViewById<TextView>(R.id.text_view_one_ingredient_result_header_en)
         val textViewIngredientNameRU =
             root.findViewById<TextView>(R.id.text_view_one_ingredient_result_header_ru)
-        // TODO: Сделать нормальный элемент для листиков
-        val textViewIngredientRating =
+        val ratingBarIngredientRating =
             root.findViewById<RatingBar>(R.id.rating_bar_one_ingredient_result)
         val textViewIngredientDescription =
             root.findViewById<TextView>(R.id.text_view_one_ingredient_result_description)
@@ -39,6 +38,10 @@ class AnalyzeIngredientResultFragment : Fragment() {
 
         analyzeViewModel.getIngredientNameRU().observe(this, Observer {
             textViewIngredientNameRU.text = it
+        })
+
+        analyzeViewModel.getIngredientRating().observe(this, Observer {
+            ratingBarIngredientRating.rating = it.toFloat()
         })
 
         analyzeViewModel.getIngredientDescription().observe(this, Observer {

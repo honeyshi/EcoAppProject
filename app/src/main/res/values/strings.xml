@@ -11,6 +11,13 @@
     <string name="text_view_analyze_whole_header">Analyze cosmetics composition</string>
     <string name="text_view_one_ingredient_result_not_found_message">
         Ingredient not found. Please check the spelling</string>
+    <string name="text_view_whole_analysis_result_header">Analysis result</string>
+    <string name="text_view_whole_analysis_result_approved_message">Composition is approved</string>
+    <string name="text_view_whole_analysis_result_not_approved_message">
+        Composition is not approved. There are components with rating below 3 or we could not recognize components</string>
+    <string name="text_view_whole_analysis_result_not_found_message">
+        Following components were not found:
+    </string>
 
     <string name="edit_text_analyze_one">Input title</string>
     <string name="edit_text_analyze_whole">Enter a comma separated list of ingredients</string>
