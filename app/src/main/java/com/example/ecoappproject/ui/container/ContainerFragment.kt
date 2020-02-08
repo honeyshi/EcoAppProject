@@ -11,6 +11,7 @@ import androidx.viewpager.widget.ViewPager
 import com.example.ecoappproject.R
 import com.example.ecoappproject.ui.home.HomeFragment
 import com.example.ecoappproject.ui.map.MapFragment
+import com.example.ecoappproject.ui.marking.MarkingFragment
 import com.example.ecoappproject.ui.user.UserFragment
 import java.util.ArrayList
 
@@ -36,7 +37,7 @@ class ContainerFragment : Fragment() {
         /* Add fragments to adapter */
         pagerAdapter.addFragment(MapFragment())
         pagerAdapter.addFragment(HomeFragment())
-        pagerAdapter.addFragment(UserFragment())
+        pagerAdapter.addFragment(MarkingFragment())
 
         /* Initialize adapter for viewpager */
         containerViewPager.adapter = pagerAdapter

@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/linear_layout_home"
+        android:id="@+id/linear_layout_eco_marking"
         android:layout_width="409dp"
         android:layout_height="694dp"
         android:orientation="vertical"
@@ -21,7 +21,7 @@
             android:background="@color/colorAccent" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/home_recycler_view"
+            android:id="@+id/recycler_view_eco_marking"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
