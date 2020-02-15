@@ -5,24 +5,150 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/linear_layout_eco_marking"
-        android:layout_width="409dp"
-        android:layout_height="694dp"
-        android:orientation="vertical"
+
+    <View
+        android:id="@+id/top_view_marking_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="244dp"
+        android:background="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/switcher_view_header_marking_fragment"
+        android:layout_width="317dp"
+        android:layout_height="113dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="29dp"
+        android:layout_marginRight="29dp"
+        android:layout_marginStart="29dp"
+        android:layout_marginLeft="29dp"
+        android:layout_marginTop="81dp"
+        android:layout_marginBottom="50dp"
+        android:background="@drawable/shape_switcher_header"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteY="36dp">
-        <View
-            android:id="@+id/delimiter_view"
-            android:layout_width="match_parent"
-            android:layout_height="6dp"
-            android:background="@color/colorAccent" />
+        app:layout_constraintBottom_toBottomOf="@id/top_view_marking_fragment"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_eco_marking"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+
+    <View
+        android:id="@+id/switcher_view_decoration_marking_fragment"
+        android:layout_width="317dp"
+        android:layout_height="113dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="29dp"
+        android:layout_marginRight="29dp"
+        android:layout_marginStart="29dp"
+        android:layout_marginLeft="29dp"
+        android:layout_marginTop="81dp"
+        android:layout_marginBottom="50dp"
+        android:background="@drawable/ic_flower_clouds"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/top_view_marking_fragment"/>
+
+
+    <TextView
+        android:id="@+id/text_view_header_marking_fragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="91dp"
+        android:layout_marginRight="91dp"
+        android:layout_marginStart="91dp"
+        android:layout_marginLeft="91dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginBottom="35dp"
+        android:maxWidth="317dp"
+        android:textAlignment="center"
+        android:textColor="@color/colorWhite"
+        android:text="@string/text_view_top_header_marking_fragment"
+        android:textSize="36sp"
+        app:layout_constraintEnd_toEndOf="@id/switcher_view_header_marking_fragment"
+        app:layout_constraintStart_toStartOf="@id/switcher_view_header_marking_fragment"
+        app:layout_constraintTop_toTopOf="@id/switcher_view_header_marking_fragment"
+        app:layout_constraintBottom_toBottomOf="@id/switcher_view_header_marking_fragment"
+        app:fontFamily="@font/montserrat_bold"/>
+
+    <View
+        android:id="@+id/switcher_round_marking_fragment"
+        android:layout_width="46dp"
+        android:layout_height="10dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="165dp"
+        android:layout_marginRight="165dp"
+        android:layout_marginStart="165dp"
+        android:layout_marginLeft="165dp"
+        android:layout_marginTop="23dp"
+        android:layout_marginBottom="17dp"
+        android:background="@drawable/ic_switch_round_marking"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/switcher_view_header_marking_fragment"
+        app:layout_constraintBottom_toBottomOf="@id/top_view_marking_fragment"/>
+
+    <ImageButton
+        android:id="@+id/image_button_marking_fragment_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="50dp"
+        android:background="@drawable/ic_chevron_left"
+        app:layout_constraintBottom_toBottomOf="@id/top_view_marking_fragment"
+        app:layout_constraintEnd_toStartOf="@id/switcher_view_header_marking_fragment"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <ImageButton
+        android:id="@+id/image_button_marking_fragment_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="50dp"
+        android:background="@drawable/ic_chevron_right"
+        app:layout_constraintBottom_toBottomOf="@id/top_view_marking_fragment"
+        app:layout_constraintEnd_toEndOf="@id/switcher_view_header_marking_fragment"
+        app:layout_constraintStart_toEndOf="parent" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_eco_marking"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:scrollbars="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/top_view_marking_fragment"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -20,6 +20,7 @@
         Следующие компоненты не были найдены:
     </string>
     <string name="text_view_top_header_home_fragment">Статьи</string>
+    <string name="text_view_top_header_marking_fragment">Эко маркировки</string>
 
 
     <string name="edit_text_analyze_one">Введите название</string>
