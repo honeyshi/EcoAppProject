@@ -4,53 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <!-- <androidx.cardview.widget.CardView
-        android:id="@+id/card_view_article"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp">
-
-            <ImageView
-                android:id="@+id/image_view_article"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:src="@drawable/image_sample"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:contentDescription="Sample Image"
-                tools:src="@tools:sample/avatars[3]" />
-
-            <TextView
-                android:id="@+id/text_view_article_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/image_view_article"
-                android:layout_toRightOf="@+id/image_view_article"
-                android:textColor="@color/colorPrimary"
-                android:text="Description"
-                android:textSize="16sp"
-                app:fontFamily="@font/montserrat_regular" />
-            <ImageButton
-                android:id="@+id/image_button_star"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/text_view_article_name"
-                android:layout_toRightOf="@+id/text_view_article_name"
-                android:src="@drawable/selector_star_button"
-                android:background="@null"/>
-
-        </RelativeLayout>
-
-    </androidx.cardview.widget.CardView> -->
+    android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
