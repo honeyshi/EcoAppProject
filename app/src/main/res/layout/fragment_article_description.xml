@@ -33,58 +33,54 @@
         app:layout_constraintTop_toTopOf="@+id/image_view_article_whole"
         app:layout_constraintLeft_toLeftOf="@+id/image_view_article_whole"/>
 
-    <!--<ImageView
-        android:id="@+id/image_view_article_whole_star"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="249dp"
-        android:layout_marginLeft="287dp"
-        android:layout_marginTop="249dp"
-        android:layout_marginRight="38dp"
-        android:src="@drawable/selector_star_button"
-        android:background="@drawable/shape_star_button"
-        app:layout_constraintTop_toTopOf="@+id/image_view_article_whole"
-        app:layout_constraintLeft_toLeftOf="@+id/image_view_article_whole"/>-->
-
     <TextView
         android:id="@+id/text_view_article_whole_name"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="44dp"
         android:layout_marginLeft="44dp"
+        android:layout_marginEnd="44dp"
+        android:layout_marginRight="44dp"
         android:layout_marginTop="14dp"
         android:text="Name"
         android:textColor="@color/colorPrimary"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/image_view_article_whole"
         app:fontFamily="@font/montserrat_regular"/>
 
     <TextView
         android:id="@+id/text_view_article_whole_reading_time"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="44dp"
         android:layout_marginLeft="44dp"
+        android:layout_marginEnd="44dp"
+        android:layout_marginRight="44dp"
         android:layout_marginTop="9dp"
         android:text="Reading Time"
         android:textSize="16sp"
         android:textColor="@color/colorBlack30"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_view_article_whole_name"
         app:fontFamily="@font/montserrat_light"/>
 
     <TextView
         android:id="@+id/text_view_article_whole_description"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="44dp"
         android:layout_marginLeft="44dp"
+        android:layout_marginEnd="44dp"
+        android:layout_marginRight="44dp"
         android:layout_marginTop="18dp"
         android:text="Description"
         android:textSize="16sp"
         android:textColor="@color/colorBlack"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_view_article_whole_reading_time"
         app:fontFamily="@font/montserrat_regular"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
