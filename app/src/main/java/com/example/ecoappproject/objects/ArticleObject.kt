@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ecoappproject.*
 import com.example.ecoappproject.adapter.ArticleAdapter
-import com.example.ecoappproject.interfaces.OnItemClickListener
+import com.example.ecoappproject.interfaces.OnArticleItemClickListener
 import com.example.ecoappproject.items.ArticleItem
 import com.google.firebase.FirebaseApp
 import com.google.firebase.database.DataSnapshot
@@ -84,17 +84,17 @@ object ArticleObject {
         articleItemList.clear()
     }
 
-    private fun initRecyclerView(context: Context, recyclerView: RecyclerView, itemClickListener: OnItemClickListener){
+    private fun initRecyclerView(context: Context, recyclerView: RecyclerView, articleItemClickListener: OnArticleItemClickListener){
         Log.w(ContentValues.TAG, "Initialize recycler view")
         articlesRecyclerView = recyclerView
         // назначаем менеджер, который отвечает за форму отображения элементов
         articlesRecyclerView.layoutManager = LinearLayoutManager(context)
         // назначаем адаптер
-        articleAdapter = ArticleAdapter(articleItemList, itemClickListener)
+        articleAdapter = ArticleAdapter(articleItemList, articleItemClickListener)
         articlesRecyclerView.adapter = articleAdapter
     }
 
-    fun getArticles(context: Context, recyclerView: RecyclerView, itemClickListener: OnItemClickListener){
+    fun getArticles(context: Context, recyclerView: RecyclerView, articleItemClickListener: OnArticleItemClickListener){
         Log.w(ContentValues.TAG, "Come to get articles")
         FirebaseApp.initializeApp(context)
         val articlesDatabase = FirebaseDatabase.getInstance()
@@ -120,7 +120,7 @@ object ArticleObject {
                         article.child(ARTICLES_DATABASE_IS_FAVOURITE).value.toString().toBoolean())
                 }
                 // initialize Recycler view with articles
-                initRecyclerView(context, recyclerView, itemClickListener)
+                initRecyclerView(context, recyclerView, articleItemClickListener)
             }
             override fun onCancelled(error: DatabaseError) {
                 // Failed to read value

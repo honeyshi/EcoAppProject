@@ -1,6 +1,5 @@
 package com.example.ecoappproject.ui.home
 
-import android.content.ContentValues
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,14 +10,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProviders
 import com.example.ecoappproject.R
-import com.example.ecoappproject.interfaces.OnItemClickListener
+import com.example.ecoappproject.interfaces.OnArticleItemClickListener
 import com.example.ecoappproject.items.ArticleItem
 import com.example.ecoappproject.objects.ArticleObject
 import com.example.ecoappproject.ui.articleDescription.ArticleDescriptionFragment
+import com.example.ecoappproject.ui.challenge.ChallengeFragment
 import com.example.ecoappproject.ui.marking.MarkingFragment
 
 
-class HomeFragment : Fragment(), OnItemClickListener {
+class HomeFragment : Fragment(), OnArticleItemClickListener {
 
     private lateinit var homeViewModel: HomeViewModel
 
@@ -31,10 +31,16 @@ class HomeFragment : Fragment(), OnItemClickListener {
             ViewModelProviders.of(requireActivity()).get(HomeViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_home, container, false)
         ArticleObject.clearArticleItemList()
-        ArticleObject.getArticles(activity!!.applicationContext, root.findViewById(R.id.home_recycler_view), this)
+        ArticleObject.getArticles(activity!!.applicationContext,
+            root.findViewById(R.id.home_recycler_view),
+            this)
 
         root.findViewById<ImageButton>(R.id.image_button_home_fragment_right).setOnClickListener{
             rightArrowClickListener()
+        }
+
+        root.findViewById<ImageButton>(R.id.image_button_home_fragment_left).setOnClickListener{
+            leftArrowClickListener()
         }
 
         return root
@@ -47,13 +53,13 @@ class HomeFragment : Fragment(), OnItemClickListener {
         val articleIsFavourite = ArticleObject.getArticleIsFavouriteFromDictionary(articleName)
         val articleDescriptionFragment = ArticleDescriptionFragment()
 
-        Log.w(ContentValues.TAG, "Save data to view model")
+        Log.w("Home fragment:", "Save data to view model")
         homeViewModel.setArticleName(articleName)
         homeViewModel.setArticleReadingTime(articleReadingTime)
         homeViewModel.setArticleDescription(articleDescription)
         homeViewModel.setArticleIsFavourite(articleIsFavourite)
 
-        Log.w(ContentValues.TAG, "Start description fragment")
+        Log.w("Home fragment:", "Start description fragment")
         val transaction: FragmentTransaction = fragmentManager!!.beginTransaction()
         transaction.replace(R.id.nav_host_fragment, articleDescriptionFragment)
         transaction.addToBackStack(null)
@@ -61,10 +67,19 @@ class HomeFragment : Fragment(), OnItemClickListener {
     }
 
     private fun rightArrowClickListener(){
-        Log.w(ContentValues.TAG, "Start eco marking fragment")
+        Log.w("Home fragment:", "Start eco marking fragment")
         val markingFragment = MarkingFragment()
         val transaction: FragmentTransaction = fragmentManager!!.beginTransaction()
         transaction.replace(R.id.nav_host_fragment, markingFragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
+
+    private fun leftArrowClickListener(){
+        Log.w("Home fragment:", "Start eco challenges fragment")
+        val challengeFragment = ChallengeFragment()
+        val transaction: FragmentTransaction = fragmentManager!!.beginTransaction()
+        transaction.replace(R.id.nav_host_fragment, challengeFragment)
         transaction.addToBackStack(null)
         transaction.commit()
     }

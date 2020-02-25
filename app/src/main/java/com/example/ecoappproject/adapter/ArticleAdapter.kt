@@ -10,12 +10,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ecoappproject.R
-import com.example.ecoappproject.interfaces.OnItemClickListener
+import com.example.ecoappproject.interfaces.OnArticleItemClickListener
 import com.example.ecoappproject.items.ArticleItem
 import com.example.ecoappproject.objects.ArticleObject
 
 class ArticleAdapter (private val articleItems : ArrayList<ArticleItem>,
-                      private val itemClickListener: OnItemClickListener
+                      private val articleItemClickListener: OnArticleItemClickListener
 ) :
     RecyclerView.Adapter<ArticleAdapter.ArticleViewHolder>() {
 
@@ -24,7 +24,7 @@ class ArticleAdapter (private val articleItems : ArrayList<ArticleItem>,
         private var favouriteButton = itemView.findViewById<ImageButton>(R.id.image_button_star)
         //TODO: use later private var articleImage= itemView.findViewById<ImageView>(R.id.image_view_article)
 
-        fun bind(articleItem: ArticleItem, itemClickListener: OnItemClickListener) {
+        fun bind(articleItem: ArticleItem, articleItemClickListener: OnArticleItemClickListener) {
             articleHead.text = articleItem.header
 
             if (articleItem.isFavourite)
@@ -52,7 +52,7 @@ class ArticleAdapter (private val articleItems : ArrayList<ArticleItem>,
 
             itemView.setOnClickListener {
                 Log.w(ContentValues.TAG, "Set on item click listener")
-                itemClickListener.onItemClicked(articleItem)
+                articleItemClickListener.onItemClicked(articleItem)
             }
         }
     }
@@ -62,7 +62,7 @@ class ArticleAdapter (private val articleItems : ArrayList<ArticleItem>,
     }
 
     override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
-        holder.bind(articleItems[position], itemClickListener)
+        holder.bind(articleItems[position], articleItemClickListener)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleViewHolder {
