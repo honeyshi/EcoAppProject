@@ -16,4 +16,31 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="DialogTheme" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/DialogWindowTitle</item>
+        <item name="materialAlertDialogBodyTextStyle">@style/DialogWindowMessage</item>
+
+        <!-- button style -->
+        <item name="buttonBarPositiveButtonStyle">@style/YesDialogButton</item>
+    </style>
+
+    <style name="YesDialogButton" parent="@style/Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/montserrat_bold</item>
+    </style>
+
+    <style name="DialogWindowTitle" parent="@style/MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:fontFamily">@font/montserrat_bold</item>
+    </style>
+
+    <style name="DialogWindowMessage" >
+        <item name="android:textColorPrimary">@color/colorBlack</item>
+        <item name="android:fontFamily">@font/montserrat_regular</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
 </resources>

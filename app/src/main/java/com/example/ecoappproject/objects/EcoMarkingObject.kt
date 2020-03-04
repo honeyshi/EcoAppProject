@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ecoappproject.ECO_MARKING_DATABASE
 import com.example.ecoappproject.adapter.EcoMarkingAdapter
+import com.example.ecoappproject.interfaces.OnMarkingItemClickListener
 import com.example.ecoappproject.items.EcoMarkingItem
 import com.google.firebase.FirebaseApp
 import com.google.firebase.database.DataSnapshot
@@ -27,17 +28,21 @@ object EcoMarkingObject {
         ecoMarkingList.clear()
     }
 
-    private fun initRecyclerView(context: Context, recyclerView: RecyclerView){
+    private fun initRecyclerView(context: Context,
+                                 recyclerView: RecyclerView,
+                                 markingItemClickListener: OnMarkingItemClickListener){
         Log.w(ContentValues.TAG, "Initialize recycler view")
         ecoMarkingRecyclerView = recyclerView
         // назначаем менеджер, который отвечает за форму отображения элементов
         ecoMarkingRecyclerView.layoutManager = LinearLayoutManager(context)
         // назначаем адаптер
-        ecoMarkingAdapter = EcoMarkingAdapter(ecoMarkingList)
+        ecoMarkingAdapter = EcoMarkingAdapter(ecoMarkingList, markingItemClickListener)
         ecoMarkingRecyclerView.adapter = ecoMarkingAdapter
     }
 
-    fun getEcoMarkings(context: Context, recyclerView: RecyclerView){
+    fun getEcoMarkings(context: Context,
+                       recyclerView: RecyclerView,
+                       markingItemClickListener: OnMarkingItemClickListener){
         Log.w(ContentValues.TAG, "Start eco markings")
         FirebaseApp.initializeApp(context)
         val ecoMarkingDatabase = FirebaseDatabase.getInstance()
@@ -53,7 +58,7 @@ object EcoMarkingObject {
                         ecoMarkingList.add(ecoMarkingItem)
                     }
                     sortEcoMarkingList()
-                    initRecyclerView(context, recyclerView)
+                    initRecyclerView(context, recyclerView, markingItemClickListener)
                 }
 
                 override fun onCancelled(error: DatabaseError) {
