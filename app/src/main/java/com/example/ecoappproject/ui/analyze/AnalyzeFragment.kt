@@ -1,20 +1,17 @@
 package com.example.ecoappproject.ui.analyze
 
-import android.content.ContentValues
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.ecoappproject.*
 import com.example.ecoappproject.R
-import com.example.ecoappproject.adapter.CompositionAnalysisAdapter
 import com.example.ecoappproject.items.IngredientItem
 import com.google.firebase.FirebaseApp
 import com.google.firebase.database.*
@@ -46,12 +43,32 @@ class AnalyzeFragment : Fragment() {
         root.findViewById<Button>(R.id.button_analyze_one).setOnClickListener{
             /* Find ingredient in database */
             val ingredientText = edit_text_analyze_one.text.toString().toLowerCase(Locale.getDefault())
-            getIngredientInfo(ingredientText)
+
+            /* Check if user input something */
+            if (ingredientText.isEmpty()){
+                Toast.makeText(activity?.applicationContext,
+                    R.string.toast_text_input_ingredient,
+                    Toast.LENGTH_LONG)
+                    .show()
+            }
+            else {
+                getIngredientInfo(ingredientText)
+            }
         }
         root.findViewById<Button>(R.id.button_analyze_whole).setOnClickListener{
             /* Split input */
             val inputIngredientList = edit_text_analyze_whole.text.toString().split(", ").toTypedArray()
-            getCompositionInfo(inputIngredientList)
+
+            /* Check if user input something */
+            if (inputIngredientList[0].isEmpty()){
+                Toast.makeText(activity?.applicationContext,
+                    R.string.toast_text_input_composition,
+                    Toast.LENGTH_LONG)
+                    .show()
+            }
+            else {
+                getCompositionInfo(inputIngredientList)
+            }
         }
         return root
     }
@@ -59,14 +76,14 @@ class AnalyzeFragment : Fragment() {
     /* Starting fragments */
     private fun startOneIngredientFragment(){
         /* Send values to another fragment */
-        Log.w(ContentValues.TAG, "Set values")
+        Log.w("Analyze fragment", "Set values")
         analyzeViewModel.setIngredientNameEN(ingredientItem?.name_en.toString())
         analyzeViewModel.setIngredientNameRU(ingredientItem?.name_ru.toString())
         analyzeViewModel.setIngredientRating(ingredientItem?.rating)
         analyzeViewModel.setIngredientDescription(ingredientItem?.description.toString())
 
         /* Start another fragment */
-        Log.w(ContentValues.TAG, "Start one ingredient fragment")
+        Log.w("Analyze fragment", "Start one ingredient fragment")
         val analyzeIngredientResultFragment = AnalyzeIngredientResultFragment()
         val transaction: FragmentTransaction = fragmentManager!!.beginTransaction()
         transaction.replace(R.id.nav_host_fragment, analyzeIngredientResultFragment)
@@ -84,7 +101,7 @@ class AnalyzeFragment : Fragment() {
         analyzeViewModel.setNotFoundIngredients(notFoundIngredientList.joinToString(separator = " "))
 
         /* Start another fragment */
-        Log.w(ContentValues.TAG, "Start whole composition fragment")
+        Log.w("Analyze fragment", "Start whole composition fragment")
         val analyzeCompositionResultFragment = AnalyzeCompositionResultFragment()
         val transaction: FragmentTransaction = fragmentManager!!.beginTransaction()
         transaction.replace(R.id.nav_host_fragment, analyzeCompositionResultFragment)
@@ -96,7 +113,7 @@ class AnalyzeFragment : Fragment() {
         analyzeViewModel.setIngredientNameEN(ingredientName)
 
         /* Start another fragment */
-        Log.w(ContentValues.TAG, "Start ingredient not found fragment")
+        Log.w("Analyze fragment", "Start ingredient not found fragment")
         val analyzeIngredientNotFoundFragment = AnalyzeIngredientNotFoundFragment()
         val transaction: FragmentTransaction = fragmentManager!!.beginTransaction()
         transaction.replace(R.id.nav_host_fragment, analyzeIngredientNotFoundFragment)
@@ -106,7 +123,7 @@ class AnalyzeFragment : Fragment() {
 
     /* Get information from database*/
     private fun getIngredientInfo(ingredientName: String) {
-        Log.w(ContentValues.TAG, ingredientName)
+        Log.w("Analyze fragment", ingredientName)
 
         /* Start getting data from DataBase */
         FirebaseApp.initializeApp(activity!!.applicationContext)
@@ -115,7 +132,7 @@ class AnalyzeFragment : Fragment() {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     // if ingredient exists - get information
                     if (dataSnapshot.hasChild(ingredientName)){
-                        Log.w(ContentValues.TAG, "Ingredient $ingredientName in database")
+                        Log.w("Analyze fragment", "Ingredient $ingredientName in database")
                         ingredientItem =
                             dataSnapshot.child(ingredientName).getValue(IngredientItem::class.java)
                         startOneIngredientFragment()
@@ -129,14 +146,14 @@ class AnalyzeFragment : Fragment() {
 
                 override fun onCancelled(error: DatabaseError) {
                     // Failed to read value
-                    Log.w(ContentValues.TAG, "Failed to read value.", error.toException())
+                    Log.w("Analyze fragment", "Failed to read value.", error.toException())
                 }
             }
         )
     }
 
     private fun getCompositionInfo(ingredientList : Array<String>){
-        Log.w(ContentValues.TAG, "Get composition data from Database")
+        Log.w("Analyze fragment", "Get composition data from Database")
 
         FirebaseApp.initializeApp(activity!!.applicationContext)
         ingredientsReference.child(INGREDIENTS_DATABASE).addListenerForSingleValueEvent(
@@ -145,7 +162,7 @@ class AnalyzeFragment : Fragment() {
                     for (ingredientName in ingredientList){
                         /* If ingredient in database add it to list */
                         if (dataSnapshot.hasChild(ingredientName)) {
-                            Log.w(ContentValues.TAG, "Ingredient $ingredientName in database")
+                            Log.w("Analyze fragment", "Ingredient $ingredientName in database")
                             val ingredientItem =
                                 dataSnapshot.child(ingredientName).getValue(IngredientItem::class.java)
                             ingredientItemList.add(ingredientItem)
@@ -159,7 +176,7 @@ class AnalyzeFragment : Fragment() {
                             notFoundIngredientList.add(ingredientName)
                         }
                     }
-                    Log.w(ContentValues.TAG, "Rating is: $ratingCount")
+                    Log.w("Analyze fragment", "Rating is: $ratingCount")
                     /* If there are items with low rating
                     *  then composition is not approved */
                     if (ratingCount != 0){
@@ -170,13 +187,13 @@ class AnalyzeFragment : Fragment() {
                     if (notFoundIngredientList.isNotEmpty()){
                         isApproved = false
                     }
-                    Log.w(ContentValues.TAG, "Approval status: $isApproved")
+                    Log.w("Analyze fragment", "Approval status: $isApproved")
                     startWholeAnalysisFragment()
                 }
 
                 override fun onCancelled(error: DatabaseError) {
                     // Failed to read value
-                    Log.w(ContentValues.TAG, "Failed to read value.", error.toException())
+                    Log.w("Analyze fragment", "Failed to read value.", error.toException())
                 }
             }
         )

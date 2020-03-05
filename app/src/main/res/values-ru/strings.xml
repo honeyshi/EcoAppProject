@@ -36,4 +36,6 @@
 
     <string name="toast_text_add_to_favourites">Добавлено в Избранное</string>
     <string name="toast_text_delete_from_favourites">Удалено из Избранного</string>
+    <string name="toast_text_input_ingredient">Введите название компонента для поиска</string>
+    <string name="toast_text_input_composition">Введите состав для анализа</string>
 </resources>
