@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProviders
 import com.example.ecoappproject.R
 import com.example.ecoappproject.interfaces.OnChallengeItemClickListener
@@ -18,15 +19,13 @@ import com.example.ecoappproject.ui.marking.MarkingFragment
 
 class ChallengeFragment : Fragment(), OnChallengeItemClickListener {
 
-    private lateinit var challengeViewModel: ChallengeViewModel
+    private val challengeViewModel: ChallengeViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        challengeViewModel =
-            ViewModelProviders.of(requireActivity()).get(ChallengeViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_challenge, container, false)
 
         ChallengeObject.clearChallengeItemsList()
@@ -49,15 +48,17 @@ class ChallengeFragment : Fragment(), OnChallengeItemClickListener {
         val challengeName = challengeItem?.name
         val challengeDescription = challengeItem?.description
         val challengeIsStarted = challengeItem?.started
+        val challengeImageUri = challengeItem?.imageUri
 
         Log.w("Challenge fragment:", "Save data to view model")
         challengeViewModel.setChallengeName(challengeName)
         challengeViewModel.setChallengeDescription(challengeDescription)
+        challengeViewModel.setChallengeImageUri(challengeImageUri)
 
         if (challengeIsStarted!!.toBoolean()){
             Log.w("Challenge fragment:", "Open started challenge fragment " +
                     "'cause it has started value: $challengeIsStarted")
-            val transaction: FragmentTransaction = fragmentManager!!.beginTransaction()
+            val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
             transaction.replace(R.id.nav_host_fragment, ChallengeDescriptionStartedFragment())
             transaction.addToBackStack(null)
             transaction.commit()
@@ -65,7 +66,7 @@ class ChallengeFragment : Fragment(), OnChallengeItemClickListener {
         else{
             Log.w("Challenge fragment:", "Open not started challenge fragment " +
                     "'cause it has started value: $challengeIsStarted")
-            val transaction: FragmentTransaction = fragmentManager!!.beginTransaction()
+            val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
             transaction.replace(R.id.nav_host_fragment, ChallengeDescriptionNotStartedFragment())
             transaction.addToBackStack(null)
             transaction.commit()
@@ -74,7 +75,7 @@ class ChallengeFragment : Fragment(), OnChallengeItemClickListener {
 
     private fun rightArrowClickListener(){
         Log.w("Challenge fragment:", "Start articles fragment")
-        val transaction: FragmentTransaction = fragmentManager!!.beginTransaction()
+        val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
         transaction.replace(R.id.nav_host_fragment, HomeFragment())
         transaction.addToBackStack(null)
         transaction.commit()
@@ -82,7 +83,7 @@ class ChallengeFragment : Fragment(), OnChallengeItemClickListener {
 
     private fun leftArrowClickListener(){
         Log.w("Challenge fragment:", "Start eco marking fragment")
-        val transaction: FragmentTransaction = fragmentManager!!.beginTransaction()
+        val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
         transaction.replace(R.id.nav_host_fragment, MarkingFragment())
         transaction.addToBackStack(null)
         transaction.commit()

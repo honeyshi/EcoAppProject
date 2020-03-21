@@ -10,6 +10,7 @@ class HomeViewModel : ViewModel() {
     private val articleReadingTime = MutableLiveData<String>()
     private val articleDescription = MutableLiveData<String>()
     private val articleIsFavourite = MutableLiveData<Boolean>()
+    private val articleImageUri = MutableLiveData<String>()
 
     fun setArticleName(articleName: String?){
         this.articleName.value = articleName
@@ -34,4 +35,10 @@ class HomeViewModel : ViewModel() {
     }
 
     fun getArticleIsFavourite() : LiveData<Boolean> = articleIsFavourite
+
+    fun setArticleImageUri(articleImageUri: String?){
+        this.articleImageUri.value = articleImageUri
+    }
+
+    fun getArticleImageUri() : LiveData<String> = articleImageUri
 }

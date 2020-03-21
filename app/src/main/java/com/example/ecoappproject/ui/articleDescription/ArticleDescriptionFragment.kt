@@ -7,26 +7,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.ecoappproject.R
 import com.example.ecoappproject.objects.ArticleObject
 import com.example.ecoappproject.ui.home.HomeViewModel
+import com.google.firebase.storage.FirebaseStorage
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
 
 class ArticleDescriptionFragment : Fragment() {
-    private lateinit var homeViewModel: HomeViewModel
+
+    private val homeViewModel: HomeViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        homeViewModel =
-            ViewModelProviders.of(requireActivity()).get(HomeViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_article_description, container, false)
 
         val textViewArticleHeader =
@@ -37,28 +41,45 @@ class ArticleDescriptionFragment : Fragment() {
             root.findViewById<TextView>(R.id.text_view_article_whole_description)
         val imageButtonArticleIsFavourite =
             root.findViewById<ImageButton>(R.id.image_button_article_whole_star)
+        val imageViewArticle =
+            root.findViewById<ImageView>(R.id.image_view_article_whole)
+
         lateinit var articleName : String
 
-        homeViewModel.getArticleName().observe(this, Observer {
+        homeViewModel.getArticleName().observe(viewLifecycleOwner, Observer {
             textViewArticleHeader.text = it
             articleName = it
         })
 
-        homeViewModel.getArticleReadingTime().observe(this, Observer {
+        homeViewModel.getArticleReadingTime().observe(viewLifecycleOwner, Observer {
             textViewArticleReadingTime.text = it
         })
 
-        homeViewModel.getArticleDescription().observe(this, Observer {
+        homeViewModel.getArticleDescription().observe(viewLifecycleOwner, Observer {
             textViewArticleDescription.text = it
         })
 
-        homeViewModel.getArticleIsFavourite().observe(this, Observer {
+        homeViewModel.getArticleIsFavourite().observe(viewLifecycleOwner, Observer {
             if (it) imageButtonArticleIsFavourite.setImageResource(R.drawable.ic_star_pressed)
             else imageButtonArticleIsFavourite.setImageResource(R.drawable.ic_star_normal)
         })
 
+        homeViewModel.getArticleImageUri().observe(viewLifecycleOwner, Observer {
+            val gsReference = FirebaseStorage.getInstance()
+                .getReferenceFromUrl(it)
+            Glide.with(root)
+                .load(gsReference)
+                .apply(
+                    RequestOptions
+                        .bitmapTransform(
+                            RoundedCornersTransformation(100,0,
+                                RoundedCornersTransformation.CornerType.BOTTOM)
+                        ))
+                .into(imageViewArticle)
+        })
+
         imageButtonArticleIsFavourite.setOnClickListener {
-            homeViewModel.getArticleIsFavourite().observe(this, Observer {
+            homeViewModel.getArticleIsFavourite().observe(viewLifecycleOwner, Observer {
                 // article is favourite - set not favourite
                 if (it) {
                     Log.w(ContentValues.TAG, "Delete from favourites")

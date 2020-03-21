@@ -49,6 +49,7 @@ class HomeFragment : Fragment(), OnArticleItemClickListener {
         val articleDescription = articleItem?.longDescription
         val articleReadingTime = articleItem?.readingTime
         val articleIsFavourite = articleItem?.favourite?.toBoolean()
+        val articleImageUri = articleItem?.imageUri
         val articleDescriptionFragment = ArticleDescriptionFragment()
 
         Log.w("Home fragment:", "Save data to view model")
@@ -56,6 +57,7 @@ class HomeFragment : Fragment(), OnArticleItemClickListener {
         homeViewModel.setArticleReadingTime(articleReadingTime)
         homeViewModel.setArticleDescription(articleDescription)
         homeViewModel.setArticleIsFavourite(articleIsFavourite)
+        homeViewModel.setArticleImageUri(articleImageUri)
 
         Log.w("Home fragment:", "Start description fragment")
         val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
