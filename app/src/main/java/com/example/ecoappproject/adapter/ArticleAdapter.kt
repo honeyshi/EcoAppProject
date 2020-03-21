@@ -5,13 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.ecoappproject.R
 import com.example.ecoappproject.interfaces.OnArticleItemClickListener
 import com.example.ecoappproject.items.ArticleItem
 import com.example.ecoappproject.objects.ArticleObject
+import com.google.firebase.storage.FirebaseStorage
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
 class ArticleAdapter (private val articleItems : ArrayList<ArticleItem?>,
                       private val articleItemClickListener: OnArticleItemClickListener
@@ -21,10 +26,19 @@ class ArticleAdapter (private val articleItems : ArrayList<ArticleItem?>,
     class ArticleViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView) {
         private var articleHead = itemView.findViewById<TextView>(R.id.text_view_article_name)
         private var favouriteButton = itemView.findViewById<ImageButton>(R.id.image_button_star)
-        //TODO: use later private var articleImage= itemView.findViewById<ImageView>(R.id.image_view_article)
+        private var articleImage= itemView.findViewById<ImageView>(R.id.image_view_article)
+        private val firebaseStorage = FirebaseStorage.getInstance()
 
         fun bind(articleItem: ArticleItem?, articleItemClickListener: OnArticleItemClickListener) {
             articleHead.text = articleItem?.header
+
+            val gsReference = firebaseStorage
+                .getReferenceFromUrl(articleItem?.imageUri.toString())
+            // load image to imageView and set rounded corners
+            Glide.with(itemView)
+                .load(gsReference)
+                .apply(RequestOptions.bitmapTransform(RoundedCornersTransformation(20,0)))
+                .into(articleImage)
 
             if (articleItem?.favourite!!.toBoolean())
                 favouriteButton.setImageResource(R.drawable.ic_star_pressed)
