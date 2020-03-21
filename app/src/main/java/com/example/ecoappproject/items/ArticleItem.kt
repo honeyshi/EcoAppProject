@@ -1,4 +1,9 @@
 package com.example.ecoappproject.items
 
-class ArticleItem (val header : String?,
-                   val isFavourite: Boolean)
+import com.google.firebase.database.IgnoreExtraProperties
+
+@IgnoreExtraProperties
+data class ArticleItem (val header : String? = "",
+                        val longDescription : String? = "",
+                        val readingTime : String? = "",
+                        var favourite : String? = "")
