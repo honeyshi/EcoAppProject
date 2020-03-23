@@ -42,7 +42,7 @@ class MarkingFragment : Fragment(), OnMarkingItemClickListener {
 
     private fun leftArrowClickListener(){
         Log.w("Eco Marking fragment", "Start eco articles fragment")
-        val transaction: FragmentTransaction = fragmentManager!!.beginTransaction()
+        val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
         transaction.replace(R.id.nav_host_fragment, HomeFragment())
         transaction.addToBackStack(null)
         transaction.commit()
@@ -50,7 +50,7 @@ class MarkingFragment : Fragment(), OnMarkingItemClickListener {
 
     private fun rightArrowClickListener(){
         Log.w("Eco Marking fragment", "Start challenges fragment")
-        val transaction: FragmentTransaction = fragmentManager!!.beginTransaction()
+        val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
         transaction.replace(R.id.nav_host_fragment, ChallengeFragment())
         transaction.addToBackStack(null)
         transaction.commit()

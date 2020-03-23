@@ -3,4 +3,5 @@ import com.google.firebase.database.IgnoreExtraProperties
 
 @IgnoreExtraProperties
 data class EcoMarkingItem (val name: String? = "",
-                           val description: String? = "")
+                           val description: String? = "",
+                           val imageUri: String? = "")
