@@ -33,6 +33,8 @@
     <string name="button_analyze_whole_button_text">Проверить</string>
     <string name="button_challenge_not_started_text">Начать челлендж</string>
     <string name="button_challenge_started_text">Завершить челлендж</string>
+    <string name="button_login_google">Войти через Google</string>
+    <string name="button_skip_registration">Пропустить регистрацию</string>
 
     <string name="toast_text_add_to_favourites">Добавлено в Избранное</string>
     <string name="toast_text_delete_from_favourites">Удалено из Избранного</string>

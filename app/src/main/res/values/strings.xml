@@ -31,6 +31,8 @@
     <string name="button_analyze_whole_button_text">Check composition</string>
     <string name="button_challenge_not_started_text">Start challenge</string>
     <string name="button_challenge_started_text">Stop challenge</string>
+    <string name="button_login_google">Sign in with Google</string>
+    <string name="button_skip_registration">Skip registration</string>
 
     <string name="toast_text_add_to_favourites">Added to Favourites</string>
     <string name="toast_text_delete_from_favourites">Deleted from Favourites</string>
