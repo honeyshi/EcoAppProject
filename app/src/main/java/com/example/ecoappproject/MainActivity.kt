@@ -64,6 +64,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // region Working with Database for user
     private fun initializeDatabaseForCurrentUser() {
         val currentUserId = firebaseAuth.currentUser?.uid
         Log.w("Main Activity", "Current user id: $currentUserId")
@@ -74,7 +75,8 @@ class MainActivity : AppCompatActivity() {
                 if (dataSnapshot.child(currentUserId.toString()).exists()) {
                     Log.w("Main Activity", "Current user with id $currentUserId exists in DB")
                     // If user exists in Firebase database update his/her database to current
-                    updateDataForUserInDatabase(currentUserId)
+                    updateArticlesDataForUserInDatabase(currentUserId)
+                    updateChallengesDataForUserInDatabase(currentUserId)
                 } else {
                     Log.w("Main Activity", "Current user with id $currentUserId not exists in DB")
                     // If user not exists add to Firebase database
@@ -141,7 +143,91 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun updateDataForUserInDatabase(userId: String?) {
+    private fun updateArticlesDataForUserInDatabase(userId: String?) {
+        var countArticleItem = 0
+        firebaseReference.child(ARTICLES_DATABASE).addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (article in dataSnapshot.children) {
+                    val articleItem =
+                        article.getValue(ArticleItem::class.java)
+                    countArticleItem++
+                    firebaseReference
+                        .child(USERS_DATABASE)
+                        .child(userId.toString())
+                        .child(ARTICLES_DATABASE)
+                        .addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                // If value from whole DB not exists in user's DB
+                                if (!dataSnapshot.child(article.key.toString()).exists()) {
+                                    // Add this value un user's DB
+                                    Log.w("Main Activity", "I should add ${articleItem?.header}}")
+                                    val newRefArticles = firebaseReference
+                                        .child(USERS_DATABASE)
+                                        .child(userId.toString())
+                                        .child(ARTICLES_DATABASE)
+                                        .child("Article${countArticleItem}")
+                                    newRefArticles.setValue(articleItem)
+                                }
+                            }
 
+                            override fun onCancelled(error: DatabaseError) {
+                                // Failed to read value
+                                Log.w("Main Activity", "Failed to read value.", error.toException())
+                            }
+                        })
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Failed to read value
+                Log.w("Main Activity", "Failed to read value.", error.toException())
+            }
+        })
     }
+
+    private fun updateChallengesDataForUserInDatabase(userId: String?) {
+        var countChallengeItem = 0
+        firebaseReference.child(CHALLENGE_DATABASE).addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (challenge in dataSnapshot.children) {
+                    val challengeItem =
+                        challenge.getValue(ChallengeItem::class.java)
+                    countChallengeItem++
+                    firebaseReference
+                        .child(USERS_DATABASE)
+                        .child(userId.toString())
+                        .child(CHALLENGE_DATABASE)
+                        .addListenerForSingleValueEvent(object :
+                            ValueEventListener {
+                            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                // If value from whole DB not exists in user's DB
+                                if (!dataSnapshot.child(challenge.key.toString()).exists()) {
+                                    // Add this value un user's DB
+                                    Log.w("Main Activity", "I should add ${challengeItem?.name}}")
+                                    val newRefChallenges = firebaseReference
+                                        .child(USERS_DATABASE)
+                                        .child(userId.toString())
+                                        .child(CHALLENGE_DATABASE)
+                                        .child("Challenge${countChallengeItem}")
+                                    newRefChallenges.setValue(challengeItem)
+                                }
+                            }
+
+                            override fun onCancelled(error: DatabaseError) {
+                                // Failed to read value
+                                Log.w("Main Activity", "Failed to read value.", error.toException())
+                            }
+                        })
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Failed to read value
+                Log.w("Main Activity", "Failed to read value.", error.toException())
+            }
+        })
+    }
+    // endregion
 }
