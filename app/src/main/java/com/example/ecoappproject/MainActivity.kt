@@ -37,7 +37,10 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_analyze, R.id.navigation_map, R.id.navigation_user
+                R.id.navigation_home,
+                R.id.navigation_analyze,
+                R.id.navigation_map,
+                R.id.navigation_user
             )
         )
         //setupActionBarWithNavController(navController, appBarConfiguration)
@@ -50,30 +53,29 @@ class MainActivity : AppCompatActivity() {
         /* Settings for first time usage */
         val sharedPref = getPreferences(Context.MODE_PRIVATE)
 
-        val firstOpened : Boolean = sharedPref.getBoolean("first_opened", true)
+        val firstOpened: Boolean = sharedPref.getBoolean("first_opened", true)
 
-        if (firstOpened){
+        if (firstOpened) {
             val intent = Intent(this, FirstTimeActivity::class.java)
             startActivity(intent)
-            val editor : SharedPreferences.Editor = sharedPref.edit()
+            val editor: SharedPreferences.Editor = sharedPref.edit()
             editor.putBoolean("first_opened", false)
             editor.apply()
         }
     }
 
-    private fun initializeDatabaseForCurrentUser(){
+    private fun initializeDatabaseForCurrentUser() {
         val currentUserId = firebaseAuth.currentUser?.uid
         Log.w("Main Activity", "Current user id: $currentUserId")
 
         firebaseReference.child(USERS_DATABASE).addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if (dataSnapshot.child(currentUserId.toString()).exists()){
+                if (dataSnapshot.child(currentUserId.toString()).exists()) {
                     Log.w("Main Activity", "Current user with id $currentUserId exists in DB")
                     // If user exists in Firebase database update his/her database to current
                     updateDataForUserInDatabase(currentUserId)
-                }
-                else {
+                } else {
                     Log.w("Main Activity", "Current user with id $currentUserId not exists in DB")
                     // If user not exists add to Firebase database
                     addNewUserInDatabase(currentUserId)
@@ -87,44 +89,47 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun addNewUserInDatabase(userId : String?){
+    private fun addNewUserInDatabase(userId: String?) {
         // Add values from articles database
         Log.w("Main Activity", "Set articles for new user")
-        var count = 0
+        var countArticleItem = 0
         firebaseReference.child(ARTICLES_DATABASE).addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (article in dataSnapshot.children){
+                for (article in dataSnapshot.children) {
                     val articleItem =
                         article.getValue(ArticleItem::class.java)
-                    count ++
+                    countArticleItem++
                     val newRefArticles = firebaseReference
                         .child(USERS_DATABASE)
                         .child(userId.toString())
                         .child(ARTICLES_DATABASE)
-                        .child("Article${count}")
+                        .child("Article${countArticleItem}")
                     newRefArticles.setValue(articleItem)
                 }
             }
+
             override fun onCancelled(error: DatabaseError) {
                 // Failed to read value
                 Log.w("Main Activity", "Failed to read value.", error.toException())
             }
         })
 
+        var countChallengeItem = 0
         // Add values from challenge database
         Log.w("Main Activity", "Set challenges for new user")
         firebaseReference.child(CHALLENGE_DATABASE).addListenerForSingleValueEvent(object :
-            ValueEventListener{
+            ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (challenge in dataSnapshot.children) {
                     val challengeItem =
                         challenge.getValue(ChallengeItem::class.java)
+                    countChallengeItem++
                     val newRefChallenges = firebaseReference
                         .child(USERS_DATABASE)
                         .child(userId.toString())
                         .child(CHALLENGE_DATABASE)
-                        .child("Challenge${count}")
+                        .child("Challenge${countChallengeItem}")
                     newRefChallenges.setValue(challengeItem)
                 }
             }
@@ -136,7 +141,7 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun updateDataForUserInDatabase(userId : String?){
+    private fun updateDataForUserInDatabase(userId: String?) {
 
     }
 }

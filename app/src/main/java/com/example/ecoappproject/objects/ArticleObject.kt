@@ -9,6 +9,7 @@ import com.example.ecoappproject.adapter.ArticleAdapter
 import com.example.ecoappproject.interfaces.OnArticleItemClickListener
 import com.example.ecoappproject.items.ArticleItem
 import com.google.firebase.FirebaseApp
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -16,23 +17,31 @@ import com.google.firebase.database.ValueEventListener
 
 object ArticleObject {
     private val articleItemList = ArrayList<ArticleItem?>()
-    private lateinit var articlesRecyclerView : RecyclerView
+    private lateinit var articlesRecyclerView: RecyclerView
     private lateinit var articleAdapter: ArticleAdapter
 
-    fun setArticleIsFavourite(context: Context,
-                              articleName: String?,
-                              isFavourite: String){
+    fun setArticleIsFavourite(
+        context: Context,
+        articleName: String?,
+        isFavourite: String
+    ) {
         Log.w("Article Object", "Start changing value in database")
         FirebaseApp.initializeApp(context)
         val articlesReference = FirebaseDatabase.getInstance().reference
-        val editArticleItem = articlesReference.child(ARTICLES_DATABASE)
+        val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
+        val editArticleItem = articlesReference
+            .child(USERS_DATABASE)
+            .child(currentUserId.toString())
+            .child(ARTICLES_DATABASE)
         editArticleItem.addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (editArticle in dataSnapshot.children){
-                    if (editArticle.child(ARTICLES_DATABASE_HEADER).value.toString() == articleName){
-                        Log.w("Article Object",
-                            "Set isFavourite $isFavourite for article $articleName")
+                for (editArticle in dataSnapshot.children) {
+                    if (editArticle.child(ARTICLES_DATABASE_HEADER).value.toString() == articleName) {
+                        Log.w(
+                            "Article Object",
+                            "Set isFavourite $isFavourite for article $articleName"
+                        )
                         editArticle.ref.child(ARTICLES_DATABASE_IS_FAVOURITE).setValue(isFavourite)
                     }
                 }
@@ -54,9 +63,11 @@ object ArticleObject {
         articleItemList.clear()
     }
 
-    private fun initRecyclerView(context: Context,
-                                 recyclerView: RecyclerView,
-                                 articleItemClickListener: OnArticleItemClickListener){
+    private fun initRecyclerView(
+        context: Context,
+        recyclerView: RecyclerView,
+        articleItemClickListener: OnArticleItemClickListener
+    ) {
         Log.w("Article Object", "Initialize recycler view")
         articlesRecyclerView = recyclerView
         // назначаем менеджер, который отвечает за форму отображения элементов
@@ -66,29 +77,36 @@ object ArticleObject {
         articlesRecyclerView.adapter = articleAdapter
     }
 
-    fun getArticles(context: Context,
-                    recyclerView: RecyclerView,
-                    articleItemClickListener: OnArticleItemClickListener){
+    fun getArticles(
+        context: Context,
+        recyclerView: RecyclerView,
+        articleItemClickListener: OnArticleItemClickListener
+    ) {
         Log.w("Article Object", "Come to get articles")
         FirebaseApp.initializeApp(context)
         val articlesReference = FirebaseDatabase.getInstance().reference
-        articlesReference.child(ARTICLES_DATABASE).addListenerForSingleValueEvent(object :
-            ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (article in dataSnapshot.children){
-                    val articleItem =
-                        article.getValue(ArticleItem::class.java)
-                    Log.w("Article object", "Current article name is ${articleItem?.header}")
-                    Log.w("Article object", "Favourite status is ${articleItem?.favourite}")
-                    articleItemList.add(articleItem)
+        val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
+        articlesReference
+            .child(USERS_DATABASE)
+            .child(currentUserId.toString())
+            .child(ARTICLES_DATABASE)
+            .addListenerForSingleValueEvent(object :
+                ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (article in dataSnapshot.children) {
+                        val articleItem =
+                            article.getValue(ArticleItem::class.java)
+                        Log.w("Article object", "Current article name is ${articleItem?.header}")
+                        Log.w("Article object", "Favourite status is ${articleItem?.favourite}")
+                        articleItemList.add(articleItem)
+                    }
+                    initRecyclerView(context, recyclerView, articleItemClickListener)
                 }
-                initRecyclerView(context, recyclerView, articleItemClickListener)
-            }
 
-            override fun onCancelled(error: DatabaseError) {
-                // Failed to read value
-                Log.w("Article Object", "Failed to read value.", error.toException())
-            }
-        })
+                override fun onCancelled(error: DatabaseError) {
+                    // Failed to read value
+                    Log.w("Article Object", "Failed to read value.", error.toException())
+                }
+            })
     }
 }
