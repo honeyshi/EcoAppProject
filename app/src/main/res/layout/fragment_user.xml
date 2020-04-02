@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -15,18 +14,70 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <ImageButton
+        android:id="@+id/image_button_calendar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/ic_calendar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/image_button_challenge"/>
+
+    <ImageButton
+        android:id="@+id/image_button_challenge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/ic_challenge"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/image_button_award"/>
+
+    <ImageButton
+        android:id="@+id/image_button_award"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginEnd="40dp"
+        android:background="@drawable/ic_award"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageButton
         android:id="@+id/image_button_user_icon"
         android:layout_width="@dimen/user_fragment_image_size"
         android:layout_height="@dimen/user_fragment_image_size"
+        android:layout_marginStart="120dp"
+        android:layout_marginLeft="120dp"
+        android:layout_marginTop="94dp"
+        android:layout_marginEnd="120dp"
+        android:layout_marginRight="120dp"
+        android:background="@drawable/user"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/text_view_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="120dp"
         android:layout_marginStart="120dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="40dp"
         android:layout_marginRight="120dp"
         android:layout_marginEnd="120dp"
-        android:background="@drawable/user"
+        android:text="Test"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:textSize="@dimen/text_size_main"
+        android:textColor="@color/colorWhite"
+        app:fontFamily="@font/montserrat_bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/image_button_user_icon"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <View
         android:id="@+id/rectangle_user_fragment"
@@ -34,13 +85,41 @@
         android:layout_height="107dp"
         android:background="@color/colorPrimary"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/top_view_user_fragment" />
+        app:layout_constraintTop_toBottomOf="@id/top_view_user_fragment"/>
 
     <View
         android:id="@+id/bottom_view_user_fragment"
         android:layout_width="match_parent"
         android:layout_height="480dp"
         android:background="@drawable/ic_saved_articles_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/top_view_user_fragment"/>
+
+    <TextView
+        android:id="@+id/text_view_no_favourites"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="120dp"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginRight="120dp"
+        android:layout_marginEnd="120dp"
+        android:text="@string/text_view_no_favourites_message"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:textSize="@dimen/text_size_main"
+        android:textColor="@color/colorPrimary"
+        app:fontFamily="@font/montserrat_regular"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/top_view_user_fragment"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/favourite_articles_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:layout_marginTop="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/top_view_user_fragment"/>

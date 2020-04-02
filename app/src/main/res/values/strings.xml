@@ -22,6 +22,7 @@
     <string name="text_view_top_header_home_fragment">Eco Articles</string>
     <string name="text_view_top_header_marking_fragment">Eco Markings</string>
     <string name="text_view_top_header_challenge_fragment">Eco Challenges</string>
+    <string name="text_view_no_favourites_message">You do not have Favourite articles</string>
 
     <string name="edit_text_analyze_one">Input title</string>
     <string name="edit_text_analyze_whole">Enter a comma separated list of ingredients</string>

@@ -2,6 +2,8 @@ package com.example.ecoappproject.objects
 
 import android.content.Context
 import android.util.Log
+import android.view.View
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ecoappproject.*
@@ -63,10 +65,14 @@ object ArticleObject {
         articleItemList.clear()
     }
 
+    fun getArticleItemListSize(): Int = articleItemList.size
+
     private fun initRecyclerView(
         context: Context,
         recyclerView: RecyclerView,
-        articleItemClickListener: OnArticleItemClickListener
+        articleItemClickListener: OnArticleItemClickListener,
+        textView: TextView? = null,
+        isFavourite: Boolean = false
     ) {
         Log.w("Article Object", "Initialize recycler view")
         articlesRecyclerView = recyclerView
@@ -75,6 +81,7 @@ object ArticleObject {
         // назначаем адаптер
         articleAdapter = ArticleAdapter(articleItemList, articleItemClickListener)
         articlesRecyclerView.adapter = articleAdapter
+        if (isFavourite) textView?.visibility = View.INVISIBLE
     }
 
     fun getArticles(
@@ -101,6 +108,44 @@ object ArticleObject {
                         articleItemList.add(articleItem)
                     }
                     initRecyclerView(context, recyclerView, articleItemClickListener)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Failed to read value
+                    Log.w("Article Object", "Failed to read value.", error.toException())
+                }
+            })
+    }
+
+    fun getFavouriteArticles(
+        context: Context,
+        recyclerView: RecyclerView,
+        articleItemClickListener: OnArticleItemClickListener,
+        textView: TextView
+    ) {
+        Log.w("Article Object", "Come to get favourite articles")
+        FirebaseApp.initializeApp(context)
+        val articlesReference = FirebaseDatabase.getInstance().reference
+        val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
+        var isFavourite = false
+        articlesReference
+            .child(USERS_DATABASE)
+            .child(currentUserId.toString())
+            .child(ARTICLES_DATABASE)
+            .addListenerForSingleValueEvent(object :
+                ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (article in dataSnapshot.children) {
+                        val articleItem =
+                            article.getValue(ArticleItem::class.java)
+                        Log.w("Article object", "Favourite status is ${articleItem?.favourite}")
+                        // If article favourite for user - add to recycler view
+                        if (articleItem?.favourite?.toBoolean() == true) {
+                            articleItemList.add(articleItem)
+                            isFavourite = true
+                        }
+                    }
+                    initRecyclerView(context, recyclerView, articleItemClickListener, textView, isFavourite)
                 }
 
                 override fun onCancelled(error: DatabaseError) {
