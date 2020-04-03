@@ -9,7 +9,6 @@ import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProviders
 import com.example.ecoappproject.R
 import com.example.ecoappproject.interfaces.OnChallengeItemClickListener
 import com.example.ecoappproject.items.ChallengeItem
@@ -29,17 +28,21 @@ class ChallengeFragment : Fragment(), OnChallengeItemClickListener {
         val root = inflater.inflate(R.layout.fragment_challenge, container, false)
 
         ChallengeObject.clearChallengeItemsList()
-        ChallengeObject.getChallenges(activity!!.applicationContext,
+        ChallengeObject.getChallenges(
+            activity!!.applicationContext,
             root.findViewById(R.id.challenge_recycler_view),
-            this)
+            this
+        )
 
-        root.findViewById<ImageButton>(R.id.image_button_challenge_fragment_left).setOnClickListener {
-            leftArrowClickListener()
-        }
+        root.findViewById<ImageButton>(R.id.image_button_challenge_fragment_left)
+            .setOnClickListener {
+                leftArrowClickListener()
+            }
 
-        root.findViewById<ImageButton>(R.id.image_button_challenge_fragment_right).setOnClickListener {
-            rightArrowClickListener()
-        }
+        root.findViewById<ImageButton>(R.id.image_button_challenge_fragment_right)
+            .setOnClickListener {
+                rightArrowClickListener()
+            }
 
         return root
     }
@@ -50,39 +53,29 @@ class ChallengeFragment : Fragment(), OnChallengeItemClickListener {
         val challengeIsStarted = challengeItem?.started
         val challengeImageUri = challengeItem?.imageUri
 
-        Log.w("Challenge fragment:", "Save data to view model")
+        Log.w("Challenge fragment", "Save data to view model")
         challengeViewModel.setChallengeName(challengeName)
         challengeViewModel.setChallengeDescription(challengeDescription)
         challengeViewModel.setChallengeImageUri(challengeImageUri)
+        challengeViewModel.setChallengeIsStarted(challengeIsStarted)
 
-        if (challengeIsStarted!!.toBoolean()){
-            Log.w("Challenge fragment:", "Open started challenge fragment " +
-                    "'cause it has started value: $challengeIsStarted")
-            val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
-            transaction.replace(R.id.nav_host_fragment, ChallengeDescriptionStartedFragment())
-            transaction.addToBackStack(null)
-            transaction.commit()
-        }
-        else{
-            Log.w("Challenge fragment:", "Open not started challenge fragment " +
-                    "'cause it has started value: $challengeIsStarted")
-            val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
-            transaction.replace(R.id.nav_host_fragment, ChallengeDescriptionNotStartedFragment())
-            transaction.addToBackStack(null)
-            transaction.commit()
-        }
+        Log.w("Challenge fragment", "Start challenge description fragment")
+        val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
+        transaction.replace(R.id.nav_host_fragment, ChallengeDescriptionFragment())
+        transaction.addToBackStack(null)
+        transaction.commit()
     }
 
-    private fun rightArrowClickListener(){
-        Log.w("Challenge fragment:", "Start articles fragment")
+    private fun rightArrowClickListener() {
+        Log.w("Challenge fragment", "Start articles fragment")
         val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
         transaction.replace(R.id.nav_host_fragment, HomeFragment())
         transaction.addToBackStack(null)
         transaction.commit()
     }
 
-    private fun leftArrowClickListener(){
-        Log.w("Challenge fragment:", "Start eco marking fragment")
+    private fun leftArrowClickListener() {
+        Log.w("Challenge fragment", "Start eco marking fragment")
         val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
         transaction.replace(R.id.nav_host_fragment, MarkingFragment())
         transaction.addToBackStack(null)

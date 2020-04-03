@@ -41,4 +41,12 @@
     <string name="toast_text_delete_from_favourites">Удалено из Избранного</string>
     <string name="toast_text_input_ingredient">Введите название компонента для поиска</string>
     <string name="toast_text_input_composition">Введите состав для анализа</string>
+
+    <string name="dialog_start_challenge_header">Начать челлендж</string>
+    <string name="dialog_start_challenge_message">
+        Нажмите ОК, чтобы начать челлендж. Отмечайте прогресс по нему каждый день, чтобы получить достижение в профиле</string>
+    <string name="dialog_end_challenge_header">Завершить челлендж</string>
+    <string name="dialog_end_challenge_message">
+        Нажмите ОК, чтобы завершить челлендж. Завершая челлендж досрочно, вы не получите достижение в профиле
+    </string>
 </resources>

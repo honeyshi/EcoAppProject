@@ -39,4 +39,12 @@
     <string name="toast_text_delete_from_favourites">Deleted from Favourites</string>
     <string name="toast_text_input_ingredient">Enter ingredient for searching</string>
     <string name="toast_text_input_composition">Enter composition for analysing</string>
+
+    <string name="dialog_start_challenge_header">Start challenge</string>
+    <string name="dialog_start_challenge_message">
+        Start this challenge. Note your progress every day to get an achievement in profile</string>
+    <string name="dialog_end_challenge_header">Stop challenge</string>
+    <string name="dialog_end_challenge_message">
+        Press OK to stop challenge. Completing this challenge, you will not get the achievement in your profile
+    </string>
 </resources>

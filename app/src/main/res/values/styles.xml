@@ -23,6 +23,7 @@
 
         <!-- button style -->
         <item name="buttonBarPositiveButtonStyle">@style/YesDialogButton</item>
+        <item name="buttonBarNegativeButtonStyle">@style/YesDialogButton</item>
     </style>
 
     <style name="YesDialogButton" parent="@style/Widget.MaterialComponents.Button.TextButton.Dialog">

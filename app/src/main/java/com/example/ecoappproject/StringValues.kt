@@ -9,5 +9,7 @@ const val INGREDIENTS_DATABASE = "IngredientsList"
 const val ECO_MARKING_DATABASE = "EcoMarkingList"
 
 const val CHALLENGE_DATABASE = "ChallengeList"
+const val CHALLENGE_DATABASE_NAME = "name"
+const val CHALLENGE_DATABASE_IS_STARTED = "started"
 
 const val USERS_DATABASE = "UsersList"

@@ -9,6 +9,7 @@ class ChallengeViewModel : ViewModel() {
     private val challengeName = MutableLiveData<String>()
     private val challengeDescription = MutableLiveData<String>()
     private val challengeImageUri = MutableLiveData<String>()
+    private val challengeIsStarted = MutableLiveData<String>()
 
     fun setChallengeName(challengeName: String?) {
         this.challengeName.value = challengeName
@@ -27,4 +28,10 @@ class ChallengeViewModel : ViewModel() {
     }
 
     fun getChallengeImageUri() : LiveData<String> = challengeImageUri
+
+    fun setChallengeIsStarted(challengeIsStarted: String?){
+        this.challengeIsStarted.value = challengeIsStarted
+    }
+
+    fun getChallengeIsStarted() : LiveData<String> = challengeIsStarted
 }
