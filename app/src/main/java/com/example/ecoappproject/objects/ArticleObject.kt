@@ -65,8 +65,6 @@ object ArticleObject {
         articleItemList.clear()
     }
 
-    fun getArticleItemListSize(): Int = articleItemList.size
-
     private fun initRecyclerView(
         context: Context,
         recyclerView: RecyclerView,

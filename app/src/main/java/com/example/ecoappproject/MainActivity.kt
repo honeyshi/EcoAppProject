@@ -161,7 +161,7 @@ class MainActivity : AppCompatActivity() {
                                 // If value from whole DB not exists in user's DB
                                 if (!dataSnapshot.child(article.key.toString()).exists()) {
                                     // Add this value un user's DB
-                                    Log.w("Main Activity", "I should add ${articleItem?.header}}")
+                                    Log.w("Main Activity", "I should add article ${articleItem?.header}")
                                     val newRefArticles = firebaseReference
                                         .child(USERS_DATABASE)
                                         .child(userId.toString())
@@ -195,6 +195,7 @@ class MainActivity : AppCompatActivity() {
                     val challengeItem =
                         challenge.getValue(ChallengeItem::class.java)
                     countChallengeItem++
+                    Log.w("Main Activity", "I am in first data change $countChallengeItem")
                     firebaseReference
                         .child(USERS_DATABASE)
                         .child(userId.toString())
@@ -205,7 +206,8 @@ class MainActivity : AppCompatActivity() {
                                 // If value from whole DB not exists in user's DB
                                 if (!dataSnapshot.child(challenge.key.toString()).exists()) {
                                     // Add this value un user's DB
-                                    Log.w("Main Activity", "I should add ${challengeItem?.name}}")
+                                    Log.w("Main Activity", "I am in second data change")
+                                    Log.w("Main Activity", "I should add challenge ${challengeItem?.name}")
                                     val newRefChallenges = firebaseReference
                                         .child(USERS_DATABASE)
                                         .child(userId.toString())

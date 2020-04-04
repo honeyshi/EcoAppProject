@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -18,6 +19,7 @@ import com.example.ecoappproject.interfaces.OnArticleItemClickListener
 import com.example.ecoappproject.items.ArticleItem
 import com.example.ecoappproject.objects.ArticleObject
 import com.example.ecoappproject.ui.articleDescription.ArticleDescriptionFragment
+import com.example.ecoappproject.ui.challenge.ChallengeStartedFragment
 import com.example.ecoappproject.ui.home.HomeViewModel
 import com.google.firebase.auth.FirebaseAuth
 
@@ -41,11 +43,6 @@ class UserFragment : Fragment(), OnArticleItemClickListener {
             root.findViewById(R.id.favourite_articles_recycler_view),
             this,
             root.findViewById(R.id.text_view_no_favourites)
-        )
-
-        Log.w(
-            "User Fragment",
-            "Favourite articles ${ArticleObject.getArticleItemListSize()}"
         )
 
         // Initialize Firebase Auth
@@ -73,7 +70,20 @@ class UserFragment : Fragment(), OnArticleItemClickListener {
             Log.w("User Fragment", "User photo url ${currentUser.photoUrl}")
             Glide.with(root).load(currentUser.photoUrl).into(userIconImageButton)
         }
+
+        // Set listeners for section buttons
+        root.findViewById<ImageButton>(R.id.image_button_challenge).setOnClickListener {
+            onChallengeButtonClick()
+        }
         return root
+    }
+
+    private fun onChallengeButtonClick() {
+        Log.w("User fragment:", "Click on challenge button")
+        val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
+        transaction.replace(R.id.nav_host_fragment, ChallengeStartedFragment())
+        transaction.addToBackStack(null)
+        transaction.commit()
     }
 
     private fun startLoginActivity() {

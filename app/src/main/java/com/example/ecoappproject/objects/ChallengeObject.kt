@@ -2,6 +2,8 @@ package com.example.ecoappproject.objects
 
 import android.content.Context
 import android.util.Log
+import android.view.View
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ecoappproject.CHALLENGE_DATABASE
@@ -28,13 +30,16 @@ object ChallengeObject {
     private fun initRecyclerView(
         context: Context,
         recyclerView: RecyclerView,
-        challengeItemClickListener: OnChallengeItemClickListener
+        challengeItemClickListener: OnChallengeItemClickListener,
+        textView: TextView? = null,
+        isStarted: Boolean = false
     ) {
         Log.w("Challenge Object", "Initialize recycler view")
         challengeRecyclerView = recyclerView
         challengeRecyclerView.layoutManager = LinearLayoutManager(context)
         challengeAdapter = ChallengeAdapter(challengeItemList, challengeItemClickListener)
         challengeRecyclerView.adapter = challengeAdapter
+        if (isStarted) textView?.visibility = View.INVISIBLE
     }
 
     fun clearChallengeItemsList() {
@@ -75,9 +80,6 @@ object ChallengeObject {
         challengeItemClickListener: OnChallengeItemClickListener
     ) {
         Log.w("Challenge Object", "Start getting challenges from DataBase")
-        FirebaseApp.initializeApp(context)
-        //val challengeReference = FirebaseDatabase.getInstance().reference
-        //val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
         challengeReference
             .child(USERS_DATABASE)
             .child(currentUserId.toString())
@@ -91,6 +93,39 @@ object ChallengeObject {
                         challengeItemList.add(challengeItem)
                     }
                     initRecyclerView(context, recyclerView, challengeItemClickListener)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Failed to read value
+                    Log.w("Challenge Object", "Failed to read value.", error.toException())
+                }
+            })
+    }
+
+    fun getStartedChallenges(
+        context: Context,
+        recyclerView: RecyclerView,
+        challengeItemClickListener: OnChallengeItemClickListener,
+        textView: TextView?
+    ){
+        Log.w("Challenge Object", "Start getting started challenges from DataBase")
+        var isStarted = false
+        challengeReference
+            .child(USERS_DATABASE)
+            .child(currentUserId.toString())
+            .child(CHALLENGE_DATABASE).addListenerForSingleValueEvent(object :
+                ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (challenge in dataSnapshot.children) {
+                        val challengeItem =
+                            challenge.getValue(ChallengeItem::class.java)
+                        Log.w("Challenge Object", "Current challenge: ${challengeItem?.name}")
+                        if (challengeItem?.started?.toBoolean() == true) {
+                            isStarted = true
+                            challengeItemList.add(challengeItem)
+                        }
+                    }
+                    initRecyclerView(context, recyclerView, challengeItemClickListener, textView, isStarted)
                 }
 
                 override fun onCancelled(error: DatabaseError) {
