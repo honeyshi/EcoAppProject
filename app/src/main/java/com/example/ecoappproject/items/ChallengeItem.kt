@@ -4,9 +4,11 @@ import com.google.firebase.database.IgnoreExtraProperties
 
 @IgnoreExtraProperties
 data class ChallengeItem(
-    val name: String? = "",
+    val currentDay: Int? = 0,
     val description: String? = "",
-    val started: String? = "",
+    val id: String? = "",
     val imageUri: String? = "",
+    val name: String? = "",
+    val started: String? = "",
     val startedDescription: String? = ""
 )

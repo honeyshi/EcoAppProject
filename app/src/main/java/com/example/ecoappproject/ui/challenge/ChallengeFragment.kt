@@ -52,12 +52,14 @@ class ChallengeFragment : Fragment(), OnChallengeItemClickListener {
         val challengeDescription = challengeItem?.description
         val challengeIsStarted = challengeItem?.started
         val challengeImageUri = challengeItem?.imageUri
+        val challengeId = challengeItem?.id
 
         Log.w("Challenge fragment", "Save data to view model")
         challengeViewModel.setChallengeName(challengeName)
         challengeViewModel.setChallengeDescription(challengeDescription)
         challengeViewModel.setChallengeImageUri(challengeImageUri)
         challengeViewModel.setChallengeIsStarted(challengeIsStarted)
+        challengeViewModel.setChallengeId(challengeId)
 
         Log.w("Challenge fragment", "Start challenge description fragment")
         val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()

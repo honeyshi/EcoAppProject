@@ -23,6 +23,7 @@ class ChallengeDescriptionFragment : Fragment() {
 
     private val challengeViewModel: ChallengeViewModel by activityViewModels()
     private lateinit var challengeName: String
+    private lateinit var challengeId: String
     private lateinit var buttonStartChallenge: Button
     private lateinit var buttonEndChallenge: Button
     private lateinit var textViewStartedChallenge: TextView
@@ -54,6 +55,10 @@ class ChallengeDescriptionFragment : Fragment() {
             textViewChallengeName.text = it
         })
 
+        challengeViewModel.getChallengeId().observe(viewLifecycleOwner, Observer {
+            challengeId = it
+        })
+
         challengeViewModel.getChallengeDescription().observe(viewLifecycleOwner, Observer {
             textViewChallengeDescription.text = it
         })
@@ -77,7 +82,7 @@ class ChallengeDescriptionFragment : Fragment() {
 
         // Change layout view in accordance of challenge status
         challengeViewModel.getChallengeIsStarted().observe(viewLifecycleOwner, Observer {
-            if (it.toBoolean()) {
+            if (it!!.toBoolean()) {
                 buttonStartChallenge.visibility = View.INVISIBLE
                 buttonEndChallenge.visibility = View.VISIBLE
                 textViewStartedChallenge.visibility = View.VISIBLE
@@ -101,18 +106,21 @@ class ChallengeDescriptionFragment : Fragment() {
     }
 
     private fun startChallenge() {
-        // Set status started for challenge in Database
-        ChallengeObject.setChallengeIsStarted(challengeName, "true")
-
         // Show dialog window that user starts challenge
         val builder = AlertDialog.Builder(ContextThemeWrapper(activity!!, R.style.DialogTheme))
         builder.setTitle(resources.getString(R.string.dialog_start_challenge_header))
         builder.setMessage(resources.getString(R.string.dialog_start_challenge_message))
-        // When user submit dialog show fragment with started challenge
+        // When user submit dialog
+        // 1) Show fragment with started challenge
+        // 2) Set status started for challenge in Database
+        // 3) Create tracker for challenge in Database
         builder.setPositiveButton(android.R.string.ok) { _, _ ->
             buttonStartChallenge.visibility = View.INVISIBLE
             buttonEndChallenge.visibility = View.VISIBLE
             textViewStartedChallenge.visibility = View.VISIBLE
+
+            ChallengeObject.setChallengeIsStarted(challengeName, "true")
+            ChallengeObject.createChallengeTracker(challengeId)
         }
         // Close dialog on Cancel
         builder.setNegativeButton(android.R.string.cancel, null)
@@ -121,18 +129,21 @@ class ChallengeDescriptionFragment : Fragment() {
     }
 
     private fun endChallenge() {
-        // Set status started for challenge in Database
-        ChallengeObject.setChallengeIsStarted(challengeName, "false")
-
         // Show dialog window that user starts challenge
         val builder = AlertDialog.Builder(ContextThemeWrapper(activity!!, R.style.DialogTheme))
         builder.setTitle(resources.getString(R.string.dialog_end_challenge_header))
         builder.setMessage(resources.getString(R.string.dialog_end_challenge_message))
-        // When user submit dialog show fragment with not started challenge
+        // When user submit dialog
+        // 1) Show fragment with not started challenge
+        // 2) Set status started for challenge in Database
+        // 3) Delete tracker for challenge in Database
         builder.setPositiveButton(android.R.string.ok) { _, _ ->
             buttonStartChallenge.visibility = View.VISIBLE
             buttonEndChallenge.visibility = View.INVISIBLE
             textViewStartedChallenge.visibility = View.INVISIBLE
+
+            ChallengeObject.setChallengeIsStarted(challengeName, "false")
+            ChallengeObject.deleteChallengeTracker(challengeId)
         }
         // Close dialog on Cancel
         builder.setNegativeButton(android.R.string.cancel, null)

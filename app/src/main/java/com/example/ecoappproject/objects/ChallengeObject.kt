@@ -6,13 +6,11 @@ import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.ecoappproject.CHALLENGE_DATABASE
-import com.example.ecoappproject.CHALLENGE_DATABASE_IS_STARTED
-import com.example.ecoappproject.CHALLENGE_DATABASE_NAME
-import com.example.ecoappproject.USERS_DATABASE
+import com.example.ecoappproject.*
 import com.example.ecoappproject.adapter.ChallengeAdapter
 import com.example.ecoappproject.interfaces.OnChallengeItemClickListener
 import com.example.ecoappproject.items.ChallengeItem
+import com.example.ecoappproject.items.ChallengeTrackerItem
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -44,6 +42,37 @@ object ChallengeObject {
 
     fun clearChallengeItemsList() {
         challengeItemList.clear()
+    }
+
+    fun createChallengeTracker(challengeId: String) {
+        Log.w("Challenge Object", "Create challenge tracker for Challenge with id $challengeId")
+        challengeReference
+            .child(CHALLENGE_TRACKER_DATABASE)
+            .child(currentUserId.toString())
+            .child(challengeId).addListenerForSingleValueEvent(object :
+                ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    challengeReference
+                        .child(CHALLENGE_TRACKER_DATABASE)
+                        .child(currentUserId.toString())
+                        .child(challengeId)
+                        .setValue(ChallengeTrackerItem())
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Failed to read value
+                    Log.w("Challenge Object", "Failed to read value.", error.toException())
+                }
+            })
+    }
+
+    fun deleteChallengeTracker(challengeId: String) {
+        Log.w("Challenge Object", "Delete challenge tracker for Challenge with id $challengeId")
+        challengeReference
+            .child(CHALLENGE_TRACKER_DATABASE)
+            .child(currentUserId.toString())
+            .child(challengeId)
+            .removeValue()
     }
 
     fun setChallengeIsStarted(
@@ -107,7 +136,7 @@ object ChallengeObject {
         recyclerView: RecyclerView,
         challengeItemClickListener: OnChallengeItemClickListener,
         textView: TextView?
-    ){
+    ) {
         Log.w("Challenge Object", "Start getting started challenges from DataBase")
         var isStarted = false
         challengeReference
@@ -125,7 +154,13 @@ object ChallengeObject {
                             challengeItemList.add(challengeItem)
                         }
                     }
-                    initRecyclerView(context, recyclerView, challengeItemClickListener, textView, isStarted)
+                    initRecyclerView(
+                        context,
+                        recyclerView,
+                        challengeItemClickListener,
+                        textView,
+                        isStarted
+                    )
                 }
 
                 override fun onCancelled(error: DatabaseError) {
