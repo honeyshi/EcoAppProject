@@ -24,9 +24,9 @@ class ArticleAdapter (private val articleItems : ArrayList<ArticleItem?>,
     RecyclerView.Adapter<ArticleAdapter.ArticleViewHolder>() {
 
     class ArticleViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private var articleHead = itemView.findViewById<TextView>(R.id.text_view_article_name)
-        private var favouriteButton = itemView.findViewById<ImageButton>(R.id.image_button_star)
-        private var articleImage= itemView.findViewById<ImageView>(R.id.image_view_article)
+        private val articleHead = itemView.findViewById<TextView>(R.id.text_view_article_name)
+        private val favouriteButton = itemView.findViewById<ImageButton>(R.id.image_button_star)
+        private val articleImage= itemView.findViewById<ImageView>(R.id.image_view_article)
         private val firebaseStorage = FirebaseStorage.getInstance()
 
         fun bind(articleItem: ArticleItem?, articleItemClickListener: OnArticleItemClickListener) {
@@ -70,9 +70,7 @@ class ArticleAdapter (private val articleItems : ArrayList<ArticleItem?>,
         }
     }
 
-    override fun getItemCount(): Int {
-        return articleItems.size
-    }
+    override fun getItemCount(): Int = articleItems.size
 
     override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
         holder.bind(articleItems[position], articleItemClickListener)

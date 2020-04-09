@@ -15,3 +15,5 @@ const val CHALLENGE_DATABASE_IS_STARTED = "started"
 const val USERS_DATABASE = "UsersList"
 
 const val CHALLENGE_TRACKER_DATABASE = "ChallengeTracker"
+
+const val AWARD_DATABASE = "AwardsList"

@@ -19,6 +19,7 @@ import com.example.ecoappproject.interfaces.OnArticleItemClickListener
 import com.example.ecoappproject.items.ArticleItem
 import com.example.ecoappproject.objects.ArticleObject
 import com.example.ecoappproject.ui.articleDescription.ArticleDescriptionFragment
+import com.example.ecoappproject.ui.award.AwardFragment
 import com.example.ecoappproject.ui.challenge.ChallengeStartedFragment
 import com.example.ecoappproject.ui.home.HomeViewModel
 import com.google.firebase.auth.FirebaseAuth
@@ -75,6 +76,10 @@ class UserFragment : Fragment(), OnArticleItemClickListener {
         root.findViewById<ImageButton>(R.id.image_button_challenge).setOnClickListener {
             onChallengeButtonClick()
         }
+
+        root.findViewById<ImageButton>(R.id.image_button_award).setOnClickListener {
+            onAwardButtonClick()
+        }
         return root
     }
 
@@ -82,6 +87,14 @@ class UserFragment : Fragment(), OnArticleItemClickListener {
         Log.w("User fragment:", "Click on challenge button")
         val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
         transaction.replace(R.id.nav_host_fragment, ChallengeStartedFragment())
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
+
+    private fun onAwardButtonClick() {
+        Log.w("User fragment", "Click on award button")
+        val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
+        transaction.replace(R.id.nav_host_fragment, AwardFragment())
         transaction.addToBackStack(null)
         transaction.commit()
     }
