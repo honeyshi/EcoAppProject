@@ -9,9 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.ecoappproject.*
 import com.example.ecoappproject.adapter.ChallengeAdapter
 import com.example.ecoappproject.interfaces.OnChallengeItemClickListener
+import com.example.ecoappproject.interfaces.OnGetChallengeTrackerListener
 import com.example.ecoappproject.items.ChallengeItem
 import com.example.ecoappproject.items.ChallengeTrackerItem
-import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -42,6 +42,59 @@ object ChallengeObject {
 
     fun clearChallengeItemsList() {
         challengeItemList.clear()
+    }
+
+    fun getDayStatusInChallengeTracker(
+        challengeId: String,
+        onGetChallengeTrackerListener: OnGetChallengeTrackerListener
+    ) {
+        Log.w("Challenge Object", "Get tracker for Challenge with id $challengeId")
+        //val challengeTrackerList = ArrayList<String>()
+        val challengeTrackerList = HashMap<String, String>()
+        challengeReference
+            .child(CHALLENGE_TRACKER_DATABASE)
+            .child(currentUserId.toString())
+            .child(challengeId).addListenerForSingleValueEvent(object :
+                ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (day in dataSnapshot.children) {
+                        //challengeTrackerList.add(day.value.toString())
+                        challengeTrackerList[day.key.toString()] = day.value.toString()
+                    }
+                    onGetChallengeTrackerListener.onGetChallengeTracker(challengeTrackerList)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Failed to read value
+                    Log.w("Challenge Object", "Failed to read value.", error.toException())
+                }
+            })
+    }
+
+    fun setDayStatusInChallengeTracker(challengeId: String, currentDay: Int) {
+        Log.w(
+            "Challenge Object",
+            "Set true on day $currentDay in challenge tracker for Challenge with id $challengeId"
+        )
+        challengeReference
+            .child(CHALLENGE_TRACKER_DATABASE)
+            .child(currentUserId.toString())
+            .child(challengeId).addListenerForSingleValueEvent(object :
+                ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    challengeReference
+                        .child(CHALLENGE_TRACKER_DATABASE)
+                        .child(currentUserId.toString())
+                        .child(challengeId)
+                        .child("day$currentDay")
+                        .setValue("true")
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Failed to read value
+                    Log.w("Challenge Object", "Failed to read value.", error.toException())
+                }
+            })
     }
 
     fun createChallengeTracker(challengeId: String) {

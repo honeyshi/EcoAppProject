@@ -10,18 +10,18 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.ecoappproject.R
+import com.example.ecoappproject.interfaces.OnGetChallengeTrackerListener
 import com.example.ecoappproject.objects.ChallengeObject
 
 class ChallengeStartedDescriptionFragment : Fragment() {
 
     private val challengeViewModel: ChallengeViewModel by activityViewModels()
     private val currentDay = 9
+    private val leafArraySize = 30
     private lateinit var challengeName: String
     private lateinit var challengeId: String
     private lateinit var buttonEndChallenge: Button
@@ -42,14 +42,40 @@ class ChallengeStartedDescriptionFragment : Fragment() {
         buttonEndChallenge = root.findViewById(R.id.button_challenge_started)
         textViewStartedChallenge = root.findViewById(R.id.text_view_challenge_message_started)
 
+        // Create array with leaf buttons
+        Log.w("Challenge Started Desc", "Create leaf array")
+        val leafImageButtonList = ArrayList<ImageButton>()
+        for (i in 1..leafArraySize) {
+            val button = root.findViewWithTag<ImageButton>("image_button_leaf_$i")
+            leafImageButtonList.add(button)
+        }
+
         // Get data from ViewModel
+        challengeViewModel.getChallengeId().observe(viewLifecycleOwner, Observer {
+            challengeId = it
+            // Get array for button statuses
+            Log.w("Challenge Started Desc", "Get button status")
+            ChallengeObject.getDayStatusInChallengeTracker(
+                it,
+                object : OnGetChallengeTrackerListener {
+                    override fun onGetChallengeTracker(challengeTrackerStatusList: HashMap<String, String>) {
+                        Log.w(
+                            "Challenge Started Desc",
+                            "Loaded day trackers ${challengeTrackerStatusList.size}"
+                        )
+                        // Set buttons color accordingly to tracker
+                        for (i in 1..leafArraySize) {
+                            if (challengeTrackerStatusList["day$i"]?.toBoolean() == true) leafImageButtonList[i - 1].setImageResource(
+                                R.drawable.ic_leaf_pressed
+                            )
+                        }
+                    }
+                })
+        })
+
         challengeViewModel.getChallengeName().observe(viewLifecycleOwner, Observer {
             challengeName = it
             textViewChallengeStartedName.text = it
-        })
-
-        challengeViewModel.getChallengeId().observe(viewLifecycleOwner, Observer {
-            challengeId = it
         })
 
         challengeViewModel.getChallengeStartedDescription().observe(viewLifecycleOwner, Observer {
@@ -61,20 +87,16 @@ class ChallengeStartedDescriptionFragment : Fragment() {
             endChallenge()
         }
 
-        // Create array with leaf buttons
-        val leafImageButtonList = ArrayList<ImageButton>()
-        for (i in 1..30) {
-            val button = root.findViewWithTag<ImageButton>("image_button_leaf_$i")
-            leafImageButtonList.add(button)
-
-        }
-
+        // Set click listener for current leaf button
         leafImageButtonList[currentDay - 1].setImageResource(R.drawable.ic_leaf_current)
         leafImageButtonList[currentDay - 1].setOnClickListener {
             Log.w("Challenge Started Desc", "Click on button")
-            root.findViewWithTag<ImageButton>("image_button_leaf_${currentDay}")
-                .setImageResource(R.drawable.ic_leaf_pressed)
+            //root.findViewWithTag<ImageButton>("image_button_leaf_${currentDay}")
+            //    .setImageResource(R.drawable.ic_leaf_pressed)
+            leafImageButtonList[currentDay - 1].setImageResource(R.drawable.ic_leaf_pressed)
+            ChallengeObject.setDayStatusInChallengeTracker(challengeId, currentDay)
         }
+
         return root
     }
 
