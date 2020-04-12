@@ -8,8 +8,10 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ecoappproject.R
+import com.example.ecoappproject.interfaces.OnGetAwardCompletedListener
 import com.example.ecoappproject.interfaces.OnGetChallengeTrackerListener
 import com.example.ecoappproject.items.AwardItem
+import com.example.ecoappproject.objects.AwardObject
 import com.example.ecoappproject.objects.ChallengeObject
 
 class AwardAdapter(private val awardItems: ArrayList<AwardItem?>) :
@@ -25,22 +27,33 @@ class AwardAdapter(private val awardItems: ArrayList<AwardItem?>) :
         fun bind(awardItem: AwardItem?) {
             textViewAwardName.text = awardItem?.awardName
             textViewAwardDescription.text = awardItem?.awardDescription
+            val challengeId = awardItem?.challengeId.toString()
 
-            ChallengeObject.getDayStatusInChallengeTracker(
-                awardItem?.challengeId.toString(),
-                object : OnGetChallengeTrackerListener {
-                    override fun onGetChallengeTracker(challengeTrackerStatusList: HashMap<String, String>) {
-                        Log.w(
-                            "Award Adapter",
-                            "Load day tracker for challenge ${awardItem?.challengeId}"
-                        )
-                        // Get amount of days with "true" value
-                        var progress = 0
-                        for (day in challengeTrackerStatusList) {
-                            if (day.value.toBoolean()) progress++
+            AwardObject.getCompletedAward(challengeId,
+                object : OnGetAwardCompletedListener {
+                    override fun onGetAwardCompleted(isCompleted: Boolean) {
+                        if (isCompleted) {
+                            progressBarAward.progress = 30
+                            textViewProgressAward.setText(R.string.text_view_completed_award)
+                        } else {
+                            ChallengeObject.getDayStatusInChallengeTracker(
+                                challengeId,
+                                object : OnGetChallengeTrackerListener {
+                                    override fun onGetChallengeTracker(challengeTrackerStatusList: HashMap<String, String>) {
+                                        Log.w(
+                                            "Award Adapter",
+                                            "Load day tracker for challenge $challengeId"
+                                        )
+                                        // Get amount of days with "true" value
+                                        var progress = 0
+                                        for (day in challengeTrackerStatusList) {
+                                            if (day.value.toBoolean()) progress++
+                                        }
+                                        progressBarAward.progress = progress
+                                        textViewProgressAward.text = "$progress/30"
+                                    }
+                                })
                         }
-                        progressBarAward.progress = progress
-                        textViewProgressAward.text = "$progress/30"
                     }
                 })
         }

@@ -49,7 +49,6 @@ object ChallengeObject {
         onGetChallengeTrackerListener: OnGetChallengeTrackerListener
     ) {
         Log.w("Challenge Object", "Get tracker for Challenge with id $challengeId")
-        //val challengeTrackerList = ArrayList<String>()
         val challengeTrackerList = HashMap<String, String>()
         challengeReference
             .child(CHALLENGE_TRACKER_DATABASE)
@@ -58,7 +57,6 @@ object ChallengeObject {
                 ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     for (day in dataSnapshot.children) {
-                        //challengeTrackerList.add(day.value.toString())
                         challengeTrackerList[day.key.toString()] = day.value.toString()
                     }
                     onGetChallengeTrackerListener.onGetChallengeTracker(challengeTrackerList)

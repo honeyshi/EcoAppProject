@@ -10,6 +10,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.example.ecoappproject.items.ArticleItem
+import com.example.ecoappproject.items.AwardItem
 import com.example.ecoappproject.items.ChallengeItem
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -77,6 +78,7 @@ class MainActivity : AppCompatActivity() {
                     // If user exists in Firebase database update his/her database to current
                     updateArticlesDataForUserInDatabase(currentUserId)
                     updateChallengesDataForUserInDatabase(currentUserId)
+                    updateAwardDataForUserInDatabase(currentUserId)
                 } else {
                     Log.w("Main Activity", "Current user with id $currentUserId not exists in DB")
                     // If user not exists add to Firebase database
@@ -106,7 +108,7 @@ class MainActivity : AppCompatActivity() {
                         .child(USERS_DATABASE)
                         .child(userId.toString())
                         .child(ARTICLES_DATABASE)
-                        .child("Article${countArticleItem}")
+                        .child("Article$countArticleItem")
                     newRefArticles.setValue(articleItem)
                 }
             }
@@ -131,8 +133,33 @@ class MainActivity : AppCompatActivity() {
                         .child(USERS_DATABASE)
                         .child(userId.toString())
                         .child(CHALLENGE_DATABASE)
-                        .child("Challenge${countChallengeItem}")
+                        .child("Challenge$countChallengeItem")
                     newRefChallenges.setValue(challengeItem)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Failed to read value
+                Log.w("Main Activity", "Failed to read value.", error.toException())
+            }
+        })
+
+        var countAwardItem = 0
+        // Add values from award database
+        Log.w("Main Activity", "Set awards for new user")
+        firebaseReference.child(AWARD_DATABASE).addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (award in dataSnapshot.children) {
+                    val awardItem =
+                        award.getValue(AwardItem::class.java)
+                    countAwardItem++
+                    val newRefAwards = firebaseReference
+                        .child(USERS_DATABASE)
+                        .child(userId.toString())
+                        .child(AWARD_DATABASE)
+                        .child("Award$countAwardItem")
+                    newRefAwards.setValue(awardItem)
                 }
             }
 
@@ -225,6 +252,57 @@ class MainActivity : AppCompatActivity() {
                                         .child(CHALLENGE_DATABASE)
                                         .child("Challenge${i + 1}")
                                     newRefChallenges.setValue(challengeItemList[i])
+                                }
+                            }
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            // Failed to read value
+                            Log.w("Main Activity", "Failed to read value.", error.toException())
+                        }
+                    })
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Failed to read value
+                Log.w("Main Activity", "Failed to read value.", error.toException())
+            }
+        })
+    }
+
+    private fun updateAwardDataForUserInDatabase(userId: String?) {
+        val awardItemList = ArrayList<AwardItem?>()
+        firebaseReference.child(AWARD_DATABASE).addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // Get all awards from DataBase
+                for (award in dataSnapshot.children) {
+                    val awardItem =
+                        award.getValue(AwardItem::class.java)
+                    awardItemList.add(awardItem)
+                }
+                // Check challenges in user's DataBase
+                firebaseReference
+                    .child(USERS_DATABASE)
+                    .child(userId.toString())
+                    .child(AWARD_DATABASE)
+                    .addListenerForSingleValueEvent(object :
+                        ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            // If value from whole DB not exists in user's DB
+                            for (i in 0 until awardItemList.size) {
+                                if (!dataSnapshot.child("Award${i + 1}").exists()) {
+                                    // Add this value un user's DB
+                                    Log.w(
+                                        "Main Activity",
+                                        "I should add award ${awardItemList[i]?.awardName}"
+                                    )
+                                    val newRefAwards = firebaseReference
+                                        .child(USERS_DATABASE)
+                                        .child(userId.toString())
+                                        .child(AWARD_DATABASE)
+                                        .child("Award${i + 1}")
+                                    newRefAwards.setValue(awardItemList[i])
                                 }
                             }
                         }

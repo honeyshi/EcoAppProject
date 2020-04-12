@@ -29,6 +29,7 @@
         Выберете любой понравившийся в соответствующем разделе и нажмите кнопку “Начать челлендж”.
         За выполнение челленджей вы получаете достижения в приложении.
     </string>
+    <string name="text_view_completed_award">30/30</string>
 
 
     <string name="edit_text_analyze_one">Введите название</string>
@@ -53,5 +54,13 @@
     <string name="dialog_end_challenge_header">Завершить челлендж</string>
     <string name="dialog_end_challenge_message">
         Нажмите ОК, чтобы завершить челлендж. Завершая челлендж досрочно, вы не получите достижение в профиле
+    </string>
+    <string name="dialog_get_award_message">
+        Поздравляем с завершением челленджа. Вы можете увидеть награду за него в своем профиле
+    </string>
+    <string name="dialog_not_get_award_message">
+        Поздравляем с завершением челленджа.
+        Так как вы не отметили все дни в трекере, вы не получите награду за него.
+        Попробуйте начать челлендж заново.
     </string>
 </resources>

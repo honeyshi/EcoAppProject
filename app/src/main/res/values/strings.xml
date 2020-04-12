@@ -28,6 +28,7 @@
         Select any one you like in the corresponding section and click the “Start challenge” button.
         For completing challenges you get achievements in the application.
     </string>
+    <string name="text_view_completed_award">30/30</string>
 
     <string name="edit_text_analyze_one">Input title</string>
     <string name="edit_text_analyze_whole">Enter a comma separated list of ingredients</string>
@@ -51,5 +52,13 @@
     <string name="dialog_end_challenge_header">Stop challenge</string>
     <string name="dialog_end_challenge_message">
         Press OK to stop challenge. Completing this challenge, you will not get the achievement in your profile
+    </string>
+    <string name="dialog_get_award_message">
+        Congratulate on finishing this challenge. You can see your award in your profile
+    </string>
+    <string name="dialog_not_get_award_message">
+        Congratulate on finishing this challenge.
+        Due to not marking all days in tracker you will not get an award.
+        Try this challenge again and succeed next time!
     </string>
 </resources>
