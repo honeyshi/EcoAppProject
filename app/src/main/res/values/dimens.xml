@@ -8,4 +8,5 @@
 
     <dimen name="text_size_headers">24sp</dimen>
     <dimen name="text_size_main">16sp</dimen>
+    <dimen name="text_size_switcher_header">36sp</dimen>
 </resources>

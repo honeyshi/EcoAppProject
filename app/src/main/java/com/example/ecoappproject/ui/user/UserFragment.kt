@@ -73,11 +73,11 @@ class UserFragment : Fragment(), OnArticleItemClickListener {
         }
 
         // Set listeners for section buttons
-        root.findViewById<ImageButton>(R.id.image_button_challenge).setOnClickListener {
+        root.findViewById<ImageButton>(R.id.image_button_user_fragment_left).setOnClickListener {
             onChallengeButtonClick()
         }
 
-        root.findViewById<ImageButton>(R.id.image_button_award).setOnClickListener {
+        root.findViewById<ImageButton>(R.id.image_button_user_fragment_right).setOnClickListener {
             onAwardButtonClick()
         }
         return root

@@ -22,6 +22,7 @@
     <string name="text_view_top_header_home_fragment">Eco Articles</string>
     <string name="text_view_top_header_marking_fragment">Eco Markings</string>
     <string name="text_view_top_header_challenge_fragment">Eco Challenges</string>
+    <string name="text_view_top_header_award_fragment">Awards</string>
     <string name="text_view_no_favourites_message">You do not have Favourite articles</string>
     <string name="text_view_no_started_challenges_message">
         You are not participating in any of the challenges yet.

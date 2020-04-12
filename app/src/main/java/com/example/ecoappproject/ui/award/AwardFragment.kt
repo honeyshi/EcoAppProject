@@ -1,12 +1,17 @@
 package com.example.ecoappproject.ui.award
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import com.example.ecoappproject.R
 import com.example.ecoappproject.objects.AwardObject
+import com.example.ecoappproject.ui.challenge.ChallengeStartedFragment
+import com.example.ecoappproject.ui.user.UserFragment
 
 class AwardFragment : Fragment() {
     override fun onCreateView(
@@ -22,6 +27,29 @@ class AwardFragment : Fragment() {
             root.findViewById(R.id.award_recycler_view)
         )
 
+        root.findViewById<ImageButton>(R.id.image_button_award_fragment_left).setOnClickListener {
+            onUserButtonClick()
+        }
+
+        root.findViewById<ImageButton>(R.id.image_button_award_fragment_right).setOnClickListener {
+            onChallengeButtonClick()
+        }
         return root
+    }
+
+    private fun onChallengeButtonClick() {
+        Log.w("Award fragment", "Click on challenge button")
+        val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
+        transaction.replace(R.id.nav_host_fragment, ChallengeStartedFragment())
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
+
+    private fun onUserButtonClick() {
+        Log.w("Award fragment", "Click on user button")
+        val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
+        transaction.replace(R.id.nav_host_fragment, UserFragment())
+        transaction.addToBackStack(null)
+        transaction.commit()
     }
 }

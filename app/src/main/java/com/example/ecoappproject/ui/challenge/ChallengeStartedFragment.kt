@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
@@ -12,6 +13,8 @@ import com.example.ecoappproject.R
 import com.example.ecoappproject.interfaces.OnChallengeItemClickListener
 import com.example.ecoappproject.items.ChallengeItem
 import com.example.ecoappproject.objects.ChallengeObject
+import com.example.ecoappproject.ui.award.AwardFragment
+import com.example.ecoappproject.ui.user.UserFragment
 
 class ChallengeStartedFragment : Fragment(), OnChallengeItemClickListener {
 
@@ -32,6 +35,16 @@ class ChallengeStartedFragment : Fragment(), OnChallengeItemClickListener {
             root.findViewById(R.id.text_view_no_started_challenges)
         )
 
+        root.findViewById<ImageButton>(R.id.image_button_challenge_started_fragment_left)
+            .setOnClickListener {
+                onAwardButtonClick()
+            }
+
+        root.findViewById<ImageButton>(R.id.image_button_challenge_started_fragment_right)
+            .setOnClickListener {
+                onUserButtonClick()
+            }
+
         return root
     }
 
@@ -49,6 +62,22 @@ class ChallengeStartedFragment : Fragment(), OnChallengeItemClickListener {
         Log.w("Challenge Started", "Start challenge description fragment")
         val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
         transaction.replace(R.id.nav_host_fragment, ChallengeStartedDescriptionFragment())
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
+
+    private fun onAwardButtonClick() {
+        Log.w("Challenge Started", "Click on award button")
+        val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
+        transaction.replace(R.id.nav_host_fragment, AwardFragment())
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
+
+    private fun onUserButtonClick() {
+        Log.w("Challenge Started", "Click on user button")
+        val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
+        transaction.replace(R.id.nav_host_fragment, UserFragment())
         transaction.addToBackStack(null)
         transaction.commit()
     }

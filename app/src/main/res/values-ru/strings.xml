@@ -23,6 +23,7 @@
     <string name="text_view_top_header_home_fragment">Статьи</string>
     <string name="text_view_top_header_marking_fragment">Эко маркировки</string>
     <string name="text_view_top_header_challenge_fragment">Челленджи</string>
+    <string name="text_view_top_header_award_fragment">Награды</string>
     <string name="text_view_no_favourites_message">Вы еще не добавили ни одну статью в Избранное</string>
     <string name="text_view_no_started_challenges_message">
         Вы еще не участвуете ни в одном из челленджей.
