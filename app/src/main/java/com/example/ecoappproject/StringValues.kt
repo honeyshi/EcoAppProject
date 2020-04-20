@@ -11,6 +11,7 @@ const val ECO_MARKING_DATABASE = "EcoMarkingList"
 const val CHALLENGE_DATABASE = "ChallengeList"
 const val CHALLENGE_DATABASE_NAME = "name"
 const val CHALLENGE_DATABASE_IS_STARTED = "started"
+const val CHALLENGE_DATABASE_CURRENT_DAY = "currentDay"
 
 const val USERS_DATABASE = "UsersList"
 

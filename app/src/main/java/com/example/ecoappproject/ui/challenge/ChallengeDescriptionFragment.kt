@@ -144,6 +144,7 @@ class ChallengeDescriptionFragment : Fragment() {
 
             ChallengeObject.setChallengeIsStarted(challengeName, "false")
             ChallengeObject.deleteChallengeTracker(challengeId)
+            ChallengeObject.removeCurrentDayForChallenge(challengeId)
         }
         // Close dialog on Cancel
         builder.setNegativeButton(android.R.string.cancel, null)

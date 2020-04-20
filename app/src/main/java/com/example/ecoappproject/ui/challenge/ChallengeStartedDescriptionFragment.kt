@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.ecoappproject.R
+import com.example.ecoappproject.interfaces.OnGetChallengeCurrentDayListener
 import com.example.ecoappproject.interfaces.OnGetChallengeTrackerListener
 import com.example.ecoappproject.objects.AwardObject
 import com.example.ecoappproject.objects.ChallengeObject
@@ -21,7 +22,6 @@ import com.example.ecoappproject.objects.ChallengeObject
 class ChallengeStartedDescriptionFragment : Fragment() {
 
     private val challengeViewModel: ChallengeViewModel by activityViewModels()
-    private val currentDay = 30
     private val leafArraySize = 30
     private lateinit var challengeName: String
     private lateinit var challengeId: String
@@ -78,6 +78,83 @@ class ChallengeStartedDescriptionFragment : Fragment() {
                         }
                     }
                 })
+            // Get current day for challenge
+            Log.w("Challenge Started Desc", "Get current day")
+            ChallengeObject.getCurrentDayForChallenge(
+                it,
+                object : OnGetChallengeCurrentDayListener {
+                    override fun onGetChallengeCurrentDay(currentDay: Int) {
+
+                        Log.w("Challenge Started Desc", "Set listener for current day button")
+                        // Set click listener for current leaf button
+                        leafImageButtonList[currentDay - 1].setImageResource(R.drawable.ic_leaf_current)
+                        leafImageButtonList[currentDay - 1].setOnClickListener {
+                            Log.w("Challenge Started Desc", "Click on button")
+                            leafImageButtonList[currentDay - 1].setImageResource(R.drawable.ic_leaf_pressed)
+                            ChallengeObject.setDayStatusInChallengeTracker(challengeId, currentDay)
+                            val countMarkedButtons =
+                                leafImageButtonStatusMap.filterValues { it }.count()
+                            Log.w("Challenge Started Desc", "Marked buttons $countMarkedButtons")
+
+                            // Stop challenge if user marks last day
+                            // and validate whether he marked all days (case with 30 days)
+                            if (currentDay == leafArraySize && countMarkedButtons == leafArraySize - 1) {
+                                Log.w("Challenge Started Desc", "Challenge completed")
+                                // Show dialog that user got award
+                                val builder =
+                                    AlertDialog.Builder(
+                                        ContextThemeWrapper(
+                                            activity!!,
+                                            R.style.DialogTheme
+                                        )
+                                    )
+                                builder.setTitle(resources.getString(R.string.dialog_end_challenge_header))
+                                builder.setMessage(resources.getString(R.string.dialog_get_award_message))
+                                builder.setPositiveButton(android.R.string.ok, null)
+                                // 1) Hide button and message
+                                // 2) Set status not started for challenge in Database
+                                // 3) Delete tracker for challenge in Database
+                                buttonEndChallenge.visibility = View.INVISIBLE
+                                textViewStartedChallenge.visibility = View.INVISIBLE
+
+                                ChallengeObject.setChallengeIsStarted(challengeName, "false")
+                                ChallengeObject.deleteChallengeTracker(challengeId)
+                                ChallengeObject.removeCurrentDayForChallenge(challengeId)
+                                // Set completed status for award
+                                AwardObject.setCompletedAward(challengeId)
+
+                                builder.show()
+                            }
+
+                            // Case when not every day is marked
+                            if (currentDay == leafArraySize && countMarkedButtons != leafArraySize - 1) {
+                                Log.w("Challenge Started Desc", "Challenge is not completed")
+                                // Show dialog that user not got award
+                                val builder =
+                                    AlertDialog.Builder(
+                                        ContextThemeWrapper(
+                                            activity!!,
+                                            R.style.DialogTheme
+                                        )
+                                    )
+                                builder.setTitle(resources.getString(R.string.dialog_end_challenge_header))
+                                builder.setMessage(resources.getString(R.string.dialog_not_get_award_message))
+                                builder.setPositiveButton(android.R.string.ok, null)
+                                // 1) Hide button and message
+                                // 2) Set status not started for challenge in Database
+                                // 3) Delete tracker for challenge in Database
+                                buttonEndChallenge.visibility = View.INVISIBLE
+                                textViewStartedChallenge.visibility = View.INVISIBLE
+
+                                ChallengeObject.setChallengeIsStarted(challengeName, "false")
+                                ChallengeObject.deleteChallengeTracker(challengeId)
+                                ChallengeObject.removeCurrentDayForChallenge(challengeId)
+
+                                builder.show()
+                            }
+                        }
+                    }
+                })
         })
 
         challengeViewModel.getChallengeName().observe(viewLifecycleOwner, Observer {
@@ -92,56 +169,6 @@ class ChallengeStartedDescriptionFragment : Fragment() {
         // Set button click listener
         root.findViewById<Button>(R.id.button_challenge_started).setOnClickListener {
             endChallenge()
-        }
-
-        // Set click listener for current leaf button
-        leafImageButtonList[currentDay - 1].setImageResource(R.drawable.ic_leaf_current)
-        leafImageButtonList[currentDay - 1].setOnClickListener {
-            Log.w("Challenge Started Desc", "Click on button")
-            leafImageButtonList[currentDay - 1].setImageResource(R.drawable.ic_leaf_pressed)
-            ChallengeObject.setDayStatusInChallengeTracker(challengeId, currentDay)
-            val countMarkedButtons = leafImageButtonStatusMap.filterValues { it }.count()
-            Log.w("Challenge Started Desc", "Marked buttons $countMarkedButtons")
-            if (currentDay == leafArraySize && countMarkedButtons == leafArraySize - 1) {
-                Log.w("Challenge Started Desc", "Challenge completed")
-                // Show dialog that user got award
-                val builder = AlertDialog.Builder(ContextThemeWrapper(activity!!, R.style.DialogTheme))
-                builder.setTitle(resources.getString(R.string.dialog_end_challenge_header))
-                builder.setMessage(resources.getString(R.string.dialog_get_award_message))
-                builder.setPositiveButton(android.R.string.ok, null)
-                // 1) Hide button and message
-                // 2) Set status not started for challenge in Database
-                // 3) Delete tracker for challenge in Database
-                buttonEndChallenge.visibility = View.INVISIBLE
-                textViewStartedChallenge.visibility = View.INVISIBLE
-
-                ChallengeObject.setChallengeIsStarted(challengeName, "false")
-                ChallengeObject.deleteChallengeTracker(challengeId)
-
-                // Set completed status for award
-                AwardObject.setCompletedAward(challengeId)
-
-                builder.show()
-            }
-
-            if (currentDay == leafArraySize && countMarkedButtons != leafArraySize - 1) {
-                Log.w("Challenge Started Desc", "Challenge is not completed")
-                // Show dialog that user not got award
-                val builder = AlertDialog.Builder(ContextThemeWrapper(activity!!, R.style.DialogTheme))
-                builder.setTitle(resources.getString(R.string.dialog_end_challenge_header))
-                builder.setMessage(resources.getString(R.string.dialog_not_get_award_message))
-                builder.setPositiveButton(android.R.string.ok, null)
-                // 1) Hide button and message
-                // 2) Set status not started for challenge in Database
-                // 3) Delete tracker for challenge in Database
-                buttonEndChallenge.visibility = View.INVISIBLE
-                textViewStartedChallenge.visibility = View.INVISIBLE
-
-                ChallengeObject.setChallengeIsStarted(challengeName, "false")
-                ChallengeObject.deleteChallengeTracker(challengeId)
-
-                builder.show()
-            }
         }
 
         return root
@@ -162,6 +189,7 @@ class ChallengeStartedDescriptionFragment : Fragment() {
 
             ChallengeObject.setChallengeIsStarted(challengeName, "false")
             ChallengeObject.deleteChallengeTracker(challengeId)
+            ChallengeObject.removeCurrentDayForChallenge(challengeId)
         }
         // Close dialog on Cancel
         builder.setNegativeButton(android.R.string.cancel, null)

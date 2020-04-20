@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.ecoappproject.*
 import com.example.ecoappproject.adapter.ChallengeAdapter
 import com.example.ecoappproject.interfaces.OnChallengeItemClickListener
+import com.example.ecoappproject.interfaces.OnGetChallengeCurrentDayListener
 import com.example.ecoappproject.interfaces.OnGetChallengeTrackerListener
 import com.example.ecoappproject.items.ChallengeItem
 import com.example.ecoappproject.items.ChallengeTrackerItem
@@ -42,6 +43,95 @@ object ChallengeObject {
 
     fun clearChallengeItemsList() {
         challengeItemList.clear()
+    }
+
+    fun getCurrentDayForChallenge(
+        challengeId: String,
+        onGetChallengeCurrentDayListener: OnGetChallengeCurrentDayListener
+    ) {
+        challengeReference
+            .child(USERS_DATABASE)
+            .child(currentUserId.toString())
+            .child(CHALLENGE_DATABASE).addListenerForSingleValueEvent(object :
+                ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (challenge in dataSnapshot.children) {
+                        if (challenge.child("id").value.toString() == challengeId) {
+                            val challengeCurrentDay =
+                                challenge.child(CHALLENGE_DATABASE_CURRENT_DAY).value.toString()
+                                    .toInt()
+                            Log.w(
+                                "Challenge Object",
+                                "Current day for challenge $challengeId is $challengeCurrentDay"
+                            )
+                            onGetChallengeCurrentDayListener.onGetChallengeCurrentDay(
+                                challengeCurrentDay
+                            )
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Failed to read value
+                    Log.w("Challenge Object", "Failed to read value.", error.toException())
+                }
+            })
+    }
+
+    fun removeCurrentDayForChallenge(challengeId: String) {
+        challengeReference
+            .child(USERS_DATABASE)
+            .child(currentUserId.toString())
+            .child(CHALLENGE_DATABASE).addListenerForSingleValueEvent(object :
+                ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (challenge in dataSnapshot.children) {
+                        if (challenge.child("id").value.toString() == challengeId) {
+                            Log.w(
+                                "Challenge Object",
+                                "Set current day 0 for challenge $challengeId"
+                            )
+                            challenge.ref.child(CHALLENGE_DATABASE_CURRENT_DAY).setValue(0)
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Failed to read value
+                    Log.w("Challenge Object", "Failed to read value.", error.toException())
+                }
+            })
+    }
+
+    fun increaseCurrentDayForStartedChallenges() {
+        challengeReference
+            .child(USERS_DATABASE)
+            .child(currentUserId.toString())
+            .child(CHALLENGE_DATABASE).addListenerForSingleValueEvent(object :
+                ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (challenge in dataSnapshot.children) {
+                        val challengeItem =
+                            challenge.getValue(ChallengeItem::class.java)
+                        if (challengeItem?.started?.toBoolean() == true) {
+                            Log.w(
+                                "Challenge Object",
+                                "For challenge with name ${challengeItem.name} set current day ${challengeItem.currentDay?.plus(
+                                    1
+                                )}"
+                            )
+                            challenge.ref.child(CHALLENGE_DATABASE_CURRENT_DAY).setValue(
+                                challengeItem.currentDay?.plus(1)
+                            )
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Failed to read value
+                    Log.w("Challenge Object", "Failed to read value.", error.toException())
+                }
+            })
     }
 
     fun getDayStatusInChallengeTracker(
