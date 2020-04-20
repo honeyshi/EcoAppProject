@@ -38,7 +38,7 @@ class UserFragment : Fragment(), OnArticleItemClickListener {
         val userNameTextView = root.findViewById<TextView>(R.id.text_view_user_name)
         val userIconImageButton = root.findViewById<ImageButton>(R.id.image_button_user_icon)
 
-        ArticleObject.clearArticleItemList()
+        ArticleObject.clearFavouriteArticleItemList()
         ArticleObject.getFavouriteArticles(
             activity!!.applicationContext,
             root.findViewById(R.id.favourite_articles_recycler_view),

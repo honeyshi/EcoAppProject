@@ -19,6 +19,7 @@ import com.google.firebase.database.ValueEventListener
 
 object ArticleObject {
     private val articleItemList = ArrayList<ArticleItem?>()
+    private val favouriteArticleItemList = ArrayList<ArticleItem?>()
     private lateinit var articlesRecyclerView: RecyclerView
     private lateinit var articleAdapter: ArticleAdapter
 
@@ -59,15 +60,25 @@ object ArticleObject {
             if (articleItem?.header == articleName)
                 articleItem?.favourite = isFavourite
         }
+
+        favouriteArticleItemList.map { articleItem ->
+            if (articleItem?.header == articleName)
+                articleItem?.favourite = isFavourite
+        }
     }
 
     fun clearArticleItemList() {
         articleItemList.clear()
     }
 
+    fun clearFavouriteArticleItemList() {
+        favouriteArticleItemList.clear()
+    }
+
     private fun initRecyclerView(
         context: Context,
         recyclerView: RecyclerView,
+        articleItemList: ArrayList<ArticleItem?>,
         articleItemClickListener: OnArticleItemClickListener,
         textView: TextView? = null,
         isFavourite: Boolean = false
@@ -105,7 +116,12 @@ object ArticleObject {
                         Log.w("Article object", "Favourite status is ${articleItem?.favourite}")
                         articleItemList.add(articleItem)
                     }
-                    initRecyclerView(context, recyclerView, articleItemClickListener)
+                    initRecyclerView(
+                        context,
+                        recyclerView,
+                        articleItemList,
+                        articleItemClickListener
+                    )
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -139,11 +155,18 @@ object ArticleObject {
                         Log.w("Article object", "Favourite status is ${articleItem?.favourite}")
                         // If article favourite for user - add to recycler view
                         if (articleItem?.favourite?.toBoolean() == true) {
-                            articleItemList.add(articleItem)
+                            favouriteArticleItemList.add(articleItem)
                             isFavourite = true
                         }
                     }
-                    initRecyclerView(context, recyclerView, articleItemClickListener, textView, isFavourite)
+                    initRecyclerView(
+                        context,
+                        recyclerView,
+                        favouriteArticleItemList,
+                        articleItemClickListener,
+                        textView,
+                        isFavourite
+                    )
                 }
 
                 override fun onCancelled(error: DatabaseError) {
