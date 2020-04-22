@@ -107,7 +107,7 @@ class ChallengeDescriptionFragment : Fragment() {
 
     private fun startChallenge() {
         // Show dialog window that user starts challenge
-        val builder = AlertDialog.Builder(ContextThemeWrapper(activity!!, R.style.DialogTheme))
+        val builder = AlertDialog.Builder(ContextThemeWrapper(requireActivity(), R.style.DialogTheme))
         builder.setTitle(resources.getString(R.string.dialog_start_challenge_header))
         builder.setMessage(resources.getString(R.string.dialog_start_challenge_message))
         // When user submit dialog
@@ -130,7 +130,7 @@ class ChallengeDescriptionFragment : Fragment() {
 
     private fun endChallenge() {
         // Show dialog window that user starts challenge
-        val builder = AlertDialog.Builder(ContextThemeWrapper(activity!!, R.style.DialogTheme))
+        val builder = AlertDialog.Builder(ContextThemeWrapper(requireActivity(), R.style.DialogTheme))
         builder.setTitle(resources.getString(R.string.dialog_end_challenge_header))
         builder.setMessage(resources.getString(R.string.dialog_end_challenge_message))
         // When user submit dialog

@@ -87,13 +87,16 @@ class ChallengeStartedDescriptionFragment : Fragment() {
 
                         Log.w("Challenge Started Desc", "Set listener for current day button")
                         // Set click listener for current leaf button
-                        leafImageButtonList[currentDay - 1].setImageResource(R.drawable.ic_leaf_current)
+                        if (leafImageButtonStatusMap["image_button_leaf_$currentDay"] == false) {
+                            leafImageButtonList[currentDay - 1].setImageResource(R.drawable.ic_leaf_current)
+                        }
                         leafImageButtonList[currentDay - 1].setOnClickListener {
                             Log.w("Challenge Started Desc", "Click on button")
                             leafImageButtonList[currentDay - 1].setImageResource(R.drawable.ic_leaf_pressed)
                             ChallengeObject.setDayStatusInChallengeTracker(challengeId, currentDay)
                             val countMarkedButtons =
-                                leafImageButtonStatusMap.filterValues { it }.count()
+                                leafImageButtonStatusMap.filterValues { leafImage -> leafImage }
+                                    .count()
                             Log.w("Challenge Started Desc", "Marked buttons $countMarkedButtons")
 
                             // Stop challenge if user marks last day
@@ -176,7 +179,8 @@ class ChallengeStartedDescriptionFragment : Fragment() {
 
     private fun endChallenge() {
         // Show dialog window that user ends challenge
-        val builder = AlertDialog.Builder(ContextThemeWrapper(activity!!, R.style.DialogTheme))
+        val builder =
+            AlertDialog.Builder(ContextThemeWrapper(requireActivity(), R.style.DialogTheme))
         builder.setTitle(resources.getString(R.string.dialog_end_challenge_header))
         builder.setMessage(resources.getString(R.string.dialog_end_challenge_message))
         // When user submit dialog

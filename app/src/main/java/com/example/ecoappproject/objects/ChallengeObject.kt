@@ -232,6 +232,10 @@ object ChallengeObject {
                                 "Challenge Object",
                                 "Set isStarted $isStarted for challenge $challengeName"
                             )
+                            // If we start challenge set current day 1
+                            if (isStarted.toBoolean()) {
+                                challenge.ref.child(CHALLENGE_DATABASE_CURRENT_DAY).setValue(1)
+                            }
                             challenge.ref.child(CHALLENGE_DATABASE_IS_STARTED).setValue(isStarted)
                         }
                     }

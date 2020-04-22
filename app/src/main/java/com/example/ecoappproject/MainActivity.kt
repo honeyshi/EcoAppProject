@@ -9,12 +9,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
+import androidx.work.*
+import com.example.ecoappproject.background.ChangeChallengeCurrentDayWorker
 import com.example.ecoappproject.items.ArticleItem
 import com.example.ecoappproject.items.AwardItem
 import com.example.ecoappproject.items.ChallengeItem
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import java.util.*
+import java.util.concurrent.TimeUnit
+import kotlin.collections.ArrayList
 
 
 class MainActivity : AppCompatActivity() {
@@ -25,6 +30,29 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
+
+        /* Start service for changing challenge current day */
+        // Create calendar for setting execution time
+        val currentDate = Calendar.getInstance()
+        val dueDate = Calendar.getInstance()
+
+        // Set Execution around 05:00:00 AM
+        dueDate.set(Calendar.HOUR_OF_DAY, 5)
+        dueDate.set(Calendar.MINUTE, 0)
+        dueDate.set(Calendar.SECOND, 0)
+        dueDate.set(Calendar.MILLISECOND, 0)
+
+        if (dueDate.before(currentDate)) {
+            dueDate.add(Calendar.HOUR_OF_DAY, 24)
+        }
+
+        val timeDiff = dueDate.timeInMillis - currentDate.timeInMillis
+        // Enqueue worker job
+        val dailyWorkRequest = OneTimeWorkRequestBuilder<ChangeChallengeCurrentDayWorker>()
+            .setInitialDelay(timeDiff, TimeUnit.MILLISECONDS)
+            .build()
+        WorkManager.getInstance(application).enqueue(dailyWorkRequest)
+
 
         /* Initialize Firebase */
         firebaseAuth = FirebaseAuth.getInstance()
