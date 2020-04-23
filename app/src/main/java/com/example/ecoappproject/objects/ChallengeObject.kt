@@ -113,6 +113,7 @@ object ChallengeObject {
                     for (challenge in dataSnapshot.children) {
                         val challengeItem =
                             challenge.getValue(ChallengeItem::class.java)
+                        // If challenge started increase current day for it
                         if (challengeItem?.started?.toBoolean() == true) {
                             Log.w(
                                 "Challenge Object",
@@ -123,6 +124,11 @@ object ChallengeObject {
                             challenge.ref.child(CHALLENGE_DATABASE_CURRENT_DAY).setValue(
                                 challengeItem.currentDay?.plus(1)
                             )
+                        }
+                        // If current day became 31 we should automatically finish this challenge
+                        if (challengeItem?.currentDay == 31) {
+                            deleteChallengeTracker(challengeItem.id.toString())
+                            setChallengeIsStarted(challengeItem.name.toString(), "false")
                         }
                     }
                 }
