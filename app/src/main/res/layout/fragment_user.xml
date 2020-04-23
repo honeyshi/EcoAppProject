@@ -63,29 +63,6 @@
         app:fontFamily="@font/montserrat_light"/>
 
     <ImageButton
-        android:id="@+id/image_button_user_fragment_left"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginBottom="100dp"
-        android:background="@drawable/ic_chevron_left"
-        app:layout_constraintBottom_toBottomOf="@id/top_view_user_fragment"
-        app:layout_constraintStart_toStartOf="parent"/>
-
-
-    <ImageButton
-        android:id="@+id/image_button_user_fragment_right"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="100dp"
-        android:background="@drawable/ic_chevron_right"
-        app:layout_constraintBottom_toBottomOf="@id/top_view_user_fragment"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <ImageButton
         android:id="@+id/image_button_user_icon"
         android:layout_width="@dimen/user_fragment_image_size"
         android:layout_height="@dimen/user_fragment_image_size"

@@ -64,31 +64,6 @@
         app:layout_constraintBottom_toBottomOf="@id/switcher_view_header_started_challenge_fragment"
         app:fontFamily="@font/montserrat_bold"/>
 
-    <ImageButton
-        android:id="@+id/image_button_challenge_started_fragment_left"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginBottom="100dp"
-        android:background="@drawable/ic_chevron_left"
-        app:layout_constraintBottom_toBottomOf="@id/top_view_challenge_started_fragment"
-        app:layout_constraintEnd_toStartOf="@id/switcher_view_header_started_challenge_fragment"
-        app:layout_constraintStart_toStartOf="parent"/>
-
-
-    <ImageButton
-        android:id="@+id/image_button_challenge_started_fragment_right"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginBottom="100dp"
-        android:background="@drawable/ic_chevron_right"
-        app:layout_constraintBottom_toBottomOf="@id/top_view_challenge_started_fragment"
-        app:layout_constraintEnd_toEndOf="@id/switcher_view_header_started_challenge_fragment"
-        app:layout_constraintStart_toEndOf="parent" />
-
     <View
         android:id="@+id/rectangle_challenge_started_fragment"
         android:layout_width="156dp"
