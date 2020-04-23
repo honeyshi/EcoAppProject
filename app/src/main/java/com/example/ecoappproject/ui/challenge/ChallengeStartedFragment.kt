@@ -29,21 +29,11 @@ class ChallengeStartedFragment : Fragment(), OnChallengeItemClickListener {
 
         ChallengeObject.clearChallengeItemsList()
         ChallengeObject.getStartedChallenges(
-            activity!!.applicationContext,
+            requireActivity().applicationContext,
             root.findViewById(R.id.started_challenge_recycler_view),
             this,
             root.findViewById(R.id.text_view_no_started_challenges)
         )
-
-        root.findViewById<ImageButton>(R.id.image_button_challenge_started_fragment_left)
-            .setOnClickListener {
-                onAwardButtonClick()
-            }
-
-        root.findViewById<ImageButton>(R.id.image_button_challenge_started_fragment_right)
-            .setOnClickListener {
-                onUserButtonClick()
-            }
 
         return root
     }
@@ -62,22 +52,6 @@ class ChallengeStartedFragment : Fragment(), OnChallengeItemClickListener {
         Log.w("Challenge Started", "Start challenge description fragment")
         val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
         transaction.replace(R.id.nav_host_fragment, ChallengeStartedDescriptionFragment())
-        transaction.addToBackStack(null)
-        transaction.commit()
-    }
-
-    private fun onAwardButtonClick() {
-        Log.w("Challenge Started", "Click on award button")
-        val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
-        transaction.replace(R.id.nav_host_fragment, AwardFragment())
-        transaction.addToBackStack(null)
-        transaction.commit()
-    }
-
-    private fun onUserButtonClick() {
-        Log.w("Challenge Started", "Click on user button")
-        val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
-        transaction.replace(R.id.nav_host_fragment, UserFragment())
         transaction.addToBackStack(null)
         transaction.commit()
     }

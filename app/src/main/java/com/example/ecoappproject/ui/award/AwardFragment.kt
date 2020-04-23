@@ -23,33 +23,10 @@ class AwardFragment : Fragment() {
 
         AwardObject.clearAwardItemList()
         AwardObject.getAwards(
-            activity!!.applicationContext,
+            requireActivity().applicationContext,
             root.findViewById(R.id.award_recycler_view)
         )
 
-        root.findViewById<ImageButton>(R.id.image_button_award_fragment_left).setOnClickListener {
-            onUserButtonClick()
-        }
-
-        root.findViewById<ImageButton>(R.id.image_button_award_fragment_right).setOnClickListener {
-            onChallengeButtonClick()
-        }
         return root
-    }
-
-    private fun onChallengeButtonClick() {
-        Log.w("Award fragment", "Click on challenge button")
-        val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
-        transaction.replace(R.id.nav_host_fragment, ChallengeStartedFragment())
-        transaction.addToBackStack(null)
-        transaction.commit()
-    }
-
-    private fun onUserButtonClick() {
-        Log.w("Award fragment", "Click on user button")
-        val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
-        transaction.replace(R.id.nav_host_fragment, UserFragment())
-        transaction.addToBackStack(null)
-        transaction.commit()
     }
 }

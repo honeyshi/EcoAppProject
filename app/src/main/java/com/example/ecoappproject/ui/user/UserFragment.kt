@@ -40,7 +40,7 @@ class UserFragment : Fragment(), OnArticleItemClickListener {
 
         ArticleObject.clearFavouriteArticleItemList()
         ArticleObject.getFavouriteArticles(
-            activity!!.applicationContext,
+            requireActivity().applicationContext,
             root.findViewById(R.id.favourite_articles_recycler_view),
             this,
             root.findViewById(R.id.text_view_no_favourites)
@@ -73,11 +73,11 @@ class UserFragment : Fragment(), OnArticleItemClickListener {
         }
 
         // Set listeners for section buttons
-        root.findViewById<ImageButton>(R.id.image_button_user_fragment_left).setOnClickListener {
+        root.findViewById<Button>(R.id.button_user_fragment_challenge).setOnClickListener {
             onChallengeButtonClick()
         }
 
-        root.findViewById<ImageButton>(R.id.image_button_user_fragment_right).setOnClickListener {
+        root.findViewById<Button>(R.id.button_user_fragment_award).setOnClickListener {
             onAwardButtonClick()
         }
         return root
