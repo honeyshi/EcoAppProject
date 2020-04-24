@@ -125,10 +125,15 @@ object ChallengeObject {
                                 challengeItem.currentDay?.plus(1)
                             )
                         }
+                        Log.w(
+                            "Challenge Object",
+                            "Current day is: ${challengeItem?.currentDay?.plus(1)}"
+                        )
                         // If current day became 31 we should automatically finish this challenge
-                        if (challengeItem?.currentDay == 31) {
+                        if (challengeItem?.currentDay?.plus(1) == 31) {
                             deleteChallengeTracker(challengeItem.id.toString())
                             setChallengeIsStarted(challengeItem.name.toString(), "false")
+                            removeCurrentDayForChallenge(challengeItem.id.toString())
                         }
                     }
                 }
