@@ -1,19 +1,29 @@
 package com.example.ecoappproject
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.work.*
 import com.example.ecoappproject.background.ChangeChallengeCurrentDayWorker
+import com.example.ecoappproject.background.SendNotificationWorker
+import com.example.ecoappproject.interfaces.OnGetStartedChallengePresenceListener
 import com.example.ecoappproject.items.ArticleItem
 import com.example.ecoappproject.items.AwardItem
 import com.example.ecoappproject.items.ChallengeItem
+import com.example.ecoappproject.objects.ChallengeObject
+import com.example.ecoappproject.ui.challenge.ChallengeStartedFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -31,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
-        /* Start service for changing challenge current day */
+        // region Start service for changing challenge current day
         // Create calendar for setting execution time
         val currentDate = Calendar.getInstance()
         val dueDate = Calendar.getInstance()
@@ -51,16 +61,45 @@ class MainActivity : AppCompatActivity() {
         val dailyWorkRequest = OneTimeWorkRequestBuilder<ChangeChallengeCurrentDayWorker>()
             .setInitialDelay(timeDiff, TimeUnit.MILLISECONDS)
             .build()
-        WorkManager.getInstance(application).enqueue(dailyWorkRequest)
+        //WorkManager.getInstance(application).enqueue(dailyWorkRequest)
+        // endregion
 
+        // region Start service for sending notification to user
+        Log.w("Main Activity", "Create notification channel")
+        createNotificationChannel()
 
-        /* Initialize Firebase */
+        val currentDateNotification = Calendar.getInstance()
+        val dueDateNotification = Calendar.getInstance()
+
+        // Set Execution around 12:00:00 AM
+        dueDateNotification.set(Calendar.HOUR_OF_DAY, 12)
+        dueDateNotification.set(Calendar.MINUTE, 0)
+        dueDateNotification.set(Calendar.SECOND, 0)
+        dueDateNotification.set(Calendar.MILLISECOND, 0)
+
+        if (dueDateNotification.before(currentDate)) {
+            dueDateNotification.add(Calendar.HOUR_OF_DAY, 24)
+        }
+
+        val timeDiffNotification =
+            dueDateNotification.timeInMillis - currentDateNotification.timeInMillis
+
+        val dailyNotificationRequest = OneTimeWorkRequestBuilder<SendNotificationWorker>()
+            .setInitialDelay(timeDiffNotification, TimeUnit.MILLISECONDS)
+            .build()
+        WorkManager.getInstance(application)
+            .beginWith(listOf(dailyWorkRequest, dailyNotificationRequest)).enqueue()
+        // endregion
+
+        // region Initialize Firebase
         firebaseAuth = FirebaseAuth.getInstance()
         firebaseReference = FirebaseDatabase.getInstance().reference
 
         initializeDatabaseForCurrentUser()
 
-        /* Set bottom bar navigation */
+        // endregion
+
+        // region Set bottom bar navigation
         val navController = findNavController(R.id.nav_host_fragment)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -78,8 +117,9 @@ class MainActivity : AppCompatActivity() {
         /* Do not show action bar */
         NavigationUI.setupWithNavController(navView, navController)
 
+        // endregion
 
-        /* Settings for first time usage */
+        // region Settings for first time usage
         val sharedPref = getPreferences(Context.MODE_PRIVATE)
 
         val firstOpened: Boolean = sharedPref.getBoolean("first_opened", true)
@@ -90,6 +130,25 @@ class MainActivity : AppCompatActivity() {
             val editor: SharedPreferences.Editor = sharedPref.edit()
             editor.putBoolean("first_opened", false)
             editor.apply()
+        }
+
+        // endregion
+    }
+
+    private fun createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = getString(R.string.notification_channel_name)
+            val descriptionText = getString(R.string.notification_channel_description)
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+                description = descriptionText
+            }
+            // Register the channel with the system
+            val notificationManager: NotificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
         }
     }
 

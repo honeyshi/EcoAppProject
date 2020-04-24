@@ -62,4 +62,9 @@
         Due to not marking all days in tracker you will not get an award.
         Try this challenge again and succeed next time!
     </string>
+
+    <string name="notification_channel_name">Challenge notification name</string>
+    <string name="notification_channel_description">Challenge notification description</string>
+    <string name="notification_challenge_title">Challenge Tracking</string>
+    <string name="notification_challenge_description">You are participating in challenge. Do not forget to mark your progress</string>
 </resources>
