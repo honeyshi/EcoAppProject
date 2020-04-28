@@ -11,6 +11,7 @@ import com.example.ecoappproject.adapter.ChallengeAdapter
 import com.example.ecoappproject.interfaces.OnChallengeItemClickListener
 import com.example.ecoappproject.interfaces.OnGetChallengeCurrentDayListener
 import com.example.ecoappproject.interfaces.OnGetChallengeTrackerListener
+import com.example.ecoappproject.interfaces.OnGetStartedChallengePresenceListener
 import com.example.ecoappproject.items.ChallengeItem
 import com.example.ecoappproject.items.ChallengeTrackerItem
 import com.google.firebase.auth.FirebaseAuth
@@ -43,6 +44,32 @@ object ChallengeObject {
 
     fun clearChallengeItemsList() {
         challengeItemList.clear()
+    }
+
+    fun isStartedChallengeExists(onGetStartedChallengePresenceListener: OnGetStartedChallengePresenceListener) {
+        challengeReference
+            .child(USERS_DATABASE)
+            .child(currentUserId.toString())
+            .child(CHALLENGE_DATABASE).addListenerForSingleValueEvent(object :
+                ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (challenge in dataSnapshot.children) {
+                        if (challenge.child(CHALLENGE_DATABASE_IS_STARTED).value.toString() == "true") {
+                            Log.w(
+                                "Challenge Object",
+                                "Started challenge is presented"
+                            )
+                            onGetStartedChallengePresenceListener.OnGetStartedChallengePresence(true)
+                            break
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Failed to read value
+                    Log.w("Challenge Object", "Failed to read value.", error.toException())
+                }
+            })
     }
 
     fun getCurrentDayForChallenge(
@@ -113,6 +140,7 @@ object ChallengeObject {
                     for (challenge in dataSnapshot.children) {
                         val challengeItem =
                             challenge.getValue(ChallengeItem::class.java)
+                        // If challenge started increase current day for it
                         if (challengeItem?.started?.toBoolean() == true) {
                             Log.w(
                                 "Challenge Object",
@@ -123,6 +151,16 @@ object ChallengeObject {
                             challenge.ref.child(CHALLENGE_DATABASE_CURRENT_DAY).setValue(
                                 challengeItem.currentDay?.plus(1)
                             )
+                        }
+                        Log.w(
+                            "Challenge Object",
+                            "Current day is: ${challengeItem?.currentDay?.plus(1)}"
+                        )
+                        // If current day became 31 we should automatically finish this challenge
+                        if (challengeItem?.currentDay?.plus(1) == 31) {
+                            deleteChallengeTracker(challengeItem.id.toString())
+                            setChallengeIsStarted(challengeItem.name.toString(), "false")
+                            removeCurrentDayForChallenge(challengeItem.id.toString())
                         }
                     }
                 }
