@@ -64,4 +64,10 @@
         Так как вы не отметили все дни в трекере, вы не получите награду за него.
         Попробуйте начать челлендж заново.
     </string>
+
+    <string name="notification_channel_name">Challenge notification name</string>
+    <string name="notification_channel_description">Challenge notification description</string>
+    <string name="notification_challenge_title">Challenge Tracking</string>
+    <string name="notification_challenge_description">Не забудьте отметить свой прогресс по челленджу</string>
+
 </resources>

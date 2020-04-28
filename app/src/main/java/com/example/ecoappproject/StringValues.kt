@@ -20,3 +20,5 @@ const val CHALLENGE_TRACKER_DATABASE = "ChallengeTracker"
 const val AWARD_DATABASE = "AwardsList"
 const val AWARD_DATABASE_CHALLENGE_ID = "challengeId"
 const val AWARD_DATABASE_COMPLETED = "completed"
+
+const val CHANNEL_ID = "challenge_notification"
