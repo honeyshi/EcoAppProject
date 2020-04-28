@@ -7,6 +7,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.os.Build
 import android.os.Bundle
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -81,6 +82,16 @@ class MapFragment : Fragment() {
 
             // Get the current location of the device and set the position of the map.
             getDeviceLocation()
+
+            // Stop getting current location
+            /*val removeTask = fusedLocationProviderClient.removeLocationUpdates(locationCallback)
+            removeTask.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.w("Map Fragment", "Location Callback removed.")
+                } else {
+                    Log.w("Map fragment", "Failed to remove Location Callback.")
+                }
+            }*/
 
             // For dropping a marker at a point on the Map
             /*val sydney = LatLng(-34.0, 151.0)
@@ -172,7 +183,7 @@ class MapFragment : Fragment() {
         */
         try {
             if (isLocationPermissionGranted) {
-                Log.w("Map Fragment", "Location permission is granted")
+                Log.w("Map Fragment", "Location permission is granted - getDeviceLocation()")
                 locationRequest = LocationRequest().apply {
                     // Sets the desired interval for active location updates.
                     interval = TimeUnit.SECONDS.toMillis(60)
@@ -190,32 +201,51 @@ class MapFragment : Fragment() {
 
                 locationCallback = object : LocationCallback() {
                     override fun onLocationResult(locationResult: LocationResult?) {
+                        Log.w("Map Fragment", "In location callback")
                         super.onLocationResult(locationResult)
 
                         if (locationResult?.lastLocation != null) {
 
                             val currentLocation = locationResult.lastLocation
-
+                            Log.w(
+                                "Map Fragment",
+                                "Current location is not null. Move camera to users location"
+                            )
                             googleMap.moveCamera(
                                 CameraUpdateFactory.newLatLngZoom(
                                     LatLng(
                                         currentLocation.latitude,
                                         currentLocation.longitude
-                                    ), 12f
+                                    ), 15f
                                 )
                             )
+                            Log.w("Map Fragment","Stop getting location"
+                            )
+                            val removeTask =
+                                fusedLocationProviderClient.removeLocationUpdates(locationCallback)
+                            removeTask.addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    Log.w("Map Fragment", "Location Callback removed.")
+                                } else {
+                                    Log.w("Map fragment", "Failed to remove Location Callback.")
+                                }
+                            }
+
                         } else {
-                            Log.d("Map Fragment", "Current location is null. Using defaults.")
+                            Log.w("Map Fragment", "Current location is null. Using defaults.")
                             googleMap.moveCamera(
                                 CameraUpdateFactory.newLatLngZoom(
                                     defaultLocation,
-                                    12f
+                                    15f
                                 )
                             )
                             googleMap.uiSettings.isMyLocationButtonEnabled = false
                         }
                     }
                 }
+                fusedLocationProviderClient.requestLocationUpdates(
+                    locationRequest, locationCallback, Looper.myLooper()
+                )
             }
         } catch (e: SecurityException) {
             Log.e("Exception: %s", e.message.toString())
