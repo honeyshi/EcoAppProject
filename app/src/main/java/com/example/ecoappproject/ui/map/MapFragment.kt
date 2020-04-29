@@ -13,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -57,6 +58,9 @@ class MapFragment : Fragment() {
     ): View? {
 
         val root = inflater.inflate(R.layout.fragment_map, container, false)
+
+        // Make description for location template invisible
+        // root.findViewById<ConstraintLayout>(R.id.constraint_layout_location_description).visibility = View.INVISIBLE
 
         fusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(requireActivity());

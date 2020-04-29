@@ -31,6 +31,14 @@
         За выполнение челленджей вы получаете достижения в приложении.
     </string>
     <string name="text_view_completed_award">30/30</string>
+    <string name="text_view_location_description_can_recycle_header">Можно сдать:</string>
+    <string name="text_view_location_working_hours_monday">ПН</string>
+    <string name="text_view_location_working_hours_tuesday">ВТ</string>
+    <string name="text_view_location_working_hours_wednesday">СР</string>
+    <string name="text_view_location_working_hours_thursday">ЧТ</string>
+    <string name="text_view_location_working_hours_friday">ПТ</string>
+    <string name="text_view_location_working_hours_saturday">СБ</string>
+    <string name="text_view_location_working_hours_sunday">ВС</string>
 
 
     <string name="edit_text_analyze_one">Введите название</string>

@@ -30,6 +30,14 @@
         For completing challenges you get achievements in the application.
     </string>
     <string name="text_view_completed_award">30/30</string>
+    <string name="text_view_location_description_can_recycle_header">Can recycle:</string>
+    <string name="text_view_location_working_hours_monday">MO</string>
+    <string name="text_view_location_working_hours_tuesday">TU</string>
+    <string name="text_view_location_working_hours_wednesday">WE</string>
+    <string name="text_view_location_working_hours_thursday">TH</string>
+    <string name="text_view_location_working_hours_friday">FR</string>
+    <string name="text_view_location_working_hours_saturday">SA</string>
+    <string name="text_view_location_working_hours_sunday">SU</string>
 
     <string name="edit_text_analyze_one">Input title</string>
     <string name="edit_text_analyze_whole">Enter a comma separated list of ingredients</string>
