@@ -1,6 +1,7 @@
 package com.example.ecoappproject.ui.map
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -12,11 +13,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.example.ecoappproject.OnSwipeTouchListener
 import com.example.ecoappproject.R
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -24,8 +26,6 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.MapsInitializer
 import com.google.android.gms.maps.model.*
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
 import java.util.concurrent.TimeUnit
 import kotlin.properties.Delegates
 
@@ -50,6 +50,7 @@ class MapFragment : Fragment() {
     private val PERMISSION_REQUEST_COARSE_LOCATION = 101
     private val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 102
 
+    @SuppressLint("ClickableViewAccessibility")
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,7 +61,31 @@ class MapFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_map, container, false)
 
         // Make description for location template invisible
+        val constraintLayoutLocationDescription =
+            root.findViewById<ConstraintLayout>(R.id.constraint_layout_location_description)
         // root.findViewById<ConstraintLayout>(R.id.constraint_layout_location_description).visibility = View.INVISIBLE
+
+        // Set click listener for button - hide location description
+        val hideLocationButton =
+            root.findViewById<ImageButton>(R.id.image_button_hide_location_description)
+
+        hideLocationButton.setOnClickListener {
+            constraintLayoutLocationDescription.visibility = View.INVISIBLE
+        }
+
+        constraintLayoutLocationDescription.setOnTouchListener(object: OnSwipeTouchListener(requireActivity().applicationContext)
+        {
+            override fun onSwipeRight() {}
+
+            override fun onSwipeLeft() {}
+
+            override fun onSwipeBottom() {
+                Log.w("Map Fragment", "Swipe bottom.")
+                constraintLayoutLocationDescription.visibility = View.INVISIBLE
+            }
+
+            override fun onSwipeTop() {}
+        })
 
         fusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(requireActivity());
@@ -223,7 +248,8 @@ class MapFragment : Fragment() {
                                     ), 15f
                                 )
                             )
-                            Log.w("Map Fragment","Stop getting location"
+                            Log.w(
+                                "Map Fragment", "Stop getting location"
                             )
                             val removeTask =
                                 fusedLocationProviderClient.removeLocationUpdates(locationCallback)
