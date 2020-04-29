@@ -18,14 +18,22 @@ import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.example.ecoappproject.LOCATIONS_DATABASE
+import com.example.ecoappproject.MAP_FRAGMENT_TAG
 import com.example.ecoappproject.OnSwipeTouchListener
 import com.example.ecoappproject.R
+import com.example.ecoappproject.items.LocationItem
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.MapsInitializer
 import com.google.android.gms.maps.model.*
+import com.google.firebase.FirebaseApp
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import java.util.concurrent.TimeUnit
 import kotlin.properties.Delegates
 
@@ -63,7 +71,8 @@ class MapFragment : Fragment() {
         // Make description for location template invisible
         val constraintLayoutLocationDescription =
             root.findViewById<ConstraintLayout>(R.id.constraint_layout_location_description)
-        // root.findViewById<ConstraintLayout>(R.id.constraint_layout_location_description).visibility = View.INVISIBLE
+        root.findViewById<ConstraintLayout>(R.id.constraint_layout_location_description).visibility =
+            View.INVISIBLE
 
         // Set click listener for button - hide location description
         val hideLocationButton =
@@ -73,14 +82,14 @@ class MapFragment : Fragment() {
             constraintLayoutLocationDescription.visibility = View.INVISIBLE
         }
 
-        constraintLayoutLocationDescription.setOnTouchListener(object: OnSwipeTouchListener(requireActivity().applicationContext)
-        {
+        constraintLayoutLocationDescription.setOnTouchListener(object :
+            OnSwipeTouchListener(requireActivity().applicationContext) {
             override fun onSwipeRight() {}
 
             override fun onSwipeLeft() {}
 
             override fun onSwipeBottom() {
-                Log.w("Map Fragment", "Swipe bottom.")
+                Log.w(MAP_FRAGMENT_TAG, "Swipe bottom.")
                 constraintLayoutLocationDescription.visibility = View.INVISIBLE
             }
 
@@ -112,6 +121,9 @@ class MapFragment : Fragment() {
             // Get the current location of the device and set the position of the map.
             getDeviceLocation()
 
+            // Get locations of eco points and put them on map
+            //getLocationsFromDatabaseAndPutOnMap()
+
             // Stop getting current location
             /*val removeTask = fusedLocationProviderClient.removeLocationUpdates(locationCallback)
             removeTask.addOnCompleteListener { task ->
@@ -123,7 +135,7 @@ class MapFragment : Fragment() {
             }*/
 
             // For dropping a marker at a point on the Map
-            /*val sydney = LatLng(-34.0, 151.0)
+            /*val sydney = LatLng(56.259896, 43.882122)
             googleMap.addMarker(
                 MarkerOptions().position(sydney).title("Marker Title").snippet("Marker Description")
                     .icon(
@@ -132,14 +144,51 @@ class MapFragment : Fragment() {
                             R.drawable.ic_map_pin_usual
                         )
                     )
-            )
+            )*/
             // For zooming automatically to the location of the marker
-            val cameraPosition =
+            /*val cameraPosition =
                 CameraPosition.Builder().target(sydney).zoom(12f).build()
             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))*/
         }
 
         return root
+    }
+
+    private fun getLocationsFromDatabaseAndPutOnMap() {
+        Log.w(MAP_FRAGMENT_TAG, "Get locations from database")
+        FirebaseApp.initializeApp(requireContext().applicationContext)
+        val locationsReference = FirebaseDatabase.getInstance().reference.child(LOCATIONS_DATABASE)
+        locationsReference.addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (location in dataSnapshot.children) {
+                    val locationItem = location.getValue(LocationItem::class.java)
+
+                    if (locationItem?.geo != null) {
+                        Log.w(MAP_FRAGMENT_TAG, "Put location ${locationItem.geo} on map")
+                        val locationCoordinateList = locationItem.geo.split(' ')
+                        val locationCoordinate = LatLng(
+                            locationCoordinateList[0].toDouble(),
+                            locationCoordinateList[1].toDouble()
+                        )
+                        googleMap.addMarker(
+                            MarkerOptions().position(locationCoordinate).title("Eco point").snippet("Eco point description")
+                                .icon(
+                                    bitmapDescriptorFromVector(
+                                        requireActivity().applicationContext,
+                                        R.drawable.ic_map_pin_usual
+                                    )
+                                )
+                        )
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Failed to read value
+                Log.w(MAP_FRAGMENT_TAG, "Failed to read value.", error.toException())
+            }
+        })
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -157,7 +206,7 @@ class MapFragment : Fragment() {
         ) {
             isLocationPermissionGranted = true
         } else {
-            Log.w("Map Fragment", "There are no permissions")
+            Log.w(MAP_FRAGMENT_TAG, "There are no permissions")
             activity?.requestPermissions(
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                 PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
@@ -212,7 +261,7 @@ class MapFragment : Fragment() {
         */
         try {
             if (isLocationPermissionGranted) {
-                Log.w("Map Fragment", "Location permission is granted - getDeviceLocation()")
+                Log.w(MAP_FRAGMENT_TAG, "Location permission is granted - getDeviceLocation()")
                 locationRequest = LocationRequest().apply {
                     // Sets the desired interval for active location updates.
                     interval = TimeUnit.SECONDS.toMillis(60)
@@ -230,14 +279,14 @@ class MapFragment : Fragment() {
 
                 locationCallback = object : LocationCallback() {
                     override fun onLocationResult(locationResult: LocationResult?) {
-                        Log.w("Map Fragment", "In location callback")
+                        Log.w(MAP_FRAGMENT_TAG, "In location callback")
                         super.onLocationResult(locationResult)
 
                         if (locationResult?.lastLocation != null) {
 
                             val currentLocation = locationResult.lastLocation
                             Log.w(
-                                "Map Fragment",
+                                MAP_FRAGMENT_TAG,
                                 "Current location is not null. Move camera to users location"
                             )
                             googleMap.moveCamera(
@@ -248,21 +297,21 @@ class MapFragment : Fragment() {
                                     ), 15f
                                 )
                             )
-                            Log.w(
-                                "Map Fragment", "Stop getting location"
-                            )
+                            Log.w(MAP_FRAGMENT_TAG, "Stop getting location")
                             val removeTask =
                                 fusedLocationProviderClient.removeLocationUpdates(locationCallback)
                             removeTask.addOnCompleteListener { task ->
                                 if (task.isSuccessful) {
-                                    Log.w("Map Fragment", "Location Callback removed.")
+                                    Log.w(MAP_FRAGMENT_TAG, "Location Callback removed.")
                                 } else {
-                                    Log.w("Map fragment", "Failed to remove Location Callback.")
+                                    Log.w(MAP_FRAGMENT_TAG, "Failed to remove Location Callback.")
                                 }
                             }
 
+                            getLocationsFromDatabaseAndPutOnMap()
+
                         } else {
-                            Log.w("Map Fragment", "Current location is null. Using defaults.")
+                            Log.w(MAP_FRAGMENT_TAG, "Current location is null. Using defaults.")
                             googleMap.moveCamera(
                                 CameraUpdateFactory.newLatLngZoom(
                                     defaultLocation,
