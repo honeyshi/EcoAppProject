@@ -14,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -34,11 +35,12 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.properties.Delegates
 
 
-class MapFragment : Fragment() {
+class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
 
     private lateinit var mapViewModel: MapViewModel
     private lateinit var mapView: MapView
@@ -55,8 +57,20 @@ class MapFragment : Fragment() {
     // LocationCallback - Called when FusedLocationProviderClient has a new Location.
     private lateinit var locationCallback: LocationCallback
     private val defaultLocation = LatLng(56.315470, 43.991542)
-    private val PERMISSION_REQUEST_COARSE_LOCATION = 101
     private val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 102
+
+    // region UI elements
+    private lateinit var constraintLayoutLocationDescription: ConstraintLayout
+    private lateinit var textViewMonday: TextView
+    private lateinit var textViewTuesday: TextView
+    private lateinit var textViewWednesday: TextView
+    private lateinit var textViewThursday: TextView
+    private lateinit var textViewFriday: TextView
+    private lateinit var textViewSaturday: TextView
+    private lateinit var textViewSunday: TextView
+    private lateinit var textViewCanRecycle: TextView
+    private lateinit var textViewLocationAddress: TextView
+    // endregion
 
     @SuppressLint("ClickableViewAccessibility")
     @RequiresApi(Build.VERSION_CODES.M)
@@ -68,13 +82,24 @@ class MapFragment : Fragment() {
 
         val root = inflater.inflate(R.layout.fragment_map, container, false)
 
-        // Make description for location template invisible
-        val constraintLayoutLocationDescription =
-            root.findViewById<ConstraintLayout>(R.id.constraint_layout_location_description)
-        root.findViewById<ConstraintLayout>(R.id.constraint_layout_location_description).visibility =
-            View.INVISIBLE
+        // region Initialize UI elements
+        constraintLayoutLocationDescription =
+            root.findViewById(R.id.constraint_layout_location_description)
+        constraintLayoutLocationDescription.visibility = View.INVISIBLE
 
-        // Set click listener for button - hide location description
+        textViewMonday = root.findViewById(R.id.text_view_location_working_hours_monday)
+        textViewTuesday = root.findViewById(R.id.text_view_location_working_hours_tuesday)
+        textViewWednesday = root.findViewById(R.id.text_view_location_working_hours_wednesday)
+        textViewThursday = root.findViewById(R.id.text_view_location_working_hours_thursday)
+        textViewFriday = root.findViewById(R.id.text_view_location_working_hours_friday)
+        textViewSaturday = root.findViewById(R.id.text_view_location_working_hours_saturday)
+        textViewSunday = root.findViewById(R.id.text_view_location_working_hours_sunday)
+
+        textViewCanRecycle = root.findViewById(R.id.text_view_location_can_recycle_text)
+        textViewLocationAddress = root.findViewById(R.id.text_view_location_address)
+        // endregion
+
+        // region Location description constraint layout settings
         val hideLocationButton =
             root.findViewById<ImageButton>(R.id.image_button_hide_location_description)
 
@@ -95,6 +120,20 @@ class MapFragment : Fragment() {
 
             override fun onSwipeTop() {}
         })
+
+        // endregion
+
+        // region Set current day
+        val calendar = Calendar.getInstance()
+        val dayLongName =
+            calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.ENGLISH)
+                ?.toLowerCase(
+                    Locale.ENGLISH
+                )
+        Log.w(MAP_FRAGMENT_TAG, "Current week day is $dayLongName")
+        root.findViewWithTag<View>("view_location_current_day_$dayLongName").visibility =
+            View.VISIBLE
+        // endregion
 
         fusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(requireActivity());
@@ -121,37 +160,50 @@ class MapFragment : Fragment() {
             // Get the current location of the device and set the position of the map.
             getDeviceLocation()
 
-            // Get locations of eco points and put them on map
-            //getLocationsFromDatabaseAndPutOnMap()
+            // Get location of eco points from database and put on map.
+            getLocationsFromDatabaseAndPutOnMap()
 
-            // Stop getting current location
-            /*val removeTask = fusedLocationProviderClient.removeLocationUpdates(locationCallback)
-            removeTask.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.w("Map Fragment", "Location Callback removed.")
-                } else {
-                    Log.w("Map fragment", "Failed to remove Location Callback.")
-                }
-            }*/
-
-            // For dropping a marker at a point on the Map
-            /*val sydney = LatLng(56.259896, 43.882122)
-            googleMap.addMarker(
-                MarkerOptions().position(sydney).title("Marker Title").snippet("Marker Description")
-                    .icon(
-                        bitmapDescriptorFromVector(
-                            requireActivity().applicationContext,
-                            R.drawable.ic_map_pin_usual
-                        )
-                    )
-            )*/
-            // For zooming automatically to the location of the marker
-            /*val cameraPosition =
-                CameraPosition.Builder().target(sydney).zoom(12f).build()
-            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))*/
+            googleMap.setOnMarkerClickListener(this)
         }
 
         return root
+    }
+
+    override fun onMarkerClick(marker: Marker?): Boolean {
+        val markerTag = marker?.tag.toString()
+
+        Log.w(MAP_FRAGMENT_TAG, "Click on marker with tag $markerTag")
+
+        constraintLayoutLocationDescription.visibility = View.VISIBLE
+
+        FirebaseApp.initializeApp(requireContext().applicationContext)
+        val locationReference =
+            FirebaseDatabase.getInstance().reference.child(LOCATIONS_DATABASE).child(markerTag)
+        locationReference.addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val locationItem = dataSnapshot.getValue(LocationItem::class.java)
+                Log.w(MAP_FRAGMENT_TAG, "For this marker location is ${locationItem?.geo}")
+                textViewLocationAddress.text = locationItem?.address
+                textViewCanRecycle.text = locationItem?.canRecycle
+                textViewMonday.text = locationItem?.monday?.replace('_', '\n')
+                textViewTuesday.text = locationItem?.tuesday?.replace('_', '\n')
+                textViewWednesday.text = locationItem?.wednesday?.replace('_', '\n')
+                textViewThursday.text = locationItem?.thursday?.replace('_', '\n')
+                textViewFriday.text = locationItem?.friday?.replace('_', '\n')
+                textViewSaturday.text = locationItem?.saturday?.replace('_', '\n')
+                textViewSunday.text = locationItem?.sunday?.replace('_', '\n')
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Failed to read value
+                Log.w(MAP_FRAGMENT_TAG, "Failed to read value.", error.toException())
+            }
+        })
+        // Return false to indicate that we have not consumed the event and that we wish
+        // for the default behavior to occur (which is for the camera to move such that the
+        // marker is centered and for the marker's info window to open, if it has one).
+        return false
     }
 
     private fun getLocationsFromDatabaseAndPutOnMap() {
@@ -171,15 +223,16 @@ class MapFragment : Fragment() {
                             locationCoordinateList[0].toDouble(),
                             locationCoordinateList[1].toDouble()
                         )
+                        // Add markers with tags in order to accesses them later on click
                         googleMap.addMarker(
-                            MarkerOptions().position(locationCoordinate).title("Eco point").snippet("Eco point description")
+                            MarkerOptions().position(locationCoordinate)
                                 .icon(
                                     bitmapDescriptorFromVector(
                                         requireActivity().applicationContext,
                                         R.drawable.ic_map_pin_usual
                                     )
                                 )
-                        )
+                        ).tag = location.key
                     }
                 }
             }
@@ -307,8 +360,6 @@ class MapFragment : Fragment() {
                                     Log.w(MAP_FRAGMENT_TAG, "Failed to remove Location Callback.")
                                 }
                             }
-
-                            getLocationsFromDatabaseAndPutOnMap()
 
                         } else {
                             Log.w(MAP_FRAGMENT_TAG, "Current location is null. Using defaults.")
