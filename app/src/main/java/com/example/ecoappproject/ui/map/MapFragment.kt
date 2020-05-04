@@ -41,8 +41,6 @@ import kotlin.properties.Delegates
 
 
 class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
-
-    private lateinit var mapViewModel: MapViewModel
     private lateinit var mapView: MapView
     private lateinit var googleMap: GoogleMap
     private var isLocationPermissionGranted by Delegates.notNull<Boolean>()
