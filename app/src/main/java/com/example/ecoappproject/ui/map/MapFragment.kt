@@ -58,6 +58,8 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
     private lateinit var locationCallback: LocationCallback
     private val defaultLocation = LatLng(56.315470, 43.991542)
     private val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 102
+    private val defaultZoom = 15f
+    private var currentZoom = 15f
 
     // region UI elements
     private lateinit var constraintLayoutLocationDescription: ConstraintLayout
@@ -70,6 +72,7 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
     private lateinit var textViewSunday: TextView
     private lateinit var textViewCanRecycle: TextView
     private lateinit var textViewLocationAddress: TextView
+    private lateinit var imageButtonMyLocation: ImageButton
     // endregion
 
     @SuppressLint("ClickableViewAccessibility")
@@ -97,6 +100,8 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
 
         textViewCanRecycle = root.findViewById(R.id.text_view_location_can_recycle_text)
         textViewLocationAddress = root.findViewById(R.id.text_view_location_address)
+
+        imageButtonMyLocation = root.findViewById(R.id.image_button_my_location)
         // endregion
 
         // region Location description constraint layout settings
@@ -135,6 +140,26 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
             View.VISIBLE
         // endregion
 
+        // region Set on click listener for custom navigation buttons
+        imageButtonMyLocation.setOnClickListener {
+            getDeviceLocation()
+        }
+
+        root.findViewById<ImageButton>(R.id.image_button_zoom_plus).setOnClickListener {
+            if (currentZoom < 21)
+                currentZoom += 1
+            Log.w(MAP_FRAGMENT_TAG, "Current zoom is: $currentZoom")
+            googleMap.animateCamera(CameraUpdateFactory.zoomTo(currentZoom))
+        }
+
+        root.findViewById<ImageButton>(R.id.image_button_zoom_minus).setOnClickListener {
+            if (currentZoom > 2)
+                currentZoom -= 1
+            Log.w(MAP_FRAGMENT_TAG, "Current zoom is: $currentZoom")
+            googleMap.animateCamera(CameraUpdateFactory.zoomTo(currentZoom))
+        }
+        // endregion
+
         fusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(requireActivity());
 
@@ -162,6 +187,9 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
 
             // Get location of eco points from database and put on map.
             getLocationsFromDatabaseAndPutOnMap()
+
+            // Disable Google button for location as we use custom
+            googleMap.uiSettings.isMyLocationButtonEnabled = false
 
             googleMap.setOnMarkerClickListener(this)
         }
@@ -296,10 +324,10 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
         try {
             if (isLocationPermissionGranted) {
                 googleMap.isMyLocationEnabled = true
-                googleMap.uiSettings.isMyLocationButtonEnabled = true
+                imageButtonMyLocation.visibility = View.VISIBLE
             } else {
                 googleMap.isMyLocationEnabled = false
-                googleMap.uiSettings.isMyLocationButtonEnabled = false
+                imageButtonMyLocation.visibility = View.INVISIBLE
                 getLocationPermission()
             }
         } catch (e: SecurityException) {
@@ -342,12 +370,12 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
                                 MAP_FRAGMENT_TAG,
                                 "Current location is not null. Move camera to users location"
                             )
-                            googleMap.moveCamera(
+                            googleMap.animateCamera(
                                 CameraUpdateFactory.newLatLngZoom(
                                     LatLng(
                                         currentLocation.latitude,
                                         currentLocation.longitude
-                                    ), 15f
+                                    ), defaultZoom
                                 )
                             )
                             Log.w(MAP_FRAGMENT_TAG, "Stop getting location")
@@ -363,13 +391,13 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
 
                         } else {
                             Log.w(MAP_FRAGMENT_TAG, "Current location is null. Using defaults.")
-                            googleMap.moveCamera(
+                            googleMap.animateCamera(
                                 CameraUpdateFactory.newLatLngZoom(
                                     defaultLocation,
-                                    15f
+                                    defaultZoom
                                 )
                             )
-                            googleMap.uiSettings.isMyLocationButtonEnabled = false
+                            imageButtonMyLocation.visibility = View.INVISIBLE
                         }
                     }
                 }
