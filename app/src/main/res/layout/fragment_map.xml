@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -9,5 +8,429 @@
         android:id="@+id/map_view_map_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <ImageButton
+        android:id="@+id/image_button_my_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
+        android:visibility="invisible"
+        android:background="@drawable/ic_location_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/constraint_layout_location_description"/>
+
+    <ImageButton
+        android:id="@+id/image_button_zoom_plus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/ic_zoom_plus"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/image_button_zoom_minus"/>
+
+    <ImageButton
+        android:id="@+id/image_button_zoom_minus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/ic_zoom_minus"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/image_button_my_location"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_layout_location_description"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:background="@drawable/shape_location_description"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ImageButton
+            android:id="@+id/image_button_hide_location_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:layout_marginLeft="136dp"
+            android:layout_marginStart="136dp"
+            android:layout_marginRight="136dp"
+            android:layout_marginEnd="136dp"
+            android:background="@drawable/ic_hide_location"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/text_view_location_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="26dp"
+            android:layout_marginStart="26dp"
+            android:layout_marginRight="26dp"
+            android:layout_marginEnd="26dp"
+            android:text="Street test 19"
+            android:textSize="@dimen/text_size_headers"
+            android:textColor="@color/colorPrimary"
+            android:fontFamily="@font/montserrat_bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/text_view_location_can_recycle_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="13dp"
+            android:layout_marginLeft="26dp"
+            android:layout_marginStart="26dp"
+            android:layout_marginRight="26dp"
+            android:layout_marginEnd="26dp"
+            android:text="@string/text_view_location_description_can_recycle_header"
+            android:textSize="@dimen/text_size_main"
+            android:textColor="@color/colorBlack"
+            android:fontFamily="@font/montserrat_bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_view_location_address"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/text_view_location_can_recycle_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="26dp"
+            android:layout_marginStart="26dp"
+            android:layout_marginRight="26dp"
+            android:layout_marginEnd="26dp"
+            android:text="We can recycle something like this"
+            android:textSize="@dimen/text_size_main"
+            android:textColor="@color/colorBlack"
+            android:fontFamily="@font/montserrat_light"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_view_location_can_recycle_header"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_layout_location_working_hours"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@drawable/shape_location_working_hours"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/constraint_layout_location_working_hours">
+
+                <View
+                    android:tag="view_location_current_day_monday"
+                    android:layout_width="45dp"
+                    android:layout_height="100dp"
+                    android:visibility="invisible"
+                    android:background="@drawable/shape_button_usual"/>
+
+                <View
+                    android:tag="view_location_current_day_tuesday"
+                    android:layout_width="45dp"
+                    android:layout_height="100dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginStart="3dp"
+                    android:visibility="invisible"
+                    android:background="@drawable/shape_button_usual"/>
+
+                <View
+                    android:tag="view_location_current_day_wednesday"
+                    android:layout_width="45dp"
+                    android:layout_height="100dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginStart="3dp"
+                    android:visibility="invisible"
+                    android:background="@drawable/shape_button_usual"/>
+
+                <View
+                    android:tag="view_location_current_day_thursday"
+                    android:layout_width="45dp"
+                    android:layout_height="100dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginStart="3dp"
+                    android:visibility="invisible"
+                    android:background="@drawable/shape_button_usual"/>
+
+                <View
+                    android:tag="view_location_current_day_friday"
+                    android:layout_width="45dp"
+                    android:layout_height="100dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginStart="3dp"
+                    android:visibility="invisible"
+                    android:background="@drawable/shape_button_usual"/>
+
+                <View
+                    android:tag="view_location_current_day_saturday"
+                    android:layout_width="45dp"
+                    android:layout_height="100dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginStart="3dp"
+                    android:visibility="invisible"
+                    android:background="@drawable/shape_button_usual"/>
+
+                <View
+                    android:tag="view_location_current_day_sunday"
+                    android:layout_width="45dp"
+                    android:layout_height="100dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginStart="3dp"
+                    android:visibility="invisible"
+                    android:background="@drawable/shape_button_usual"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_layout_working_hours_headers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/constraint_layout_location_working_hours">
+
+                <TextView
+                    android:id="@+id/text_view_location_working_hours_monday_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_view_location_working_hours_monday"
+                    android:textSize="@dimen/text_size_week_day"
+                    android:textColor="@color/colorBlack"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:textAlignment="center"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/text_view_location_working_hours_tuesday_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="26dp"
+                    android:layout_marginStart="26dp"
+                    android:text="@string/text_view_location_working_hours_tuesday"
+                    android:textSize="@dimen/text_size_week_day"
+                    android:textColor="@color/colorBlack"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:textAlignment="center"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/text_view_location_working_hours_wednesday_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="26dp"
+                    android:layout_marginStart="26dp"
+                    android:text="@string/text_view_location_working_hours_wednesday"
+                    android:textSize="@dimen/text_size_week_day"
+                    android:textColor="@color/colorBlack"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:textAlignment="center"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/text_view_location_working_hours_thursday_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="26dp"
+                    android:layout_marginStart="26dp"
+                    android:text="@string/text_view_location_working_hours_thursday"
+                    android:textSize="@dimen/text_size_week_day"
+                    android:textColor="@color/colorBlack"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:textAlignment="center"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/text_view_location_working_hours_friday_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="26dp"
+                    android:layout_marginStart="26dp"
+                    android:text="@string/text_view_location_working_hours_friday"
+                    android:textSize="@dimen/text_size_week_day"
+                    android:textColor="@color/colorBlack"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:textAlignment="center"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/text_view_location_working_hours_saturday_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="26dp"
+                    android:layout_marginStart="26dp"
+                    android:text="@string/text_view_location_working_hours_saturday"
+                    android:textSize="@dimen/text_size_week_day"
+                    android:textColor="@color/colorBlack"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:textAlignment="center"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/text_view_location_working_hours_sunday_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="26dp"
+                    android:layout_marginStart="26dp"
+                    android:text="@string/text_view_location_working_hours_sunday"
+                    android:textSize="@dimen/text_size_week_day"
+                    android:textColor="@color/colorBlack"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:textAlignment="center"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/linear_layout_working_hours_headers">
+
+                <TextView
+                    android:id="@+id/text_view_location_working_hours_monday"
+                    android:layout_width="45dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="none"
+                    android:maxLines="100"
+                    android:scrollHorizontally="false"
+                    android:text="10:00
+                    -
+                    19:00"
+                    android:textSize="@dimen/text_size_working_hours"
+                    android:textColor="@color/colorBlack70"
+                    android:fontFamily="@font/montserrat_light"
+                    android:textAlignment="center"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/text_view_location_working_hours_tuesday"
+                    android:layout_width="45dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginStart="3dp"
+                    android:ellipsize="none"
+                    android:maxLines="100"
+                    android:scrollHorizontally="false"
+                    android:text="10:00
+                    -
+                    19:00"
+                    android:textSize="@dimen/text_size_working_hours"
+                    android:textColor="@color/colorBlack70"
+                    android:fontFamily="@font/montserrat_light"
+                    android:textAlignment="center"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/text_view_location_working_hours_wednesday"
+                    android:layout_width="45dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginStart="3dp"
+                    android:ellipsize="none"
+                    android:maxLines="100"
+                    android:scrollHorizontally="false"
+                    android:text="10:00
+                    -
+                    19:00"
+                    android:textSize="@dimen/text_size_working_hours"
+                    android:textColor="@color/colorBlack70"
+                    android:fontFamily="@font/montserrat_light"
+                    android:textAlignment="center"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/text_view_location_working_hours_thursday"
+                    android:layout_width="45dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginStart="3dp"
+                    android:ellipsize="none"
+                    android:maxLines="100"
+                    android:scrollHorizontally="false"
+                    android:text="10:00
+                    -
+                    19:00"
+                    android:textSize="@dimen/text_size_working_hours"
+                    android:textColor="@color/colorBlack70"
+                    android:fontFamily="@font/montserrat_light"
+                    android:textAlignment="center"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/text_view_location_working_hours_friday"
+                    android:layout_width="45dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginStart="3dp"
+                    android:ellipsize="none"
+                    android:maxLines="100"
+                    android:scrollHorizontally="false"
+                    android:text="10:00
+                    -
+                    19:00"
+                    android:textSize="@dimen/text_size_working_hours"
+                    android:textColor="@color/colorBlack70"
+                    android:fontFamily="@font/montserrat_light"
+                    android:textAlignment="center"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/text_view_location_working_hours_saturday"
+                    android:layout_width="45dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginStart="3dp"
+                    android:ellipsize="none"
+                    android:maxLines="100"
+                    android:scrollHorizontally="false"
+                    android:text="10:00
+                    -
+                    19:00"
+                    android:textSize="@dimen/text_size_working_hours"
+                    android:textColor="@color/colorBlack70"
+                    android:fontFamily="@font/montserrat_light"
+                    android:textAlignment="center"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/text_view_location_working_hours_sunday"
+                    android:layout_width="45dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginStart="3dp"
+                    android:ellipsize="none"
+                    android:maxLines="100"
+                    android:scrollHorizontally="false"
+                    android:text="10:00
+                    -
+                    19:00"
+                    android:textSize="@dimen/text_size_working_hours"
+                    android:textColor="@color/colorBlack70"
+                    android:fontFamily="@font/montserrat_light"
+                    android:textAlignment="center"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

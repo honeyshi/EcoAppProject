@@ -21,4 +21,6 @@ const val AWARD_DATABASE = "AwardsList"
 const val AWARD_DATABASE_CHALLENGE_ID = "challengeId"
 const val AWARD_DATABASE_COMPLETED = "completed"
 
-const val CHANNEL_ID = "challenge_notification"
+const val LOCATIONS_DATABASE = "LocationList"
+
+const val MAP_FRAGMENT_TAG = "Map Fragment"
