@@ -1,14 +1,17 @@
 package com.example.ecoappproject.ui.challenge
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
+import com.example.ecoappproject.CHALLENGE_FRAGMENT_TAG
+import com.example.ecoappproject.OnSwipeTouchListener
 import com.example.ecoappproject.R
 import com.example.ecoappproject.interfaces.OnChallengeItemClickListener
 import com.example.ecoappproject.items.ChallengeItem
@@ -20,6 +23,7 @@ class ChallengeFragment : Fragment(), OnChallengeItemClickListener {
 
     private val challengeViewModel: ChallengeViewModel by activityViewModels()
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -29,20 +33,28 @@ class ChallengeFragment : Fragment(), OnChallengeItemClickListener {
 
         ChallengeObject.clearChallengeItemsList()
         ChallengeObject.getChallenges(
-            activity!!.applicationContext,
+            requireActivity().applicationContext,
             root.findViewById(R.id.challenge_recycler_view),
             this
         )
 
-        root.findViewById<ImageButton>(R.id.image_button_challenge_fragment_left)
-            .setOnClickListener {
-                leftArrowClickListener()
-            }
+        root.findViewById<ConstraintLayout>(R.id.constraint_layout_challenge_fragment)
+            .setOnTouchListener(object :
+                OnSwipeTouchListener(requireActivity().applicationContext) {
+                override fun onSwipeRight() {
+                    Log.w(CHALLENGE_FRAGMENT_TAG, "Swipe right")
+                    swipeRightListener()
+                }
 
-        root.findViewById<ImageButton>(R.id.image_button_challenge_fragment_right)
-            .setOnClickListener {
-                rightArrowClickListener()
-            }
+                override fun onSwipeLeft() {
+                    Log.w(CHALLENGE_FRAGMENT_TAG, "Swipe left")
+                    swipeLeftListener()
+                }
+
+                override fun onSwipeBottom() {}
+
+                override fun onSwipeTop() {}
+            })
 
         return root
     }
@@ -54,30 +66,30 @@ class ChallengeFragment : Fragment(), OnChallengeItemClickListener {
         val challengeImageUri = challengeItem?.imageUri
         val challengeId = challengeItem?.id
 
-        Log.w("Challenge fragment", "Save data to view model")
+        Log.w(CHALLENGE_FRAGMENT_TAG, "Save data to view model")
         challengeViewModel.setChallengeName(challengeName)
         challengeViewModel.setChallengeDescription(challengeDescription)
         challengeViewModel.setChallengeImageUri(challengeImageUri)
         challengeViewModel.setChallengeIsStarted(challengeIsStarted)
         challengeViewModel.setChallengeId(challengeId)
 
-        Log.w("Challenge fragment", "Start challenge description fragment")
+        Log.w(CHALLENGE_FRAGMENT_TAG, "Start challenge description fragment")
         val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
         transaction.replace(R.id.nav_host_fragment, ChallengeDescriptionFragment())
         transaction.addToBackStack(null)
         transaction.commit()
     }
 
-    private fun rightArrowClickListener() {
-        Log.w("Challenge fragment", "Start articles fragment")
+    private fun swipeLeftListener() {
+        Log.w(CHALLENGE_FRAGMENT_TAG, "Start articles fragment")
         val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
         transaction.replace(R.id.nav_host_fragment, HomeFragment())
         transaction.addToBackStack(null)
         transaction.commit()
     }
 
-    private fun leftArrowClickListener() {
-        Log.w("Challenge fragment", "Start eco marking fragment")
+    private fun swipeRightListener() {
+        Log.w(CHALLENGE_FRAGMENT_TAG, "Start eco marking fragment")
         val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
         transaction.replace(R.id.nav_host_fragment, MarkingFragment())
         transaction.addToBackStack(null)
