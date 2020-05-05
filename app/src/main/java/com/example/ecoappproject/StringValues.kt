@@ -24,3 +24,6 @@ const val AWARD_DATABASE_COMPLETED = "completed"
 const val LOCATIONS_DATABASE = "LocationList"
 
 const val MAP_FRAGMENT_TAG = "Map Fragment"
+const val HOME_FRAGMENT_TAG = "Home Fragment"
+const val ECO_MARKING_FRAGMENT_TAG = "Eco Marking fragment"
+const val CHALLENGE_FRAGMENT_TAG = "Challenge fragment"
