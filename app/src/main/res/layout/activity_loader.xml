@@ -6,10 +6,19 @@
     android:layout_height="match_parent">
 
     <ImageView
+        android:id="@+id/image_view_loader_activity_clouds"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:src="@tools:sample/avatars[7]"/>
+
+    <ImageView
         android:id="@+id/image_view_loader_activity_icon"
         android:layout_width="@dimen/loader_activity_icon_size"
         android:layout_height="@dimen/loader_activity_icon_size"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="120dp"
         android:layout_marginStart="50dp"
         android:layout_marginLeft="50dp"
         android:layout_marginEnd="50dp"
@@ -24,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="95dp"
         android:layout_marginRight="95dp"
-        android:layout_marginBottom="130dp"
+        android:layout_marginBottom="190dp"
         android:ellipsize="none"
         android:fontFamily="@font/montserrat_bold"
         android:gravity="center"
@@ -37,5 +46,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/image_view_loader_activity_flowers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:src="@tools:sample/avatars[2]"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -26,8 +26,13 @@ class LoaderActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_loader)
 
+        // Set all GIFs on loader screen
         Glide.with(this).asGif().load(R.drawable.ic_loader_activity)
             .into(image_view_loader_activity_icon)
+        Glide.with(this).asGif().load(R.drawable.ic_loader_activity_flowers)
+            .into(image_view_loader_activity_flowers)
+        Glide.with(this).asGif().load(R.drawable.ic_loader_activity_clouds)
+            .into(image_view_loader_activity_clouds)
 
         // region Initialize Firebase
         firebaseAuth = FirebaseAuth.getInstance()
