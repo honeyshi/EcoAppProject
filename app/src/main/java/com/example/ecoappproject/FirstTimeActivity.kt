@@ -15,7 +15,7 @@ class FirstTimeActivity : AppCompatActivity() {
     }
 
     fun onButtonStartButtonClick(view: View){
-        Log.w(ContentValues.TAG, "Start Main Activity")
+        Log.w(FIRST_TIME_ACTIVITY_TAG, "Start Main Activity")
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
     }

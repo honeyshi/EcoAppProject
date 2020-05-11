@@ -43,5 +43,7 @@ const val CHALLENGE_OBJECT_TAG = "Challenge Object"
 
 // region Activity
 const val LOADER_ACTIVITY_TAG = "Loader activity"
+const val FIRST_TIME_ACTIVITY_TAG = "First time activity"
+const val LOGIN_ACTIVITY_TAG = "Login activity"
 // endregion
 // endregion
