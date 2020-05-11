@@ -58,28 +58,28 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun signInWithGoogle() {
-        Log.w("Login Activity", "Google Sign In")
+        Log.w(LOGIN_ACTIVITY_TAG, "Google Sign In")
         val signInIntent = googleSignInClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
 
     private fun skipSignIn() {
-        Log.w("Login Activity", "Skip Sign In")
+        Log.w(LOGIN_ACTIVITY_TAG, "Skip Sign In")
         firebaseAuth.signInAnonymously()
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Sign in success - start main activity
-                    Log.w("Login Activity", "signInAnonymously:success")
-                    startActivity(Intent(this, MainActivity::class.java))
+                    // Sign in success - start loader activity to load data for user before main activity
+                    Log.w(LOGIN_ACTIVITY_TAG, "signInAnonymously:success")
+                    startActivity(Intent(this, LoaderActivity::class.java))
                 } else {
                     // If sign in fails, display a message to the user.
-                    Log.w("Login Activity", "signInAnonymously:failure", task.exception)
+                    Log.w(LOGIN_ACTIVITY_TAG, "signInAnonymously:failure", task.exception)
                 }
             }
     }
 
     private fun convertAnonymousAccountToPermanent() {
-        Log.w("Login Activity", "Convert Anonymous account to permanent")
+        Log.w(LOGIN_ACTIVITY_TAG, "Convert Anonymous account to permanent")
         val convertIntent = googleSignInClient.signInIntent
         startActivityForResult(convertIntent, RC_CONVERT_ACC)
     }
@@ -97,7 +97,7 @@ class LoginActivity : AppCompatActivity() {
                 firebaseAuthWithGoogle(account!!)
             } catch (e: ApiException) {
                 // Google Sign In failed, update UI appropriately
-                Log.w("Login Activity", "Google sign in failed", e)
+                Log.w(LOGIN_ACTIVITY_TAG, "Google sign in failed", e)
             }
         }
 
@@ -110,42 +110,42 @@ class LoginActivity : AppCompatActivity() {
                 firebaseConvertAnonymousAccountToPermanentGoogle(account!!)
             } catch (e: ApiException) {
                 // Google Sign In failed, update UI appropriately
-                Log.w("Login Activity", "Google sign in failed", e)
+                Log.w(LOGIN_ACTIVITY_TAG, "Google sign in failed", e)
 
             }
         }
     }
 
     private fun firebaseAuthWithGoogle(googleSignInAccount: GoogleSignInAccount) {
-        Log.d("Login Activity", "firebaseAuthWithGoogle:" + googleSignInAccount.id!!)
+        Log.d(LOGIN_ACTIVITY_TAG, "firebaseAuthWithGoogle:" + googleSignInAccount.id!!)
 
         val credential = GoogleAuthProvider.getCredential(googleSignInAccount.idToken, null)
         firebaseAuth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-                    Log.d("Login Activity", "signInWithCredential:success")
-                    // Start Main Activity
-                    startActivity(Intent(this, MainActivity::class.java))
+                    Log.d(LOGIN_ACTIVITY_TAG, "signInWithCredential:success")
+                    // Start Loader Activity
+                    startActivity(Intent(this, LoaderActivity::class.java))
                 } else {
                     // If sign in fails, display a message to the user.
-                    Log.w("Login Activity", "signInWithCredential:failure", task.exception)
+                    Log.w(LOGIN_ACTIVITY_TAG, "signInWithCredential:failure", task.exception)
                 }
             }
     }
 
     private fun firebaseConvertAnonymousAccountToPermanentGoogle(googleSignInAccount: GoogleSignInAccount) {
-        Log.d("Login Activity", "firebaseConvertToGoogle:" + googleSignInAccount.id!!)
+        Log.d(LOGIN_ACTIVITY_TAG, "firebaseConvertToGoogle:" + googleSignInAccount.id!!)
 
         val credential = GoogleAuthProvider.getCredential(googleSignInAccount.idToken, null)
         firebaseAuth.currentUser?.linkWithCredential(credential)
             ?.addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    Log.d("Login Activity", "linkWithCredential:success")
-                    // Start Main Activity
-                    startActivity(Intent(this, MainActivity::class.java))
+                    Log.d(LOGIN_ACTIVITY_TAG, "linkWithCredential:success")
+                    // Start Loader Activity
+                    startActivity(Intent(this, LoaderActivity::class.java))
                 } else {
-                    Log.w("Login Activity", "linkWithCredential:failure", task.exception)
+                    Log.w(LOGIN_ACTIVITY_TAG, "linkWithCredential:failure", task.exception)
                 }
             }
     }
