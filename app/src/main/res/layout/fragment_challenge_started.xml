@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <View
         android:id="@+id/top_view_challenge_started_fragment"
@@ -12,58 +11,58 @@
         android:background="@drawable/ic_user_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <View
         android:id="@+id/switcher_view_header_started_challenge_fragment"
         android:layout_width="317dp"
         android:layout_height="113dp"
-        android:layout_marginEnd="29dp"
-        android:layout_marginRight="29dp"
         android:layout_marginStart="29dp"
         android:layout_marginLeft="29dp"
         android:layout_marginTop="81dp"
+        android:layout_marginEnd="29dp"
+        android:layout_marginRight="29dp"
         android:layout_marginBottom="70dp"
         android:background="@drawable/shape_switcher_header"
+        app:layout_constraintBottom_toBottomOf="@id/top_view_challenge_started_fragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/top_view_challenge_started_fragment"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <View
         android:id="@+id/switcher_view_decoration_started_challenge_fragment"
         android:layout_width="317dp"
         android:layout_height="113dp"
-        android:layout_marginEnd="29dp"
-        android:layout_marginRight="29dp"
         android:layout_marginStart="29dp"
         android:layout_marginLeft="29dp"
         android:layout_marginTop="81dp"
+        android:layout_marginEnd="29dp"
+        android:layout_marginRight="29dp"
         android:layout_marginBottom="70dp"
         android:background="@drawable/ic_flower_clouds"
+        app:layout_constraintBottom_toBottomOf="@id/top_view_challenge_started_fragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/top_view_challenge_started_fragment"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/text_view_header_challenge_started_fragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="91dp"
-        android:layout_marginRight="91dp"
         android:layout_marginStart="91dp"
         android:layout_marginLeft="91dp"
         android:layout_marginTop="35dp"
+        android:layout_marginEnd="91dp"
+        android:layout_marginRight="91dp"
         android:layout_marginBottom="35dp"
-        android:textColor="@color/colorWhite"
         android:text="@string/text_view_top_header_challenge_fragment"
+        android:textColor="@color/colorWhite"
         android:textSize="@dimen/text_size_switcher_header"
+        app:fontFamily="@font/montserrat_bold"
+        app:layout_constraintBottom_toBottomOf="@id/switcher_view_header_started_challenge_fragment"
         app:layout_constraintEnd_toEndOf="@id/switcher_view_header_started_challenge_fragment"
         app:layout_constraintStart_toStartOf="@id/switcher_view_header_started_challenge_fragment"
-        app:layout_constraintTop_toTopOf="@id/switcher_view_header_started_challenge_fragment"
-        app:layout_constraintBottom_toBottomOf="@id/switcher_view_header_started_challenge_fragment"
-        app:fontFamily="@font/montserrat_bold"/>
+        app:layout_constraintTop_toTopOf="@id/switcher_view_header_started_challenge_fragment" />
 
     <View
         android:id="@+id/rectangle_challenge_started_fragment"
@@ -71,7 +70,7 @@
         android:layout_height="107dp"
         android:background="@color/colorPrimary"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/top_view_challenge_started_fragment"/>
+        app:layout_constraintTop_toBottomOf="@id/top_view_challenge_started_fragment" />
 
     <View
         android:id="@+id/bottom_view_challenge_started_fragment"
@@ -80,7 +79,7 @@
         android:background="@drawable/ic_saved_articles_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/top_view_challenge_started_fragment"/>
+        app:layout_constraintTop_toBottomOf="@id/top_view_challenge_started_fragment" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -114,8 +113,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/started_challenge_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
-        android:layout_marginTop="40dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="8dp"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/top_view_challenge_started_fragment" />
