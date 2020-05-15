@@ -53,14 +53,23 @@ class LoaderActivity : AppCompatActivity() {
             editor.putBoolean("first_opened", false)
             editor.apply()
         }
-        // If not - increase challenge, initialize Firebase and start Main Activity after delay
+        // If not - check whether user sign in or not
         else {
-            initializeDatabaseForCurrentUser()
+            // If not signed in we should show first time activity again
+            if (firebaseAuth.currentUser == null) {
+                Log.w(LOADER_ACTIVITY_TAG, "User is not sign in. Show first time activity again")
+                val intent = Intent(this, FirstTimeActivity::class.java)
+                startActivity(intent)
+            }
+            // Increase challenge current day, initialize Firebase data and start Main Activity after delay
+            else {
+                initializeDatabaseForCurrentUser()
 
-            Log.w(LOADER_ACTIVITY_TAG, "Start increasing current day for challenges")
-            ChallengeObject.increaseCurrentDayForStartedChallenges()
+                Log.w(LOADER_ACTIVITY_TAG, "Start increasing current day for challenges")
+                ChallengeObject.increaseCurrentDayForStartedChallenges()
 
-            Handler().postDelayed(startMainActivity, 2000)
+                Handler().postDelayed(startMainActivity, 2000)
+            }
         }
 
         // endregion
