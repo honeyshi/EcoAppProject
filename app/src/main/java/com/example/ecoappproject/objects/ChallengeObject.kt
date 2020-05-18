@@ -11,7 +11,6 @@ import com.example.ecoappproject.adapter.ChallengeAdapter
 import com.example.ecoappproject.interfaces.OnChallengeItemClickListener
 import com.example.ecoappproject.interfaces.OnGetChallengeCurrentDayListener
 import com.example.ecoappproject.interfaces.OnGetChallengeTrackerListener
-import com.example.ecoappproject.interfaces.OnGetStartedChallengePresenceListener
 import com.example.ecoappproject.items.ChallengeItem
 import com.example.ecoappproject.items.ChallengeTrackerItem
 import com.google.firebase.auth.FirebaseAuth
@@ -19,6 +18,10 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import java.text.DateFormat
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 object ChallengeObject {
     private val challengeItemList = ArrayList<ChallengeItem?>()
@@ -34,7 +37,7 @@ object ChallengeObject {
         textView: TextView? = null,
         isStarted: Boolean = false
     ) {
-        Log.w("Challenge Object", "Initialize recycler view")
+        Log.w(CHALLENGE_OBJECT_TAG, "Initialize recycler view")
         challengeRecyclerView = recyclerView
         challengeRecyclerView.layoutManager = LinearLayoutManager(context)
         challengeAdapter = ChallengeAdapter(challengeItemList, challengeItemClickListener)
@@ -44,32 +47,6 @@ object ChallengeObject {
 
     fun clearChallengeItemsList() {
         challengeItemList.clear()
-    }
-
-    fun isStartedChallengeExists(onGetStartedChallengePresenceListener: OnGetStartedChallengePresenceListener) {
-        challengeReference
-            .child(USERS_DATABASE)
-            .child(currentUserId.toString())
-            .child(CHALLENGE_DATABASE).addListenerForSingleValueEvent(object :
-                ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    for (challenge in dataSnapshot.children) {
-                        if (challenge.child(CHALLENGE_DATABASE_IS_STARTED).value.toString() == "true") {
-                            Log.w(
-                                "Challenge Object",
-                                "Started challenge is presented"
-                            )
-                            onGetStartedChallengePresenceListener.OnGetStartedChallengePresence(true)
-                            break
-                        }
-                    }
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    // Failed to read value
-                    Log.w("Challenge Object", "Failed to read value.", error.toException())
-                }
-            })
     }
 
     fun getCurrentDayForChallenge(
@@ -88,7 +65,7 @@ object ChallengeObject {
                                 challenge.child(CHALLENGE_DATABASE_CURRENT_DAY).value.toString()
                                     .toInt()
                             Log.w(
-                                "Challenge Object",
+                                CHALLENGE_OBJECT_TAG,
                                 "Current day for challenge $challengeId is $challengeCurrentDay"
                             )
                             onGetChallengeCurrentDayListener.onGetChallengeCurrentDay(
@@ -100,7 +77,7 @@ object ChallengeObject {
 
                 override fun onCancelled(error: DatabaseError) {
                     // Failed to read value
-                    Log.w("Challenge Object", "Failed to read value.", error.toException())
+                    Log.w(CHALLENGE_OBJECT_TAG, "Failed to read value.", error.toException())
                 }
             })
     }
@@ -115,7 +92,7 @@ object ChallengeObject {
                     for (challenge in dataSnapshot.children) {
                         if (challenge.child("id").value.toString() == challengeId) {
                             Log.w(
-                                "Challenge Object",
+                                CHALLENGE_OBJECT_TAG,
                                 "Set current day 0 for challenge $challengeId"
                             )
                             challenge.ref.child(CHALLENGE_DATABASE_CURRENT_DAY).setValue(0)
@@ -125,7 +102,7 @@ object ChallengeObject {
 
                 override fun onCancelled(error: DatabaseError) {
                     // Failed to read value
-                    Log.w("Challenge Object", "Failed to read value.", error.toException())
+                    Log.w(CHALLENGE_OBJECT_TAG, "Failed to read value.", error.toException())
                 }
             })
     }
@@ -141,33 +118,39 @@ object ChallengeObject {
                         val challengeItem =
                             challenge.getValue(ChallengeItem::class.java)
                         // If challenge started increase current day for it
+                        // by calculating difference between started date and current
                         if (challengeItem?.started?.toBoolean() == true) {
-                            Log.w(
-                                "Challenge Object",
-                                "For challenge with name ${challengeItem.name} set current day ${challengeItem.currentDay?.plus(
-                                    1
-                                )}"
-                            )
-                            challenge.ref.child(CHALLENGE_DATABASE_CURRENT_DAY).setValue(
-                                challengeItem.currentDay?.plus(1)
-                            )
-                        }
-                        Log.w(
-                            "Challenge Object",
-                            "Current day is: ${challengeItem?.currentDay?.plus(1)}"
-                        )
-                        // If current day became 31 we should automatically finish this challenge
-                        if (challengeItem?.currentDay?.plus(1) == 31) {
-                            deleteChallengeTracker(challengeItem.id.toString())
-                            setChallengeIsStarted(challengeItem.name.toString(), "false")
-                            removeCurrentDayForChallenge(challengeItem.id.toString())
+                            // Get date object for both dates
+                            val currentDate = Calendar.getInstance().time
+                            val dateFormat = DateFormat.getDateInstance(DateFormat.SHORT)
+                            val startedDate = dateFormat.parse(challengeItem.startedDate.toString())
+                            // Get calendar object for both dates
+                            val currentDateCalendar = Calendar.getInstance()
+                            currentDateCalendar.time = currentDate
+                            val startedDateCalendar = Calendar.getInstance()
+                            startedDateCalendar.time = startedDate!!
+                            // Calculate difference between dates in milliseconds
+                            val difference =
+                                currentDateCalendar.timeInMillis - startedDateCalendar.timeInMillis
+                            // Convert difference from milliseconds to days
+                            val daysDifference = (difference / (24 * 60 * 60 * 1000)).toInt()
+                            Log.w(CHALLENGE_OBJECT_TAG, "Difference for dates is $daysDifference")
+                            // Set current day for challenge as difference in dates + 1
+                            challenge.ref.child(CHALLENGE_DATABASE_CURRENT_DAY)
+                                .setValue(daysDifference + 1)
+                            // If current day became 31 or more we should automatically finish this challenge
+                            if (daysDifference + 1 > 30) {
+                                deleteChallengeTracker(challengeItem.id.toString())
+                                setChallengeIsStarted(challengeItem.name.toString(), "false")
+                                removeCurrentDayForChallenge(challengeItem.id.toString())
+                            }
                         }
                     }
                 }
 
                 override fun onCancelled(error: DatabaseError) {
                     // Failed to read value
-                    Log.w("Challenge Object", "Failed to read value.", error.toException())
+                    Log.w(CHALLENGE_OBJECT_TAG, "Failed to read value.", error.toException())
                 }
             })
     }
@@ -176,7 +159,7 @@ object ChallengeObject {
         challengeId: String,
         onGetChallengeTrackerListener: OnGetChallengeTrackerListener
     ) {
-        Log.w("Challenge Object", "Get tracker for Challenge with id $challengeId")
+        Log.w(CHALLENGE_OBJECT_TAG, "Get tracker for Challenge with id $challengeId")
         val challengeTrackerList = HashMap<String, String>()
         challengeReference
             .child(CHALLENGE_TRACKER_DATABASE)
@@ -192,14 +175,14 @@ object ChallengeObject {
 
                 override fun onCancelled(error: DatabaseError) {
                     // Failed to read value
-                    Log.w("Challenge Object", "Failed to read value.", error.toException())
+                    Log.w(CHALLENGE_OBJECT_TAG, "Failed to read value.", error.toException())
                 }
             })
     }
 
     fun setDayStatusInChallengeTracker(challengeId: String, currentDay: Int) {
         Log.w(
-            "Challenge Object",
+            CHALLENGE_OBJECT_TAG,
             "Set true on day $currentDay in challenge tracker for Challenge with id $challengeId"
         )
         challengeReference
@@ -218,13 +201,13 @@ object ChallengeObject {
 
                 override fun onCancelled(error: DatabaseError) {
                     // Failed to read value
-                    Log.w("Challenge Object", "Failed to read value.", error.toException())
+                    Log.w(CHALLENGE_OBJECT_TAG, "Failed to read value.", error.toException())
                 }
             })
     }
 
     fun createChallengeTracker(challengeId: String) {
-        Log.w("Challenge Object", "Create challenge tracker for Challenge with id $challengeId")
+        Log.w(CHALLENGE_OBJECT_TAG, "Create challenge tracker for Challenge with id $challengeId")
         challengeReference
             .child(CHALLENGE_TRACKER_DATABASE)
             .child(currentUserId.toString())
@@ -240,13 +223,13 @@ object ChallengeObject {
 
                 override fun onCancelled(error: DatabaseError) {
                     // Failed to read value
-                    Log.w("Challenge Object", "Failed to read value.", error.toException())
+                    Log.w(CHALLENGE_OBJECT_TAG, "Failed to read value.", error.toException())
                 }
             })
     }
 
     fun deleteChallengeTracker(challengeId: String) {
-        Log.w("Challenge Object", "Delete challenge tracker for Challenge with id $challengeId")
+        Log.w(CHALLENGE_OBJECT_TAG, "Delete challenge tracker for Challenge with id $challengeId")
         challengeReference
             .child(CHALLENGE_TRACKER_DATABASE)
             .child(currentUserId.toString())
@@ -267,12 +250,22 @@ object ChallengeObject {
                     for (challenge in dataSnapshot.children) {
                         if (challenge.child(CHALLENGE_DATABASE_NAME).value.toString() == challengeName) {
                             Log.w(
-                                "Challenge Object",
+                                CHALLENGE_OBJECT_TAG,
                                 "Set isStarted $isStarted for challenge $challengeName"
                             )
                             // If we start challenge set current day 1
                             if (isStarted.toBoolean()) {
                                 challenge.ref.child(CHALLENGE_DATABASE_CURRENT_DAY).setValue(1)
+                                // remember started date for challenge
+                                val dateFormat = DateFormat.getDateInstance(DateFormat.SHORT)
+                                val formattedDate = dateFormat.format(Calendar.getInstance().time)
+                                challenge.ref.child(CHALLENGE_DATABASE_STARTED_DATE).setValue(
+                                    formattedDate
+                                )
+                            }
+                            // If we finish challenge remove started date for it
+                            else {
+                                challenge.ref.child(CHALLENGE_DATABASE_STARTED_DATE).removeValue()
                             }
                             challenge.ref.child(CHALLENGE_DATABASE_IS_STARTED).setValue(isStarted)
                         }
@@ -281,7 +274,7 @@ object ChallengeObject {
 
                 override fun onCancelled(error: DatabaseError) {
                     // Failed to read value
-                    Log.w("Challenge Object", "Failed to read value.", error.toException())
+                    Log.w(CHALLENGE_OBJECT_TAG, "Failed to read value.", error.toException())
                 }
             })
     }
@@ -291,7 +284,7 @@ object ChallengeObject {
         recyclerView: RecyclerView,
         challengeItemClickListener: OnChallengeItemClickListener
     ) {
-        Log.w("Challenge Object", "Start getting challenges from DataBase")
+        Log.w(CHALLENGE_OBJECT_TAG, "Start getting challenges from DataBase")
         challengeReference
             .child(USERS_DATABASE)
             .child(currentUserId.toString())
@@ -301,7 +294,7 @@ object ChallengeObject {
                     for (challenge in dataSnapshot.children) {
                         val challengeItem =
                             challenge.getValue(ChallengeItem::class.java)
-                        Log.w("Challenge Object", "Current challenge: ${challengeItem?.name}")
+                        Log.w(CHALLENGE_OBJECT_TAG, "Current challenge: ${challengeItem?.name}")
                         challengeItemList.add(challengeItem)
                     }
                     initRecyclerView(context, recyclerView, challengeItemClickListener)
@@ -309,7 +302,7 @@ object ChallengeObject {
 
                 override fun onCancelled(error: DatabaseError) {
                     // Failed to read value
-                    Log.w("Challenge Object", "Failed to read value.", error.toException())
+                    Log.w(CHALLENGE_OBJECT_TAG, "Failed to read value.", error.toException())
                 }
             })
     }
@@ -320,7 +313,7 @@ object ChallengeObject {
         challengeItemClickListener: OnChallengeItemClickListener,
         textView: TextView?
     ) {
-        Log.w("Challenge Object", "Start getting started challenges from DataBase")
+        Log.w(CHALLENGE_OBJECT_TAG, "Start getting started challenges from DataBase")
         var isStarted = false
         challengeReference
             .child(USERS_DATABASE)
@@ -331,7 +324,7 @@ object ChallengeObject {
                     for (challenge in dataSnapshot.children) {
                         val challengeItem =
                             challenge.getValue(ChallengeItem::class.java)
-                        Log.w("Challenge Object", "Current challenge: ${challengeItem?.name}")
+                        Log.w(CHALLENGE_OBJECT_TAG, "Current challenge: ${challengeItem?.name}")
                         if (challengeItem?.started?.toBoolean() == true) {
                             isStarted = true
                             challengeItemList.add(challengeItem)
@@ -348,7 +341,7 @@ object ChallengeObject {
 
                 override fun onCancelled(error: DatabaseError) {
                     // Failed to read value
-                    Log.w("Challenge Object", "Failed to read value.", error.toException())
+                    Log.w(CHALLENGE_OBJECT_TAG, "Failed to read value.", error.toException())
                 }
             })
     }

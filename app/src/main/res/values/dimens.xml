@@ -4,6 +4,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <dimen name="login_activity_icon_size">120dp</dimen>
+    <dimen name="loader_activity_icon_size">350dp</dimen>
     <dimen name="user_fragment_image_size">134dp</dimen>
     <dimen name="user_fragment_button_width">150dp</dimen>
     <dimen name="user_fragment_button_height">40dp</dimen>
