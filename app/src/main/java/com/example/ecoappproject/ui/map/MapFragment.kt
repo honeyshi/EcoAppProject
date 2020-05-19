@@ -13,6 +13,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.TranslateAnimation
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.annotation.RequiresApi
@@ -103,13 +104,6 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
         // endregion
 
         // region Location description constraint layout settings
-        val hideLocationButton =
-            root.findViewById<ImageButton>(R.id.image_button_hide_location_description)
-
-        hideLocationButton.setOnClickListener {
-            constraintLayoutLocationDescription.visibility = View.INVISIBLE
-        }
-
         constraintLayoutLocationDescription.setOnTouchListener(object :
             OnSwipeTouchListener(requireActivity().applicationContext) {
             override fun onSwipeRight() {}
@@ -118,7 +112,15 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
 
             override fun onSwipeBottom() {
                 Log.w(MAP_FRAGMENT_TAG, "Swipe bottom.")
-                constraintLayoutLocationDescription.visibility = View.INVISIBLE
+                val animate = TranslateAnimation(
+                    0.0f,
+                    0.0f,
+                    0.0f,
+                    constraintLayoutLocationDescription.height.toFloat()
+                )
+                animate.duration = 700
+                constraintLayoutLocationDescription.startAnimation(animate)
+                constraintLayoutLocationDescription.visibility = View.GONE
             }
 
             override fun onSwipeTop() {}
@@ -193,9 +195,18 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
     override fun onMarkerClick(marker: Marker?): Boolean {
         val markerTag = marker?.tag.toString()
 
-        Log.w(MAP_FRAGMENT_TAG, "Click on marker with tag $markerTag")
+        Log.w(MAP_FRAGMENT_TAG, "Click on marker with tag $markerTag. Swipe description")
 
         constraintLayoutLocationDescription.visibility = View.VISIBLE
+        val animate = TranslateAnimation(
+            0.0f,
+            0.0f,
+            constraintLayoutLocationDescription.height.toFloat(),
+            0.0f
+        )
+        animate.duration = 700
+        animate.fillAfter = true
+        constraintLayoutLocationDescription.startAnimation(animate)
 
         FirebaseApp.initializeApp(requireContext().applicationContext)
         val locationReference =
