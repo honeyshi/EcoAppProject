@@ -75,7 +75,6 @@
             android:layout_marginEnd="26dp"
             android:layout_marginRight="26dp"
             android:fontFamily="@font/montserrat_bold"
-            android:text="Street test 19"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/text_size_headers"
             app:layout_constraintEnd_toEndOf="parent"
@@ -110,7 +109,6 @@
             android:layout_marginRight="26dp"
             android:layout_marginBottom="10dp"
             android:fontFamily="@font/montserrat_light"
-            android:text="We can recycle something like this"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/text_size_main"
             app:layout_constraintBottom_toTopOf="@id/constraint_layout_location_working_hours"
@@ -317,9 +315,6 @@
                     android:gravity="center"
                     android:maxLines="100"
                     android:scrollHorizontally="false"
-                    android:text="10:00
-                    -
-                    19:00"
                     android:textAlignment="center"
                     android:textColor="@color/colorBlack70"
                     android:textSize="@dimen/text_size_working_hours" />
@@ -335,9 +330,6 @@
                     android:gravity="center"
                     android:maxLines="100"
                     android:scrollHorizontally="false"
-                    android:text="10:00
-                    -
-                    19:00"
                     android:textAlignment="center"
                     android:textColor="@color/colorBlack70"
                     android:textSize="@dimen/text_size_working_hours" />
@@ -353,9 +345,6 @@
                     android:gravity="center"
                     android:maxLines="100"
                     android:scrollHorizontally="false"
-                    android:text="10:00
-                    -
-                    19:00"
                     android:textAlignment="center"
                     android:textColor="@color/colorBlack70"
                     android:textSize="@dimen/text_size_working_hours" />
@@ -371,9 +360,6 @@
                     android:gravity="center"
                     android:maxLines="100"
                     android:scrollHorizontally="false"
-                    android:text="10:00
-                    -
-                    19:00"
                     android:textAlignment="center"
                     android:textColor="@color/colorBlack70"
                     android:textSize="@dimen/text_size_working_hours" />
@@ -389,9 +375,6 @@
                     android:gravity="center"
                     android:maxLines="100"
                     android:scrollHorizontally="false"
-                    android:text="10:00
-                    -
-                    19:00"
                     android:textAlignment="center"
                     android:textColor="@color/colorBlack70"
                     android:textSize="@dimen/text_size_working_hours" />
@@ -407,9 +390,6 @@
                     android:gravity="center"
                     android:maxLines="100"
                     android:scrollHorizontally="false"
-                    android:text="10:00
-                    -
-                    19:00"
                     android:textAlignment="center"
                     android:textColor="@color/colorBlack70"
                     android:textSize="@dimen/text_size_working_hours" />
@@ -425,9 +405,6 @@
                     android:gravity="center"
                     android:maxLines="100"
                     android:scrollHorizontally="false"
-                    android:text="10:00
-                    -
-                    19:00"
                     android:textAlignment="center"
                     android:textColor="@color/colorBlack70"
                     android:textSize="@dimen/text_size_working_hours" />
