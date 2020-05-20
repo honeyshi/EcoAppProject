@@ -1,6 +1,5 @@
 package com.example.ecoappproject.ui.articleDescription
 
-import android.content.ContentValues
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,16 +14,19 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.ecoappproject.ARTICLE_DESCRIPTION_FRAGMENT_TAG
 import com.example.ecoappproject.R
 import com.example.ecoappproject.objects.ArticleObject
 import com.example.ecoappproject.ui.home.HomeViewModel
 import com.google.firebase.storage.FirebaseStorage
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
+import kotlin.properties.Delegates
 
 
 class ArticleDescriptionFragment : Fragment() {
 
     private val homeViewModel: HomeViewModel by activityViewModels()
+    var isFavourite by Delegates.notNull<Boolean>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,7 +46,7 @@ class ArticleDescriptionFragment : Fragment() {
         val imageViewArticle =
             root.findViewById<ImageView>(R.id.image_view_article_whole)
 
-        lateinit var articleName : String
+        lateinit var articleName: String
 
         homeViewModel.getArticleName().observe(viewLifecycleOwner, Observer {
             textViewArticleHeader.text = it
@@ -62,6 +64,7 @@ class ArticleDescriptionFragment : Fragment() {
         homeViewModel.getArticleIsFavourite().observe(viewLifecycleOwner, Observer {
             if (it) imageButtonArticleIsFavourite.setImageResource(R.drawable.ic_star_pressed)
             else imageButtonArticleIsFavourite.setImageResource(R.drawable.ic_star_normal)
+            isFavourite = it
         })
 
         homeViewModel.getArticleImageUri().observe(viewLifecycleOwner, Observer {
@@ -72,35 +75,50 @@ class ArticleDescriptionFragment : Fragment() {
                 .apply(
                     RequestOptions
                         .bitmapTransform(
-                            RoundedCornersTransformation(100,0,
-                                RoundedCornersTransformation.CornerType.BOTTOM)
-                        ))
+                            RoundedCornersTransformation(
+                                100, 0,
+                                RoundedCornersTransformation.CornerType.BOTTOM
+                            )
+                        )
+                )
                 .into(imageViewArticle)
         })
 
         imageButtonArticleIsFavourite.setOnClickListener {
-            homeViewModel.getArticleIsFavourite().observe(viewLifecycleOwner, Observer {
-                // article is favourite - set not favourite
-                if (it) {
-                    Log.w(ContentValues.TAG, "Delete from favourites")
-                    imageButtonArticleIsFavourite.setImageResource(R.drawable.ic_star_normal)
-                    ArticleObject.setArticleIsFavourite(activity!!.baseContext,
-                        articleName,
-                        "false")
-                    Toast.makeText(activity!!.baseContext, R.string.toast_text_delete_from_favourites, Toast.LENGTH_LONG)
-                        .show()
-                }
-                // article is not favourite - set favourite
-                else {
-                    Log.w(ContentValues.TAG, "Add to favourites")
-                    imageButtonArticleIsFavourite.setImageResource(R.drawable.ic_star_pressed)
-                    ArticleObject.setArticleIsFavourite(activity!!.baseContext,
-                        articleName,
-                        "true")
-                    Toast.makeText(activity!!.baseContext, R.string.toast_text_add_to_favourites, Toast.LENGTH_LONG)
-                        .show()
-                }
-            })
+            // article is favourite - set not favourite
+            if (isFavourite) {
+                Log.w(ARTICLE_DESCRIPTION_FRAGMENT_TAG, "Delete from favourites")
+                imageButtonArticleIsFavourite.setImageResource(R.drawable.ic_star_normal)
+                ArticleObject.setArticleIsFavourite(
+                    requireActivity().applicationContext,
+                    articleName,
+                    "false"
+                )
+                Toast.makeText(
+                    requireActivity().applicationContext,
+                    R.string.toast_text_delete_from_favourites,
+                    Toast.LENGTH_LONG
+                )
+                    .show()
+                isFavourite = false
+            }
+            // article is not favourite - set favourite
+            else {
+                Log.w(ARTICLE_DESCRIPTION_FRAGMENT_TAG, "Add to favourites")
+                imageButtonArticleIsFavourite.setImageResource(R.drawable.ic_star_pressed)
+                ArticleObject.setArticleIsFavourite(
+                    requireActivity().applicationContext,
+                    articleName,
+                    "true"
+                )
+                Toast.makeText(
+                    requireActivity().applicationContext,
+                    R.string.toast_text_add_to_favourites,
+                    Toast.LENGTH_LONG
+                )
+                    .show()
+                isFavourite = true
+            }
         }
 
         return root

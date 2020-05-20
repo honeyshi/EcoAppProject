@@ -10,5 +10,6 @@ data class ChallengeItem(
     val imageUri: String? = "",
     val name: String? = "",
     val started: String? = "",
+    val startedDate: String? = "",
     val startedDescription: String? = ""
 )

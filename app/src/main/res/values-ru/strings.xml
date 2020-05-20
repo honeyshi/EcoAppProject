@@ -31,6 +31,14 @@
         За выполнение челленджей вы получаете достижения в приложении.
     </string>
     <string name="text_view_completed_award">30/30</string>
+    <string name="text_view_location_description_can_recycle_header">Можно сдать:</string>
+    <string name="text_view_location_working_hours_monday">ПН</string>
+    <string name="text_view_location_working_hours_tuesday">ВТ</string>
+    <string name="text_view_location_working_hours_wednesday">СР</string>
+    <string name="text_view_location_working_hours_thursday">ЧТ</string>
+    <string name="text_view_location_working_hours_friday">ПТ</string>
+    <string name="text_view_location_working_hours_saturday">СБ</string>
+    <string name="text_view_location_working_hours_sunday">ВС</string>
 
 
     <string name="edit_text_analyze_one">Введите название</string>
@@ -64,4 +72,10 @@
         Так как вы не отметили все дни в трекере, вы не получите награду за него.
         Попробуйте начать челлендж заново.
     </string>
+
+    <string name="notification_channel_name">Challenge notification name</string>
+    <string name="notification_channel_description">Challenge notification description</string>
+    <string name="notification_challenge_title">Challenge Tracking</string>
+    <string name="notification_challenge_description">Не забудьте отметить свой прогресс по челленджу</string>
+
 </resources>

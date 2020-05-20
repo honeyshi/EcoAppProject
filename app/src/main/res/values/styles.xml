@@ -38,10 +38,23 @@
         <item name="android:fontFamily">@font/montserrat_bold</item>
     </style>
 
-    <style name="DialogWindowMessage" >
+    <style name="DialogWindowMessage">
         <item name="android:textColorPrimary">@color/colorBlack</item>
         <item name="android:fontFamily">@font/montserrat_regular</item>
         <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="IngredientRatingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/layer_list_ingredient_rating_bar_small
+        </item>
+        <item name="android:minHeight">24dip</item>
+        <item name="android:maxHeight">24dip</item>
+    </style>
+
+    <style name="IngredientRatingBarBig" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/layer_list_ingredient_rating_bar_big</item>
+        <item name="android:minHeight">50dip</item>
+        <item name="android:maxHeight">50dip</item>
     </style>
 
 </resources>

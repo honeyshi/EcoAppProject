@@ -6,27 +6,26 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.example.ecoappproject.R
 
 
 class AnalyzeIngredientNotFoundFragment : Fragment() {
-    private lateinit var analyzeViewModel: AnalyzeViewModel
+    private val analyzeViewModel: AnalyzeViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        analyzeViewModel =
-            ViewModelProviders.of(requireActivity()).get(AnalyzeViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_analyze_one_ingredient_not_found, container, false)
+        val root =
+            inflater.inflate(R.layout.fragment_analyze_one_ingredient_not_found, container, false)
 
-        val textViewIngredientName  =
+        val textViewIngredientName =
             root.findViewById<TextView>(R.id.text_view_one_ingredient_result_header_not_found)
 
-        analyzeViewModel.getIngredientNameEN().observe(this, Observer {
+        analyzeViewModel.getIngredientNameEN().observe(viewLifecycleOwner, Observer {
             textViewIngredientName.text = it
         })
 

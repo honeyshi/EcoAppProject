@@ -1,401 +1,401 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/text_view_started_challenge_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
         android:layout_marginStart="44dp"
         android:layout_marginLeft="44dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="44dp"
         android:layout_marginRight="44dp"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/text_size_headers"
         app:fontFamily="@font/montserrat_regular"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/text_view_started_challenge_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_marginStart="44dp"
         android:layout_marginLeft="44dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="44dp"
         android:layout_marginRight="44dp"
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/text_size_main"
         app:fontFamily="@font/montserrat_regular"
-        app:layout_constraintTop_toBottomOf="@id/text_view_started_challenge_header"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/text_view_started_challenge_header" />
 
     <!-- START Leaf buttons -->
     <ImageButton
         android:id="@+id/image_button_leaf_1_1"
-        android:tag="image_button_leaf_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_marginStart="22dp"
         android:layout_marginLeft="22dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/ic_leaf"
-        app:layout_constraintTop_toBottomOf="@id/text_view_started_challenge_description"
-        app:layout_constraintStart_toStartOf="parent"/>
+        android:tag="image_button_leaf_1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_view_started_challenge_description" />
 
     <ImageButton
         android:id="@+id/image_button_leaf_1_2"
-        android:tag="image_button_leaf_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/ic_leaf"
-        app:layout_constraintTop_toBottomOf="@id/text_view_started_challenge_description"
-        app:layout_constraintStart_toEndOf="@id/image_button_leaf_1_1"/>
+        android:tag="image_button_leaf_2"
+        app:layout_constraintStart_toEndOf="@id/image_button_leaf_1_1"
+        app:layout_constraintTop_toBottomOf="@id/text_view_started_challenge_description" />
 
     <ImageButton
         android:id="@+id/image_button_leaf_1_3"
-        android:tag="image_button_leaf_3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/ic_leaf"
-        app:layout_constraintTop_toBottomOf="@id/text_view_started_challenge_description"
-        app:layout_constraintStart_toEndOf="@id/image_button_leaf_1_2"/>
+        android:tag="image_button_leaf_3"
+        app:layout_constraintStart_toEndOf="@id/image_button_leaf_1_2"
+        app:layout_constraintTop_toBottomOf="@id/text_view_started_challenge_description" />
 
     <ImageButton
         android:id="@+id/image_button_leaf_1_4"
-        android:tag="image_button_leaf_4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/ic_leaf"
-        app:layout_constraintTop_toBottomOf="@id/text_view_started_challenge_description"
-        app:layout_constraintStart_toEndOf="@id/image_button_leaf_1_3"/>
+        android:tag="image_button_leaf_4"
+        app:layout_constraintStart_toEndOf="@id/image_button_leaf_1_3"
+        app:layout_constraintTop_toBottomOf="@id/text_view_started_challenge_description" />
 
     <ImageButton
         android:id="@+id/image_button_leaf_1_5"
-        android:tag="image_button_leaf_5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/ic_leaf"
-        app:layout_constraintTop_toBottomOf="@id/text_view_started_challenge_description"
-        app:layout_constraintStart_toEndOf="@id/image_button_leaf_1_4"/>
+        android:tag="image_button_leaf_5"
+        app:layout_constraintStart_toEndOf="@id/image_button_leaf_1_4"
+        app:layout_constraintTop_toBottomOf="@id/text_view_started_challenge_description" />
 
     <ImageButton
         android:id="@+id/image_button_leaf_1_6"
-        android:tag="image_button_leaf_6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/ic_leaf"
-        app:layout_constraintTop_toBottomOf="@id/text_view_started_challenge_description"
-        app:layout_constraintStart_toEndOf="@id/image_button_leaf_1_5"/>
+        android:tag="image_button_leaf_6"
+        app:layout_constraintStart_toEndOf="@id/image_button_leaf_1_5"
+        app:layout_constraintTop_toBottomOf="@id/text_view_started_challenge_description" />
 
     <ImageButton
         android:id="@+id/image_button_leaf_2_1"
-        android:tag="image_button_leaf_7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_marginStart="22dp"
         android:layout_marginLeft="22dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/ic_leaf"
-        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_1_1"
-        app:layout_constraintStart_toStartOf="parent"/>
+        android:tag="image_button_leaf_7"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_1_1" />
 
     <ImageButton
         android:id="@+id/image_button_leaf_2_2"
-        android:tag="image_button_leaf_8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/ic_leaf"
-        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_1_1"
-        app:layout_constraintStart_toEndOf="@id/image_button_leaf_2_1"/>
+        android:tag="image_button_leaf_8"
+        app:layout_constraintStart_toEndOf="@id/image_button_leaf_2_1"
+        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_1_1" />
 
     <ImageButton
         android:id="@+id/image_button_leaf_2_3"
-        android:tag="image_button_leaf_9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/ic_leaf"
-        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_1_1"
-        app:layout_constraintStart_toEndOf="@id/image_button_leaf_2_2"/>
+        android:tag="image_button_leaf_9"
+        app:layout_constraintStart_toEndOf="@id/image_button_leaf_2_2"
+        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_1_1" />
 
     <ImageButton
         android:id="@+id/image_button_leaf_2_4"
-        android:tag="image_button_leaf_10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/ic_leaf"
-        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_1_1"
-        app:layout_constraintStart_toEndOf="@id/image_button_leaf_2_3"/>
+        android:tag="image_button_leaf_10"
+        app:layout_constraintStart_toEndOf="@id/image_button_leaf_2_3"
+        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_1_1" />
 
     <ImageButton
         android:id="@+id/image_button_leaf_2_5"
-        android:tag="image_button_leaf_11"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/ic_leaf"
-        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_1_1"
-        app:layout_constraintStart_toEndOf="@id/image_button_leaf_2_4"/>
+        android:tag="image_button_leaf_11"
+        app:layout_constraintStart_toEndOf="@id/image_button_leaf_2_4"
+        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_1_1" />
 
     <ImageButton
         android:id="@+id/image_button_leaf_2_6"
-        android:tag="image_button_leaf_12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/ic_leaf"
-        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_1_1"
-        app:layout_constraintStart_toEndOf="@id/image_button_leaf_2_5"/>
+        android:tag="image_button_leaf_12"
+        app:layout_constraintStart_toEndOf="@id/image_button_leaf_2_5"
+        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_1_1" />
 
     <ImageButton
         android:id="@+id/image_button_leaf_3_1"
-        android:tag="image_button_leaf_13"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_marginStart="22dp"
         android:layout_marginLeft="22dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/ic_leaf"
-        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_2_1"
-        app:layout_constraintStart_toStartOf="parent"/>
+        android:tag="image_button_leaf_13"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_2_1" />
 
     <ImageButton
         android:id="@+id/image_button_leaf_3_2"
-        android:tag="image_button_leaf_14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/ic_leaf"
-        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_2_1"
-        app:layout_constraintStart_toEndOf="@id/image_button_leaf_3_1"/>
+        android:tag="image_button_leaf_14"
+        app:layout_constraintStart_toEndOf="@id/image_button_leaf_3_1"
+        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_2_1" />
 
     <ImageButton
         android:id="@+id/image_button_leaf_3_3"
-        android:tag="image_button_leaf_15"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/ic_leaf"
-        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_2_1"
-        app:layout_constraintStart_toEndOf="@id/image_button_leaf_3_2"/>
+        android:tag="image_button_leaf_15"
+        app:layout_constraintStart_toEndOf="@id/image_button_leaf_3_2"
+        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_2_1" />
 
     <ImageButton
         android:id="@+id/image_button_leaf_3_4"
-        android:tag="image_button_leaf_16"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/ic_leaf"
-        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_2_1"
-        app:layout_constraintStart_toEndOf="@id/image_button_leaf_3_3"/>
+        android:tag="image_button_leaf_16"
+        app:layout_constraintStart_toEndOf="@id/image_button_leaf_3_3"
+        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_2_1" />
 
     <ImageButton
         android:id="@+id/image_button_leaf_3_5"
-        android:tag="image_button_leaf_17"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/ic_leaf"
-        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_2_1"
-        app:layout_constraintStart_toEndOf="@id/image_button_leaf_3_4"/>
+        android:tag="image_button_leaf_17"
+        app:layout_constraintStart_toEndOf="@id/image_button_leaf_3_4"
+        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_2_1" />
 
     <ImageButton
         android:id="@+id/image_button_leaf_3_6"
-        android:tag="image_button_leaf_18"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/ic_leaf"
-        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_2_1"
-        app:layout_constraintStart_toEndOf="@id/image_button_leaf_3_5"/>
+        android:tag="image_button_leaf_18"
+        app:layout_constraintStart_toEndOf="@id/image_button_leaf_3_5"
+        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_2_1" />
 
     <ImageButton
         android:id="@+id/image_button_leaf_4_1"
-        android:tag="image_button_leaf_19"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_marginStart="22dp"
         android:layout_marginLeft="22dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/ic_leaf"
-        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_3_1"
-        app:layout_constraintStart_toStartOf="parent"/>
+        android:tag="image_button_leaf_19"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_3_1" />
 
     <ImageButton
         android:id="@+id/image_button_leaf_4_2"
-        android:tag="image_button_leaf_20"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/ic_leaf"
-        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_3_1"
-        app:layout_constraintStart_toEndOf="@id/image_button_leaf_4_1"/>
+        android:tag="image_button_leaf_20"
+        app:layout_constraintStart_toEndOf="@id/image_button_leaf_4_1"
+        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_3_1" />
 
     <ImageButton
         android:id="@+id/image_button_leaf_4_3"
-        android:tag="image_button_leaf_21"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/ic_leaf"
-        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_3_1"
-        app:layout_constraintStart_toEndOf="@id/image_button_leaf_4_2"/>
+        android:tag="image_button_leaf_21"
+        app:layout_constraintStart_toEndOf="@id/image_button_leaf_4_2"
+        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_3_1" />
 
     <ImageButton
         android:id="@+id/image_button_leaf_4_4"
-        android:tag="image_button_leaf_22"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/ic_leaf"
-        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_3_1"
-        app:layout_constraintStart_toEndOf="@id/image_button_leaf_4_3"/>
+        android:tag="image_button_leaf_22"
+        app:layout_constraintStart_toEndOf="@id/image_button_leaf_4_3"
+        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_3_1" />
 
     <ImageButton
         android:id="@+id/image_button_leaf_4_5"
-        android:tag="image_button_leaf_23"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/ic_leaf"
-        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_3_1"
-        app:layout_constraintStart_toEndOf="@id/image_button_leaf_3_4"/>
+        android:tag="image_button_leaf_23"
+        app:layout_constraintStart_toEndOf="@id/image_button_leaf_3_4"
+        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_3_1" />
 
     <ImageButton
         android:id="@+id/image_button_leaf_4_6"
-        android:tag="image_button_leaf_24"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/ic_leaf"
-        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_3_1"
-        app:layout_constraintStart_toEndOf="@id/image_button_leaf_3_5"/>
+        android:tag="image_button_leaf_24"
+        app:layout_constraintStart_toEndOf="@id/image_button_leaf_3_5"
+        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_3_1" />
 
     <ImageButton
         android:id="@+id/image_button_leaf_5_1"
-        android:tag="image_button_leaf_25"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_marginStart="22dp"
         android:layout_marginLeft="22dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/ic_leaf"
-        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_4_1"
-        app:layout_constraintStart_toStartOf="parent"/>
+        android:tag="image_button_leaf_25"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_4_1" />
 
     <ImageButton
         android:id="@+id/image_button_leaf_5_2"
-        android:tag="image_button_leaf_26"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/ic_leaf"
-        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_4_1"
-        app:layout_constraintStart_toEndOf="@id/image_button_leaf_5_1"/>
+        android:tag="image_button_leaf_26"
+        app:layout_constraintStart_toEndOf="@id/image_button_leaf_5_1"
+        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_4_1" />
 
     <ImageButton
         android:id="@+id/image_button_leaf_5_3"
-        android:tag="image_button_leaf_27"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/ic_leaf"
-        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_4_1"
-        app:layout_constraintStart_toEndOf="@id/image_button_leaf_5_2"/>
+        android:tag="image_button_leaf_27"
+        app:layout_constraintStart_toEndOf="@id/image_button_leaf_5_2"
+        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_4_1" />
 
     <ImageButton
         android:id="@+id/image_button_leaf_5_4"
-        android:tag="image_button_leaf_28"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/ic_leaf"
-        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_4_1"
-        app:layout_constraintStart_toEndOf="@id/image_button_leaf_5_3"/>
+        android:tag="image_button_leaf_28"
+        app:layout_constraintStart_toEndOf="@id/image_button_leaf_5_3"
+        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_4_1" />
 
     <ImageButton
         android:id="@+id/image_button_leaf_5_5"
-        android:tag="image_button_leaf_29"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/ic_leaf"
-        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_4_1"
-        app:layout_constraintStart_toEndOf="@id/image_button_leaf_5_4"/>
+        android:tag="image_button_leaf_29"
+        app:layout_constraintStart_toEndOf="@id/image_button_leaf_5_4"
+        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_4_1" />
 
     <ImageButton
         android:id="@+id/image_button_leaf_5_6"
-        android:tag="image_button_leaf_30"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/ic_leaf"
-        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_4_1"
-        app:layout_constraintStart_toEndOf="@id/image_button_leaf_5_5"/>
+        android:tag="image_button_leaf_30"
+        app:layout_constraintStart_toEndOf="@id/image_button_leaf_5_5"
+        app:layout_constraintTop_toBottomOf="@id/image_button_leaf_4_1" />
 
     <!-- END Leaf buttons -->
 
@@ -405,39 +405,34 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="44dp"
         android:layout_marginLeft="44dp"
-        android:layout_marginRight="44dp"
         android:layout_marginEnd="44dp"
+        android:layout_marginRight="44dp"
         android:layout_marginBottom="21dp"
-        android:text="@string/text_view_challenge_started_message"
-        android:textSize="16sp"
-        android:textColor="@color/colorPrimary"
-        android:textAlignment="center"
         android:gravity="center"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/text_view_challenge_started_message"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
+        android:textSize="16sp"
+        app:fontFamily="@font/montserrat_regular"
         app:layout_constraintBottom_toTopOf="@id/button_challenge_started"
-        app:fontFamily="@font/montserrat_regular"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/button_challenge_started"
         android:layout_width="match_parent"
         android:layout_height="52dp"
-        android:layout_alignParentLeft="true"
         android:layout_marginLeft="24dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="638dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:layout_marginRight="24dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/shape_button_usual"
         android:text="@string/button_challenge_started_text"
         android:textAllCaps="false"
         android:textColor="@color/colorWhite"
         android:textSize="24sp"
         app:fontFamily="@font/montserrat_regular"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

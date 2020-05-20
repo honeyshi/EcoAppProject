@@ -1,14 +1,17 @@
 package com.example.ecoappproject.ui.home
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
+import com.example.ecoappproject.HOME_FRAGMENT_TAG
+import com.example.ecoappproject.OnSwipeTouchListener
 import com.example.ecoappproject.R
 import com.example.ecoappproject.interfaces.OnArticleItemClickListener
 import com.example.ecoappproject.items.ArticleItem
@@ -22,6 +25,7 @@ class HomeFragment : Fragment(), OnArticleItemClickListener {
 
     private val homeViewModel: HomeViewModel by activityViewModels()
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -29,17 +33,29 @@ class HomeFragment : Fragment(), OnArticleItemClickListener {
     ): View? {
         val root = inflater.inflate(R.layout.fragment_home, container, false)
         ArticleObject.clearArticleItemList()
-        ArticleObject.getArticles(activity!!.applicationContext,
+        ArticleObject.getArticles(
+            requireActivity().applicationContext,
             root.findViewById(R.id.home_recycler_view),
-            this)
+            this
+        )
 
-        root.findViewById<ImageButton>(R.id.image_button_home_fragment_right).setOnClickListener{
-            rightArrowClickListener()
-        }
+        root.findViewById<ConstraintLayout>(R.id.constraint_layout_home_fragment)
+            .setOnTouchListener(object :
+                OnSwipeTouchListener(requireActivity().applicationContext) {
+                override fun onSwipeRight() {
+                    Log.w(HOME_FRAGMENT_TAG, "Swipe right")
+                    swipeRightListener()
+                }
 
-        root.findViewById<ImageButton>(R.id.image_button_home_fragment_left).setOnClickListener{
-            leftArrowClickListener()
-        }
+                override fun onSwipeLeft() {
+                    Log.w(HOME_FRAGMENT_TAG, "Swipe left")
+                    swipeLeftListener()
+                }
+
+                override fun onSwipeBottom() {}
+
+                override fun onSwipeTop() {}
+            })
 
         return root
     }
@@ -52,22 +68,22 @@ class HomeFragment : Fragment(), OnArticleItemClickListener {
         val articleImageUri = articleItem?.imageUri
         val articleDescriptionFragment = ArticleDescriptionFragment()
 
-        Log.w("Home fragment:", "Save data to view model")
+        Log.w(HOME_FRAGMENT_TAG, "Save data to view model")
         homeViewModel.setArticleName(articleName)
         homeViewModel.setArticleReadingTime(articleReadingTime)
         homeViewModel.setArticleDescription(articleDescription)
         homeViewModel.setArticleIsFavourite(articleIsFavourite)
         homeViewModel.setArticleImageUri(articleImageUri)
 
-        Log.w("Home fragment:", "Start description fragment")
+        Log.w(HOME_FRAGMENT_TAG, "Start description fragment")
         val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
         transaction.replace(R.id.nav_host_fragment, articleDescriptionFragment)
         transaction.addToBackStack(null)
         transaction.commit()
     }
 
-    private fun rightArrowClickListener(){
-        Log.w("Home fragment:", "Start eco marking fragment")
+    private fun swipeLeftListener() {
+        Log.w(HOME_FRAGMENT_TAG, "Start eco marking fragment")
         val markingFragment = MarkingFragment()
         val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
         transaction.replace(R.id.nav_host_fragment, markingFragment)
@@ -75,8 +91,8 @@ class HomeFragment : Fragment(), OnArticleItemClickListener {
         transaction.commit()
     }
 
-    private fun leftArrowClickListener(){
-        Log.w("Home fragment:", "Start eco challenges fragment")
+    private fun swipeRightListener() {
+        Log.w(HOME_FRAGMENT_TAG, "Start eco challenges fragment")
         val challengeFragment = ChallengeFragment()
         val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
         transaction.replace(R.id.nav_host_fragment, challengeFragment)
