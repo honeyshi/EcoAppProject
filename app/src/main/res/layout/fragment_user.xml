@@ -7,20 +7,21 @@
     <View
         android:id="@+id/top_view_user_fragment"
         android:layout_width="match_parent"
-        android:layout_height="332dp"
+        android:layout_height="0dp"
         android:background="@drawable/ic_user_background"
+        app:layout_constraintBottom_toTopOf="@id/bottom_view_user_fragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <Button
         android:id="@+id/button_user_fragment_challenge"
-        android:layout_width="@dimen/user_fragment_button_width"
-        android:layout_height="@dimen/user_fragment_button_height"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
         android:layout_marginTop="20dp"
+        android:layout_marginRight="24dp"
         android:background="@drawable/shape_user_profile_button"
         android:drawableStart="@drawable/ic_challenge"
         android:drawableLeft="@drawable/ic_challenge"
@@ -35,13 +36,16 @@
         android:textColor="@color/colorWhite"
         android:textSize="@dimen/text_size_main"
         app:fontFamily="@font/montserrat_light"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_view_user_name" />
+        app:layout_constraintBottom_toTopOf="@id/favourite_articles_recycler_view"
+        app:layout_constraintEnd_toStartOf="@id/button_user_fragment_award"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/button_user_fragment_award"
-        android:layout_width="@dimen/user_fragment_button_width"
-        android:layout_height="@dimen/user_fragment_button_height"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
@@ -59,22 +63,28 @@
         android:textColor="@color/colorWhite"
         android:textSize="@dimen/text_size_main"
         app:fontFamily="@font/montserrat_light"
+        app:layout_constraintBottom_toTopOf="@id/favourite_articles_recycler_view"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_view_user_name" />
+        app:layout_constraintStart_toEndOf="@id/button_user_fragment_challenge" />
 
-    <ImageButton
-        android:id="@+id/image_button_user_icon"
-        android:layout_width="@dimen/user_fragment_image_size"
-        android:layout_height="@dimen/user_fragment_image_size"
-        android:layout_marginStart="120dp"
-        android:layout_marginLeft="120dp"
-        android:layout_marginTop="94dp"
-        android:layout_marginEnd="120dp"
-        android:layout_marginRight="120dp"
+    <ImageView
+        android:id="@+id/image_view_user_icon"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="60dp"
+        android:layout_marginRight="60dp"
+        android:layout_marginBottom="24dp"
         android:background="@drawable/user"
+        android:scaleType="center"
+        app:layout_constraintBottom_toTopOf="@id/text_view_user_name"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.25"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.4" />
 
     <TextView
         android:id="@+id/text_view_user_name"
@@ -82,22 +92,40 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="120dp"
         android:layout_marginLeft="120dp"
-        android:layout_marginTop="40dp"
         android:layout_marginEnd="120dp"
         android:layout_marginRight="120dp"
+        android:layout_marginBottom="24dp"
         android:gravity="center"
         android:textAlignment="center"
         android:textColor="@color/colorWhite"
         android:textSize="@dimen/text_size_main"
         app:fontFamily="@font/montserrat_bold"
+        app:layout_constraintBottom_toTopOf="@id/text_view_user_description"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/image_button_user_icon" />
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/text_view_user_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="24dp"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/text_size_main"
+        app:fontFamily="@font/montserrat_light"
+        app:layout_constraintBottom_toTopOf="@id/button_user_fragment_challenge"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <View
         android:id="@+id/rectangle_user_fragment"
-        android:layout_width="156dp"
-        android:layout_height="107dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:background="@color/colorPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/top_view_user_fragment" />
@@ -105,8 +133,9 @@
     <View
         android:id="@+id/bottom_view_user_fragment"
         android:layout_width="match_parent"
-        android:layout_height="480dp"
+        android:layout_height="0dp"
         android:background="@drawable/ic_saved_articles_background"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/top_view_user_fragment" />
@@ -134,9 +163,10 @@
         android:id="@+id/favourite_articles_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="16dp"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/button_user_fragment_challenge" />
+        app:layout_constraintTop_toTopOf="@id/bottom_view_user_fragment" />
 </androidx.constraintlayout.widget.ConstraintLayout>
