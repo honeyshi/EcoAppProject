@@ -38,9 +38,13 @@
     <string name="text_view_location_working_hours_friday">FR</string>
     <string name="text_view_location_working_hours_saturday">SA</string>
     <string name="text_view_location_working_hours_sunday">SU</string>
+    <string name="text_view_edit_user_profile_header">Edit Profile</string>
+    <string name="text_view_edit_user_profile_information_header">Account Information:</string>
 
     <string name="edit_text_analyze_one">Input title</string>
     <string name="edit_text_analyze_whole">Enter a comma separated list of ingredients</string>
+    <string name="edit_text_user_name">Input your name</string>
+    <string name="edit_text_user_information">Input short information about yourself</string>
 
     <string name="button_first_time_button_text">Start</string>
     <string name="button_analyze_one_button_text">Search</string>
@@ -49,6 +53,7 @@
     <string name="button_challenge_started_text">Stop challenge</string>
     <string name="button_login_google">Sign in with Google</string>
     <string name="button_skip_registration">Skip registration</string>
+    <string name="button_save">Save</string>
 
     <string name="toast_text_add_to_favourites">Added to Favourites</string>
     <string name="toast_text_delete_from_favourites">Deleted from Favourites</string>
