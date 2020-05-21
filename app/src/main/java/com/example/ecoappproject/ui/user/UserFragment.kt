@@ -13,13 +13,13 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
-import com.bumptech.glide.Glide
 import com.example.ecoappproject.LoginActivity
 import com.example.ecoappproject.R
 import com.example.ecoappproject.USER_FRAGMENT_TAG
 import com.example.ecoappproject.interfaces.OnArticleItemClickListener
 import com.example.ecoappproject.items.ArticleItem
 import com.example.ecoappproject.objects.ArticleObject
+import com.example.ecoappproject.objects.UserInformationObject
 import com.example.ecoappproject.ui.articleDescription.ArticleDescriptionFragment
 import com.example.ecoappproject.ui.award.AwardFragment
 import com.example.ecoappproject.ui.challenge.ChallengeStartedFragment
@@ -38,6 +38,8 @@ class UserFragment : Fragment(), OnArticleItemClickListener {
     ): View? {
         val root = inflater.inflate(R.layout.fragment_user, container, false)
         val userNameTextView = root.findViewById<TextView>(R.id.text_view_user_name)
+        val userDescriptionTextView = root.findViewById<TextView>(R.id.text_view_user_description)
+        val userImageView = root.findViewById<ImageView>(R.id.image_view_user_icon)
         val editProfileImageButton =
             root.findViewById<ImageButton>(R.id.image_button_edit_user_profile)
 
@@ -57,17 +59,14 @@ class UserFragment : Fragment(), OnArticleItemClickListener {
         editProfileImageButton.setOnClickListener {
             onEditButtonClick()
         }
-        // If user is sign in with Google set name and image from account
-        /*else {
-            Log.w(USER_FRAGMENT_TAG, "User is sign in ${currentUser.displayName}")
-            if (currentUser.displayName?.isEmpty() == true) {
-                userNameTextView.text = currentUser.email
-            } else {
-                userNameTextView.text = currentUser.displayName
-            }
-            Log.w("User Fragment", "User photo url ${currentUser.photoUrl}")
-            Glide.with(root).load(currentUser.photoUrl).into(userIconImageButton)
-        }*/
+        // If user is sign in with Google set name and image from database
+        if (currentUser?.isAnonymous == false) {
+            Log.w(USER_FRAGMENT_TAG, "User from google - update information from database")
+            UserInformationObject.updateUserInformationOnUI(
+                requireActivity().applicationContext,
+                userImageView, userDescriptionTextView, userNameTextView, currentUser.uid
+            )
+        }
 
         // Set listeners for section buttons
         root.findViewById<Button>(R.id.button_user_fragment_challenge).setOnClickListener {

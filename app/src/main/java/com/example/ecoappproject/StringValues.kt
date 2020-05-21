@@ -42,6 +42,7 @@ const val ARTICLE_DESCRIPTION_FRAGMENT_TAG = "Article desc fragment"
 
 // region Objects
 const val CHALLENGE_OBJECT_TAG = "Challenge Object"
+const val USER_INFORMATION_OBJECT_TAG = "User Info Object"
 // endregion
 
 // region Activity
