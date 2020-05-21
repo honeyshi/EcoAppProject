@@ -59,6 +59,7 @@
     <string name="toast_text_delete_from_favourites">Deleted from Favourites</string>
     <string name="toast_text_input_ingredient">Enter ingredient for searching</string>
     <string name="toast_text_input_composition">Enter composition for analysing</string>
+    <string name="toast_text_save_user_profile">New profile information is saved</string>
 
     <string name="dialog_start_challenge_header">Start challenge</string>
     <string name="dialog_start_challenge_message">

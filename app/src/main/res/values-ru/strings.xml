@@ -60,6 +60,7 @@
     <string name="toast_text_delete_from_favourites">Удалено из Избранного</string>
     <string name="toast_text_input_ingredient">Введите название компонента для поиска</string>
     <string name="toast_text_input_composition">Введите состав для анализа</string>
+    <string name="toast_text_save_user_profile">Новые данные профиля сохранены</string>
 
     <string name="dialog_start_challenge_header">Начать челлендж</string>
     <string name="dialog_start_challenge_message">

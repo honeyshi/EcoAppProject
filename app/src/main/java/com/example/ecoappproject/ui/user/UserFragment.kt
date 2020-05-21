@@ -29,6 +29,7 @@ import com.google.firebase.auth.FirebaseAuth
 class UserFragment : Fragment(), OnArticleItemClickListener {
 
     private val homeViewModel: HomeViewModel by activityViewModels()
+    private val userViewModel: UserViewModel by activityViewModels()
     private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreateView(
@@ -57,7 +58,7 @@ class UserFragment : Fragment(), OnArticleItemClickListener {
 
         // Set listener for edit button
         editProfileImageButton.setOnClickListener {
-            onEditButtonClick()
+            onEditButtonClick(userNameTextView.text.toString())
         }
         // If user is sign in with Google set name and image from database
         if (currentUser?.isAnonymous == false) {
@@ -95,7 +96,7 @@ class UserFragment : Fragment(), OnArticleItemClickListener {
         transaction.commit()
     }
 
-    private fun onEditButtonClick() {
+    private fun onEditButtonClick(userName: String) {
         Log.w(USER_FRAGMENT_TAG, "Click on edit button")
         // If user is not sign in or anonymous - edit button should allow signing in
         if (firebaseAuth.currentUser == null || firebaseAuth.currentUser!!.isAnonymous) {
@@ -108,6 +109,7 @@ class UserFragment : Fragment(), OnArticleItemClickListener {
         // If user is sign - in start activity for editing profile
         else {
             Log.w(USER_FRAGMENT_TAG, "Start edit user profile fragment")
+            userViewModel.setUserName(userName)
             val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
             transaction.replace(R.id.nav_host_fragment, EditUserProfileFragment())
             transaction.addToBackStack(null)

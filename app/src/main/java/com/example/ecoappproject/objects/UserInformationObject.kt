@@ -57,6 +57,22 @@ object UserInformationObject {
                     Log.w(USER_INFORMATION_OBJECT_TAG, "Failed to read value.", error.toException())
                 }
             })
+    }
 
+    fun updateUserTextInformationInDatabase(fieldName: String, newValue: String, userId: String) {
+        userInformationDatabaseReference.child(USERS_DATABASE)
+            .child(userId).addListenerForSingleValueEvent(object :
+                ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    dataSnapshot.child(USER_INFORMATION_DATABASE).child(fieldName).ref.setValue(
+                        newValue
+                    )
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Failed to read value
+                    Log.w(USER_INFORMATION_OBJECT_TAG, "Failed to read value.", error.toException())
+                }
+            })
     }
 }
