@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.example.ecoappproject.items.ArticleItem
 import com.example.ecoappproject.items.AwardItem
 import com.example.ecoappproject.items.ChallengeItem
+import com.example.ecoappproject.items.UserInformationItem
 import com.example.ecoappproject.objects.ChallengeObject
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -68,7 +69,7 @@ class LoaderActivity : AppCompatActivity() {
                 Log.w(LOADER_ACTIVITY_TAG, "Start increasing current day for challenges")
                 ChallengeObject.increaseCurrentDayForStartedChallenges()
 
-                Handler().postDelayed(startMainActivity, 2000)
+                Handler().postDelayed(startMainActivity, 3000)
             }
         }
 
@@ -114,6 +115,16 @@ class LoaderActivity : AppCompatActivity() {
     }
 
     private fun addNewUserInDatabase(userId: String?) {
+        // Create user information if user from Google
+        // (by default information is empty)
+        if (firebaseAuth.currentUser?.isAnonymous == false) {
+            Log.w(LOADER_ACTIVITY_TAG, "User from google - create user profile information")
+            val newUserInfoReference = firebaseReference.child(USERS_DATABASE)
+                .child(userId.toString())
+                .child(USER_INFORMATION_DATABASE)
+            newUserInfoReference.setValue(UserInformationItem())
+        }
+
         // Add values from articles database
         Log.w(LOADER_ACTIVITY_TAG, "Set articles for new user")
         var countArticleItem = 0

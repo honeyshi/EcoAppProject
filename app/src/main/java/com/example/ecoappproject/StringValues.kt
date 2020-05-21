@@ -25,6 +25,7 @@ const val AWARD_DATABASE_COMPLETED = "completed"
 
 const val LOCATIONS_DATABASE = "LocationList"
 
+const val USER_INFORMATION_DATABASE = "UserInfo"
 // endregion
 
 
