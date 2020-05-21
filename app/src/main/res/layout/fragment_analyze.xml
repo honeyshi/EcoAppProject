@@ -4,127 +4,121 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <!-- Search one ingredient -->
+    <TextView
+        android:id="@+id/text_view_analyze_one_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="24dp"
+        android:text="@string/text_view_analyze_one_header"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/text_size_headers"
+        app:fontFamily="@font/montserrat_regular"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/edit_text_analyze_one"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:orientation="vertical"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="24dp"
+        android:autofillHints="username"
+        android:background="@drawable/shape_input_field"
+        android:ems="10"
+        android:gravity="start"
+        android:hint="@string/edit_text_analyze_one"
+        android:inputType="textPersonName"
+        android:paddingStart="10dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="10dp"
+        android:textColor="@color/colorBlack30"
+        android:textSize="@dimen/text_size_main"
+        app:fontFamily="@font/montserrat_light"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_view_analyze_one_header" />
+
+    <Button
+        android:id="@+id/button_analyze_one"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="24dp"
+        android:background="@drawable/shape_button_usual"
+        android:text="@string/button_analyze_one_button_text"
+        android:textAllCaps="false"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/text_size_headers"
+        app:fontFamily="@font/montserrat_regular"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_text_analyze_one" />
+
+    <!-- Search whole composition -->
+    <TextView
+        android:id="@+id/text_view_analyze_whole_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="20dp"
+        android:text="@string/text_view_analyze_whole_header"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/text_size_headers"
+        app:fontFamily="@font/montserrat_regular"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button_analyze_one" />
+
+    <EditText
+        android:id="@+id/edit_text_analyze_whole"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_weight="4"
+        android:autofillHints="username"
+        android:background="@drawable/shape_input_field"
+        android:ems="10"
+        android:gravity="start"
+        android:hint="@string/edit_text_analyze_whole"
+        android:inputType="textMultiLine"
+        android:paddingStart="10dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="10dp"
+        android:textColor="@color/colorBlack30"
+        android:textSize="@dimen/text_size_main"
+        app:fontFamily="@font/montserrat_light"
+        app:layout_constraintTop_toBottomOf="@id/text_view_analyze_whole_header"
+        app:layout_constraintBottom_toTopOf="@id/button_analyze_whole"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/button_analyze_whole"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/shape_button_usual"
+        android:text="@string/button_analyze_whole_button_text"
+        android:textAllCaps="false"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/text_size_headers"
+        app:fontFamily="@font/montserrat_regular"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <!-- Search one ingredient -->
-        <TextView
-            android:id="@+id/text_view_analyze_one_header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="33dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="33dp"
-            android:text="@string/text_view_analyze_one_header"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/text_size_headers"
-            app:fontFamily="@font/montserrat_regular"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <EditText
-            android:id="@+id/edit_text_analyze_one"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="24dp"
-            android:layout_weight="1"
-            android:autofillHints="username"
-            android:background="@drawable/shape_input_field"
-            android:ems="10"
-            android:gravity="center"
-            android:hint="@string/edit_text_analyze_one"
-            android:inputType="textPersonName"
-            android:textAlignment="center"
-            android:textColor="@color/colorBlack30"
-            android:textSize="@dimen/text_size_main"
-            app:fontFamily="@font/montserrat_light"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_view_analyze_one_header" />
-
-        <Button
-            android:id="@+id/button_analyze_one"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="24dp"
-            android:layout_weight="1"
-            android:background="@drawable/shape_button_usual"
-            android:text="@string/button_analyze_one_button_text"
-            android:textAllCaps="false"
-            android:textColor="@color/colorWhite"
-            android:textSize="@dimen/text_size_headers"
-            app:fontFamily="@font/montserrat_regular"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/edit_text_analyze_one" />
-
-        <!-- Search whole composition -->
-        <TextView
-            android:id="@+id/text_view_analyze_whole_header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="33dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="33dp"
-            android:layout_marginBottom="20dp"
-            android:text="@string/text_view_analyze_whole_header"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/text_size_headers"
-            app:fontFamily="@font/montserrat_regular"
-            app:layout_constraintBottom_toTopOf="@id/edit_text_analyze_whole"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/button_analyze_one" />
-
-        <EditText
-            android:id="@+id/edit_text_analyze_whole"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginRight="24dp"
-            android:layout_marginBottom="20dp"
-            android:layout_weight="4"
-            android:autofillHints="username"
-            android:background="@drawable/shape_input_field"
-            android:ems="10"
-            android:gravity="center"
-            android:hint="@string/edit_text_analyze_whole"
-            android:inputType="textMultiLine"
-            android:textAlignment="center"
-            android:textColor="@color/colorBlack30"
-            android:textSize="@dimen/text_size_main"
-            app:fontFamily="@font/montserrat_light"
-            app:layout_constraintBottom_toTopOf="@id/button_analyze_whole"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <Button
-            android:id="@+id/button_analyze_whole"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginRight="24dp"
-            android:layout_marginBottom="20dp"
-            android:layout_weight="1"
-            android:background="@drawable/shape_button_usual"
-            android:text="@string/button_analyze_whole_button_text"
-            android:textAllCaps="false"
-            android:textColor="@color/colorWhite"
-            android:textSize="@dimen/text_size_headers"
-            app:fontFamily="@font/montserrat_regular"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-    </LinearLayout>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,9 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="24dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="30dp"
         android:layout_marginRight="24dp"
-        android:text="Ingredient Header RU-RU"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/text_size_headers"
         app:fontFamily="@font/montserrat_regular"
@@ -24,15 +23,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="24dp"
-        android:layout_marginTop="96dp"
+        android:layout_marginTop="20dp"
         android:layout_marginRight="24dp"
-        android:text="Ingredient Header EN-US"
         android:textColor="@color/colorBlack30"
         android:textSize="@dimen/text_size_main"
         app:fontFamily="@font/montserrat_regular"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/text_view_one_ingredient_result_header_ru" />
 
     <RatingBar
         android:id="@+id/rating_bar_one_ingredient_result"
@@ -40,7 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="24dp"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="20dp"
         android:layout_marginRight="24dp"
         android:clickable="false"
         android:focusable="false"
@@ -49,22 +47,27 @@
         android:numStars="5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/text_view_one_ingredient_result_header_en" />
 
-    <TextView
-        android:id="@+id/text_view_one_ingredient_result_description"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginLeft="24dp"
-        android:layout_marginTop="224dp"
+        android:layout_marginTop="20dp"
         android:layout_marginRight="24dp"
-        android:scrollbars="vertical"
-        android:text="Ingredient Description"
-        android:textColor="@color/colorBlack"
-        android:textSize="@dimen/text_size_main"
-        app:fontFamily="@font/montserrat_regular"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/rating_bar_one_ingredient_result">
+
+        <TextView
+            android:id="@+id/text_view_one_ingredient_result_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/text_size_main"
+            app:fontFamily="@font/montserrat_regular" />
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
