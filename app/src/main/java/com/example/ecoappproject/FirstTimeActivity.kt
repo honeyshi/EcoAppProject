@@ -1,6 +1,5 @@
 package com.example.ecoappproject
 
-import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -15,7 +14,7 @@ class FirstTimeActivity : AppCompatActivity() {
     }
 
     fun onButtonStartButtonClick(view: View){
-        Log.w(ContentValues.TAG, "Start Main Activity")
+        Log.w(FIRST_TIME_ACTIVITY_TAG, "Start Login Activity")
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
     }
