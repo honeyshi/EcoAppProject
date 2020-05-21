@@ -64,8 +64,14 @@ class UserFragment : Fragment(), OnArticleItemClickListener {
         if (currentUser?.isAnonymous == false) {
             Log.w(USER_FRAGMENT_TAG, "User from google - update information from database")
             UserInformationObject.updateUserInformationOnUI(
+                userDescriptionTextView,
+                userNameTextView,
+                currentUser.uid
+            )
+            UserInformationObject.updateUserImageOnUI(
                 requireActivity().applicationContext,
-                userImageView, userDescriptionTextView, userNameTextView, currentUser.uid
+                userImageView,
+                currentUser.uid
             )
         }
 

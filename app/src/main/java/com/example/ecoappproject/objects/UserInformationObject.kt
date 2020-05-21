@@ -22,10 +22,35 @@ object UserInformationObject {
     private val firebaseStorage = FirebaseStorage.getInstance()
 
     fun updateUserInformationOnUI(
-        context: Context,
-        userImageView: ImageView,
         userDescriptionTextView: TextView,
         userNameTextView: TextView,
+        userId: String
+    ) {
+        userInformationDatabaseReference.child(USERS_DATABASE)
+            .child(userId).addListenerForSingleValueEvent(object :
+                ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val userInformationItem = dataSnapshot.child(USER_INFORMATION_DATABASE)
+                        .getValue(UserInformationItem::class.java)
+                    Log.w(
+                        USER_INFORMATION_OBJECT_TAG,
+                        "User description - ${userInformationItem?.userDescription}. User name - ${userInformationItem?.userName}"
+                    )
+                    // Set information about user
+                    userDescriptionTextView.text = userInformationItem?.userDescription
+                    userNameTextView.text = userInformationItem?.userName
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Failed to read value
+                    Log.w(USER_INFORMATION_OBJECT_TAG, "Failed to read value.", error.toException())
+                }
+            })
+    }
+
+    fun updateUserImageOnUI(
+        context: Context,
+        userImageView: ImageView,
         userId: String
     ) {
         userInformationDatabaseReference.child(USERS_DATABASE)
@@ -47,9 +72,6 @@ object UserInformationObject {
                             .apply(RequestOptions.bitmapTransform(CircleCrop()))
                             .into(userImageView)
                     }
-                    // Set information about user
-                    userDescriptionTextView.text = userInformationItem?.userDescription
-                    userNameTextView.text = userInformationItem?.userName
                 }
 
                 override fun onCancelled(error: DatabaseError) {
