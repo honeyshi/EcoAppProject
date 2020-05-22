@@ -151,6 +151,7 @@ class EditUserProfileFragment : Fragment() {
                     .load(filePath)
                     .apply(RequestOptions.bitmapTransform(CircleCrop()))
                     .into(userImageView)
+                setImageUrlToFirebaseDatabase()
             }
             .addOnFailureListener {
                 Toast.makeText(
@@ -179,6 +180,18 @@ class EditUserProfileFragment : Fragment() {
                     chooseImageFromGallery()
                 }
             }
+        }
+    }
+
+    private fun setImageUrlToFirebaseDatabase() {
+        firebaseStorageReference.child("users/${currentUserId.toString()}").downloadUrl.addOnSuccessListener {
+            // Got the download URL and set to firebase
+            Log.w(EDIT_USER_PROFILE_FRAGMENT_TAG, "Set url $it in database")
+            UserInformationObject.updateUserTextInformationInDatabase(
+                "imageUrl",
+                it.toString(),
+                currentUserId.toString()
+            )
         }
     }
 }
