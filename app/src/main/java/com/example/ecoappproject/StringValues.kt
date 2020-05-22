@@ -25,6 +25,7 @@ const val AWARD_DATABASE_COMPLETED = "completed"
 
 const val LOCATIONS_DATABASE = "LocationList"
 
+const val USER_INFORMATION_DATABASE = "UserInfo"
 // endregion
 
 
@@ -35,11 +36,14 @@ const val MAP_FRAGMENT_TAG = "Map Fragment"
 const val HOME_FRAGMENT_TAG = "Home Fragment"
 const val ECO_MARKING_FRAGMENT_TAG = "Eco Marking fragment"
 const val CHALLENGE_FRAGMENT_TAG = "Challenge fragment"
+const val USER_FRAGMENT_TAG = "User fragment"
 const val ARTICLE_DESCRIPTION_FRAGMENT_TAG = "Article desc fragment"
+const val EDIT_USER_PROFILE_FRAGMENT_TAG = "Edit profile fragment"
 // endregion
 
 // region Objects
 const val CHALLENGE_OBJECT_TAG = "Challenge Object"
+const val USER_INFORMATION_OBJECT_TAG = "User Info Object"
 // endregion
 
 // region Activity
