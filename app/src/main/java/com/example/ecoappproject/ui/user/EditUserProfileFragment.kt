@@ -132,10 +132,12 @@ class EditUserProfileFragment : Fragment() {
         ) {
             filePath = data.data!!
             uploadImageToStorage()
+            setImageUrlToFirebaseDatabase()
         }
     }
 
     private fun uploadImageToStorage() {
+        Log.w(EDIT_USER_PROFILE_FRAGMENT_TAG, "Upload selected image to storage")
         val ref =
             firebaseStorageReference.child("users/" + currentUserId.toString())
         ref.putFile(filePath)
@@ -151,7 +153,6 @@ class EditUserProfileFragment : Fragment() {
                     .load(filePath)
                     .apply(RequestOptions.bitmapTransform(CircleCrop()))
                     .into(userImageView)
-                setImageUrlToFirebaseDatabase()
             }
             .addOnFailureListener {
                 Toast.makeText(

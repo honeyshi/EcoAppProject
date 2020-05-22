@@ -1,12 +1,18 @@
 package com.example.ecoappproject.objects
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
+import com.example.ecoappproject.R
 import com.example.ecoappproject.USERS_DATABASE
 import com.example.ecoappproject.USER_INFORMATION_DATABASE
 import com.example.ecoappproject.USER_INFORMATION_OBJECT_TAG
@@ -61,15 +67,13 @@ object UserInformationObject {
                         .getValue(UserInformationItem::class.java)
                     if (userInformationItem?.imageUrl?.isNotEmpty() == true) {
                         Log.w(USER_INFORMATION_OBJECT_TAG, "User has image - upload it")
-                        // Remove previous image as we should show one from database
                         userImageView.setImageResource(0)
                         userImageView.setBackgroundResource(0)
-                        val gsReference = firebaseStorage
-                            .getReferenceFromUrl(userInformationItem.imageUrl.toString())
                         // Load image to imageView and make it circle
                         Glide.with(context)
-                            .load(gsReference)
+                            .load(userInformationItem.imageUrl)
                             .apply(RequestOptions.bitmapTransform(CircleCrop()))
+                            .error(R.drawable.shape_oval_accent)
                             .into(userImageView)
                     }
                 }
