@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.example.ecoappproject.items.ArticleItem
 import com.example.ecoappproject.items.AwardItem
 import com.example.ecoappproject.items.ChallengeItem
+import com.example.ecoappproject.items.UserInformationItem
 import com.example.ecoappproject.objects.ChallengeObject
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -53,14 +54,23 @@ class LoaderActivity : AppCompatActivity() {
             editor.putBoolean("first_opened", false)
             editor.apply()
         }
-        // If not - increase challenge, initialize Firebase and start Main Activity after delay
+        // If not - check whether user sign in or not
         else {
-            initializeDatabaseForCurrentUser()
+            // If not signed in we should show first time activity again
+            if (firebaseAuth.currentUser == null) {
+                Log.w(LOADER_ACTIVITY_TAG, "User is not sign in. Show first time activity again")
+                val intent = Intent(this, FirstTimeActivity::class.java)
+                startActivity(intent)
+            }
+            // Increase challenge current day, initialize Firebase data and start Main Activity after delay
+            else {
+                initializeDatabaseForCurrentUser()
 
-            Log.w(LOADER_ACTIVITY_TAG, "Start increasing current day for challenges")
-            ChallengeObject.increaseCurrentDayForStartedChallenges()
+                Log.w(LOADER_ACTIVITY_TAG, "Start increasing current day for challenges")
+                ChallengeObject.increaseCurrentDayForStartedChallenges()
 
-            Handler().postDelayed(startMainActivity, 2000)
+                Handler().postDelayed(startMainActivity, 3000)
+            }
         }
 
         // endregion
@@ -84,6 +94,11 @@ class LoaderActivity : AppCompatActivity() {
                 if (dataSnapshot.child(currentUserId.toString()).exists()) {
                     Log.w(LOADER_ACTIVITY_TAG, "Current user with id $currentUserId exists in DB")
                     // If user exists in Firebase database update his/her database to current
+                    if (!dataSnapshot.child(currentUserId.toString())
+                            .child(USER_INFORMATION_DATABASE).exists()
+                    ) {
+                        setUserProfileInfo(currentUserId)
+                    }
                     updateArticlesDataForUserInDatabase(currentUserId)
                     updateChallengesDataForUserInDatabase(currentUserId)
                     updateAwardDataForUserInDatabase(currentUserId)
@@ -105,6 +120,8 @@ class LoaderActivity : AppCompatActivity() {
     }
 
     private fun addNewUserInDatabase(userId: String?) {
+        setUserProfileInfo(userId)
+
         // Add values from articles database
         Log.w(LOADER_ACTIVITY_TAG, "Set articles for new user")
         var countArticleItem = 0
@@ -330,6 +347,18 @@ class LoaderActivity : AppCompatActivity() {
                 Log.w(LOADER_ACTIVITY_TAG, "Failed to read value.", error.toException())
             }
         })
+    }
+
+    private fun setUserProfileInfo(userId: String?) {
+        // Create user information if user from Google
+        // (by default information is empty)
+        if (firebaseAuth.currentUser?.isAnonymous == false) {
+            Log.w(LOADER_ACTIVITY_TAG, "User from google - create user profile information")
+            val newUserInfoReference = firebaseReference.child(USERS_DATABASE)
+                .child(userId.toString())
+                .child(USER_INFORMATION_DATABASE)
+            newUserInfoReference.setValue(UserInformationItem())
+        }
     }
     // endregion
 }

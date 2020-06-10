@@ -13,6 +13,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.TranslateAnimation
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.annotation.RequiresApi
@@ -57,7 +58,7 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
     private val defaultLocation = LatLng(56.315470, 43.991542)
     private val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 102
     private val defaultZoom = 15f
-    private var currentZoom = 15f
+    private var currentZoom = 12f
 
     // region UI elements
     private lateinit var constraintLayoutLocationDescription: ConstraintLayout
@@ -103,13 +104,6 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
         // endregion
 
         // region Location description constraint layout settings
-        val hideLocationButton =
-            root.findViewById<ImageButton>(R.id.image_button_hide_location_description)
-
-        hideLocationButton.setOnClickListener {
-            constraintLayoutLocationDescription.visibility = View.INVISIBLE
-        }
-
         constraintLayoutLocationDescription.setOnTouchListener(object :
             OnSwipeTouchListener(requireActivity().applicationContext) {
             override fun onSwipeRight() {}
@@ -118,12 +112,19 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
 
             override fun onSwipeBottom() {
                 Log.w(MAP_FRAGMENT_TAG, "Swipe bottom.")
-                constraintLayoutLocationDescription.visibility = View.INVISIBLE
+                val animate = TranslateAnimation(
+                    0.0f,
+                    0.0f,
+                    0.0f,
+                    constraintLayoutLocationDescription.height.toFloat()
+                )
+                animate.duration = 700
+                constraintLayoutLocationDescription.startAnimation(animate)
+                constraintLayoutLocationDescription.visibility = View.GONE
             }
 
             override fun onSwipeTop() {}
         })
-
         // endregion
 
         // region Set current day
@@ -136,26 +137,6 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
         Log.w(MAP_FRAGMENT_TAG, "Current week day is $dayLongName")
         root.findViewWithTag<View>("view_location_current_day_$dayLongName").visibility =
             View.VISIBLE
-        // endregion
-
-        // region Set on click listener for custom navigation buttons
-        imageButtonMyLocation.setOnClickListener {
-            getDeviceLocation()
-        }
-
-        root.findViewById<ImageButton>(R.id.image_button_zoom_plus).setOnClickListener {
-            if (currentZoom < 21)
-                currentZoom += 1
-            Log.w(MAP_FRAGMENT_TAG, "Current zoom is: $currentZoom")
-            googleMap.animateCamera(CameraUpdateFactory.zoomTo(currentZoom))
-        }
-
-        root.findViewById<ImageButton>(R.id.image_button_zoom_minus).setOnClickListener {
-            if (currentZoom > 2)
-                currentZoom -= 1
-            Log.w(MAP_FRAGMENT_TAG, "Current zoom is: $currentZoom")
-            googleMap.animateCamera(CameraUpdateFactory.zoomTo(currentZoom))
-        }
         // endregion
 
         fusedLocationProviderClient =
@@ -177,12 +158,6 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
 
             getLocationPermission()
 
-            // Turn on the My Location layer and the related control on the map.
-            updateLocationUI()
-
-            // Get the current location of the device and set the position of the map.
-            getDeviceLocation()
-
             // Get location of eco points from database and put on map.
             getLocationsFromDatabaseAndPutOnMap()
 
@@ -190,6 +165,28 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
             googleMap.uiSettings.isMyLocationButtonEnabled = false
 
             googleMap.setOnMarkerClickListener(this)
+
+            // region Set on click listener for custom navigation buttons
+            imageButtonMyLocation.setOnClickListener {
+                getDeviceLocation()
+            }
+
+            root.findViewById<ImageButton>(R.id.image_button_zoom_plus).setOnClickListener {
+                currentZoom = googleMap.cameraPosition.zoom
+                if (currentZoom < googleMap.maxZoomLevel)
+                    currentZoom += 1
+                Log.w(MAP_FRAGMENT_TAG, "Current zoom is: $currentZoom")
+                googleMap.animateCamera(CameraUpdateFactory.zoomTo(currentZoom))
+            }
+
+            root.findViewById<ImageButton>(R.id.image_button_zoom_minus).setOnClickListener {
+                currentZoom = googleMap.cameraPosition.zoom
+                if (currentZoom > googleMap.minZoomLevel)
+                    currentZoom -= 1
+                Log.w(MAP_FRAGMENT_TAG, "Current zoom is: $currentZoom")
+                googleMap.animateCamera(CameraUpdateFactory.zoomTo(currentZoom))
+            }
+            // endregion
         }
 
         return root
@@ -198,9 +195,18 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
     override fun onMarkerClick(marker: Marker?): Boolean {
         val markerTag = marker?.tag.toString()
 
-        Log.w(MAP_FRAGMENT_TAG, "Click on marker with tag $markerTag")
+        Log.w(MAP_FRAGMENT_TAG, "Click on marker with tag $markerTag. Swipe description")
 
         constraintLayoutLocationDescription.visibility = View.VISIBLE
+        val animate = TranslateAnimation(
+            0.0f,
+            0.0f,
+            constraintLayoutLocationDescription.height.toFloat(),
+            0.0f
+        )
+        animate.duration = 700
+        animate.fillAfter = true
+        constraintLayoutLocationDescription.startAnimation(animate)
 
         FirebaseApp.initializeApp(requireContext().applicationContext)
         val locationReference =
@@ -283,13 +289,27 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
             )
             == PackageManager.PERMISSION_GRANTED
         ) {
+            // If permission is already granted update UI to show user's location
             isLocationPermissionGranted = true
+            updateLocationUI()
         } else {
-            Log.w(MAP_FRAGMENT_TAG, "There are no permissions")
-            activity?.requestPermissions(
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
-            )
+            if (ContextCompat.checkSelfPermission(
+                    requireActivity().applicationContext,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+                == PackageManager.PERMISSION_DENIED
+            ) {
+                // If permission is denied update user's UI for not showing location
+                isLocationPermissionGranted = false
+                updateLocationUI()
+            } else {
+                // If location is not granted - ask for permission
+                Log.w(MAP_FRAGMENT_TAG, "There are no permissions")
+                requestPermissions(
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
+                )
+            }
         }
     }
 
@@ -300,6 +320,7 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
         permissions: Array<String?>,
         grantResults: IntArray
     ) {
+        Log.w(MAP_FRAGMENT_TAG, "Handle result of locations permission request")
         isLocationPermissionGranted = false
         when (requestCode) {
             PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION -> {
@@ -312,6 +333,7 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
                 }
             }
         }
+        Log.w(MAP_FRAGMENT_TAG, "Update location on request result")
         updateLocationUI()
     }
 
@@ -319,6 +341,10 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
     // otherwise disable the layer and the control, and set the current location to null
     @RequiresApi(Build.VERSION_CODES.M)
     private fun updateLocationUI() {
+        Log.w(
+            MAP_FRAGMENT_TAG,
+            "Start updating UI. Permission granted is $isLocationPermissionGranted"
+        )
         try {
             if (isLocationPermissionGranted) {
                 googleMap.isMyLocationEnabled = true
@@ -326,8 +352,8 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
             } else {
                 googleMap.isMyLocationEnabled = false
                 imageButtonMyLocation.visibility = View.INVISIBLE
-                getLocationPermission()
             }
+            getDeviceLocation()
         } catch (e: SecurityException) {
             Log.e("Exception: %s", e.message.toString())
         }
@@ -402,6 +428,19 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
                 fusedLocationProviderClient.requestLocationUpdates(
                     locationRequest, locationCallback, Looper.myLooper()
                 )
+            } else {
+                // If location is denied - move camera to default location
+                Log.w(
+                    MAP_FRAGMENT_TAG,
+                    "Location permission is not granted - getDeviceLocation(). Show default location"
+                )
+                googleMap.animateCamera(
+                    CameraUpdateFactory.newLatLngZoom(
+                        defaultLocation,
+                        defaultZoom
+                    )
+                )
+                imageButtonMyLocation.visibility = View.INVISIBLE
             }
         } catch (e: SecurityException) {
             Log.e("Exception: %s", e.message.toString())

@@ -8,16 +8,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
-import com.bumptech.glide.Glide
 import com.example.ecoappproject.LoginActivity
 import com.example.ecoappproject.R
+import com.example.ecoappproject.USER_FRAGMENT_TAG
 import com.example.ecoappproject.interfaces.OnArticleItemClickListener
 import com.example.ecoappproject.items.ArticleItem
 import com.example.ecoappproject.objects.ArticleObject
+import com.example.ecoappproject.objects.UserInformationObject
 import com.example.ecoappproject.ui.articleDescription.ArticleDescriptionFragment
 import com.example.ecoappproject.ui.award.AwardFragment
 import com.example.ecoappproject.ui.challenge.ChallengeStartedFragment
@@ -27,6 +29,7 @@ import com.google.firebase.auth.FirebaseAuth
 class UserFragment : Fragment(), OnArticleItemClickListener {
 
     private val homeViewModel: HomeViewModel by activityViewModels()
+    private val userViewModel: UserViewModel by activityViewModels()
     private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreateView(
@@ -36,7 +39,10 @@ class UserFragment : Fragment(), OnArticleItemClickListener {
     ): View? {
         val root = inflater.inflate(R.layout.fragment_user, container, false)
         val userNameTextView = root.findViewById<TextView>(R.id.text_view_user_name)
-        val userIconImageButton = root.findViewById<ImageButton>(R.id.image_button_user_icon)
+        val userDescriptionTextView = root.findViewById<TextView>(R.id.text_view_user_description)
+        val userImageView = root.findViewById<ImageView>(R.id.image_view_user_icon)
+        val editProfileImageButton =
+            root.findViewById<ImageButton>(R.id.image_button_edit_user_profile)
 
         ArticleObject.clearFavouriteArticleItemList()
         ArticleObject.getFavouriteArticles(
@@ -50,26 +56,23 @@ class UserFragment : Fragment(), OnArticleItemClickListener {
         firebaseAuth = FirebaseAuth.getInstance()
         val currentUser = firebaseAuth.currentUser
 
-        // If user is not sign in or anonymous image button should allow signing in
-        if (currentUser == null || currentUser.isAnonymous) {
-            Log.w(
-                "User Fragment",
-                "User is not sign in (Anonymous ${currentUser?.isAnonymous})"
-            )
-            userIconImageButton.setOnClickListener {
-                startLoginActivity()
-            }
+        // Set listener for edit button
+        editProfileImageButton.setOnClickListener {
+            onEditButtonClick(userNameTextView.text.toString())
         }
-        // If user is sign in with Google set name and image from account
-        else {
-            Log.w("User Fragment", "User is sign in ${currentUser.displayName}")
-            if (currentUser.displayName?.isEmpty() == true) {
-                userNameTextView.text = currentUser.email
-            } else {
-                userNameTextView.text = currentUser.displayName
-            }
-            Log.w("User Fragment", "User photo url ${currentUser.photoUrl}")
-            Glide.with(root).load(currentUser.photoUrl).into(userIconImageButton)
+        // If user is sign in with Google set name and image from database
+        if (currentUser?.isAnonymous == false) {
+            Log.w(USER_FRAGMENT_TAG, "User from google - update information from database")
+            UserInformationObject.updateUserInformationOnUI(
+                userDescriptionTextView,
+                userNameTextView,
+                currentUser.uid
+            )
+            UserInformationObject.updateUserImageOnUI(
+                requireActivity().applicationContext,
+                userImageView,
+                currentUser.uid
+            )
         }
 
         // Set listeners for section buttons
@@ -84,7 +87,7 @@ class UserFragment : Fragment(), OnArticleItemClickListener {
     }
 
     private fun onChallengeButtonClick() {
-        Log.w("User fragment:", "Click on challenge button")
+        Log.w(USER_FRAGMENT_TAG, "Click on challenge button")
         val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
         transaction.replace(R.id.nav_host_fragment, ChallengeStartedFragment())
         transaction.addToBackStack(null)
@@ -92,11 +95,32 @@ class UserFragment : Fragment(), OnArticleItemClickListener {
     }
 
     private fun onAwardButtonClick() {
-        Log.w("User fragment", "Click on award button")
+        Log.w(USER_FRAGMENT_TAG, "Click on award button")
         val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
         transaction.replace(R.id.nav_host_fragment, AwardFragment())
         transaction.addToBackStack(null)
         transaction.commit()
+    }
+
+    private fun onEditButtonClick(userName: String) {
+        Log.w(USER_FRAGMENT_TAG, "Click on edit button")
+        // If user is not sign in or anonymous - edit button should allow signing in
+        if (firebaseAuth.currentUser == null || firebaseAuth.currentUser!!.isAnonymous) {
+            Log.w(
+                USER_FRAGMENT_TAG,
+                "User is not sign in (Anonymous ${firebaseAuth.currentUser!!.isAnonymous}). Start signing in"
+            )
+            startLoginActivity()
+        }
+        // If user is sign - in start activity for editing profile
+        else {
+            Log.w(USER_FRAGMENT_TAG, "Start edit user profile fragment")
+            userViewModel.setUserName(userName)
+            val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
+            transaction.replace(R.id.nav_host_fragment, EditUserProfileFragment())
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }
     }
 
     private fun startLoginActivity() {
@@ -112,14 +136,14 @@ class UserFragment : Fragment(), OnArticleItemClickListener {
         val articleImageUri = articleItem?.imageUri
         val articleDescriptionFragment = ArticleDescriptionFragment()
 
-        Log.w("User fragment:", "Save data to view model")
+        Log.w(USER_FRAGMENT_TAG, "Save data to view model")
         homeViewModel.setArticleName(articleName)
         homeViewModel.setArticleReadingTime(articleReadingTime)
         homeViewModel.setArticleDescription(articleDescription)
         homeViewModel.setArticleIsFavourite(articleIsFavourite)
         homeViewModel.setArticleImageUri(articleImageUri)
 
-        Log.w("User fragment:", "Start description fragment")
+        Log.w(USER_FRAGMENT_TAG, "Start description fragment")
         val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
         transaction.replace(R.id.nav_host_fragment, articleDescriptionFragment)
         transaction.addToBackStack(null)
