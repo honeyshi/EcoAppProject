@@ -39,6 +39,7 @@ const val CHALLENGE_FRAGMENT_TAG = "Challenge fragment"
 const val USER_FRAGMENT_TAG = "User fragment"
 const val ARTICLE_DESCRIPTION_FRAGMENT_TAG = "Article desc fragment"
 const val EDIT_USER_PROFILE_FRAGMENT_TAG = "Edit profile fragment"
+const val CHALLENGE_STARTED_DESCRIPTION_FRAGMENT_TAG = "Challenge Started Desc"
 // endregion
 
 // region Objects

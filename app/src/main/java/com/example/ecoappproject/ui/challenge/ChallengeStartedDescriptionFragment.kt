@@ -13,6 +13,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import com.example.ecoappproject.CHALLENGE_STARTED_DESCRIPTION_FRAGMENT_TAG
 import com.example.ecoappproject.R
 import com.example.ecoappproject.interfaces.OnGetChallengeCurrentDayListener
 import com.example.ecoappproject.interfaces.OnGetChallengeTrackerListener
@@ -44,7 +45,7 @@ class ChallengeStartedDescriptionFragment : Fragment() {
         textViewStartedChallenge = root.findViewById(R.id.text_view_challenge_message_started)
 
         // Create array with leaf buttons
-        Log.w("Challenge Started Desc", "Create leaf array")
+        Log.w(CHALLENGE_STARTED_DESCRIPTION_FRAGMENT_TAG, "Create leaf array")
         val leafImageButtonList = ArrayList<ImageButton>()
         val leafImageButtonStatusMap = HashMap<String, Boolean>()
         for (i in 1..leafArraySize) {
@@ -58,51 +59,68 @@ class ChallengeStartedDescriptionFragment : Fragment() {
         challengeViewModel.getChallengeId().observe(viewLifecycleOwner, Observer {
             challengeId = it
             // Get array for button statuses
-            Log.w("Challenge Started Desc", "Get button status")
+            Log.w(CHALLENGE_STARTED_DESCRIPTION_FRAGMENT_TAG, "Get button status")
             ChallengeObject.getDayStatusInChallengeTracker(
                 it,
                 object : OnGetChallengeTrackerListener {
                     override fun onGetChallengeTracker(challengeTrackerStatusList: HashMap<String, String>) {
                         Log.w(
-                            "Challenge Started Desc",
+                            CHALLENGE_STARTED_DESCRIPTION_FRAGMENT_TAG,
                             "Loaded day trackers ${challengeTrackerStatusList.size}"
                         )
                         // Set buttons color accordingly to tracker
                         for (i in 1..leafArraySize) {
                             if (challengeTrackerStatusList["day$i"]?.toBoolean() == true) {
+                                leafImageButtonList[i - 1].setBackgroundResource(0)
                                 leafImageButtonList[i - 1].setImageResource(
                                     R.drawable.ic_leaf_pressed
                                 )
                                 leafImageButtonStatusMap["image_button_leaf_$i"] = true
+                            } else {
+                                leafImageButtonList[i - 1].setBackgroundResource(0)
+                                leafImageButtonList[i - 1].setImageResource(
+                                    R.drawable.ic_leaf
+                                )
                             }
                         }
                     }
                 })
             // Get current day for challenge
-            Log.w("Challenge Started Desc", "Get current day")
+            Log.w(CHALLENGE_STARTED_DESCRIPTION_FRAGMENT_TAG, "Get current day")
             ChallengeObject.getCurrentDayForChallenge(
                 it,
                 object : OnGetChallengeCurrentDayListener {
                     override fun onGetChallengeCurrentDay(currentDay: Int) {
 
-                        Log.w("Challenge Started Desc", "Set listener for current day button")
+                        Log.w(
+                            CHALLENGE_STARTED_DESCRIPTION_FRAGMENT_TAG,
+                            "Set listener for current day button"
+                        )
                         // Set click listener for current leaf button
                         if (leafImageButtonStatusMap["image_button_leaf_$currentDay"] == false) {
+                            leafImageButtonList[currentDay - 1].setBackgroundResource(0)
                             leafImageButtonList[currentDay - 1].setImageResource(R.drawable.ic_leaf_current)
                         }
                         leafImageButtonList[currentDay - 1].setOnClickListener {
-                            Log.w("Challenge Started Desc", "Click on button")
+                            Log.w(CHALLENGE_STARTED_DESCRIPTION_FRAGMENT_TAG, "Click on button")
+                            leafImageButtonList[currentDay - 1].setBackgroundResource(0)
                             leafImageButtonList[currentDay - 1].setImageResource(R.drawable.ic_leaf_pressed)
                             ChallengeObject.setDayStatusInChallengeTracker(challengeId, currentDay)
                             val countMarkedButtons =
                                 leafImageButtonStatusMap.filterValues { leafImage -> leafImage }
                                     .count()
-                            Log.w("Challenge Started Desc", "Marked buttons $countMarkedButtons")
+                            Log.w(
+                                CHALLENGE_STARTED_DESCRIPTION_FRAGMENT_TAG,
+                                "Marked buttons $countMarkedButtons"
+                            )
 
                             // Stop challenge if user marks last day
                             // and validate whether he marked all days (case with 30 days)
                             if (currentDay == leafArraySize && countMarkedButtons == leafArraySize - 1) {
-                                Log.w("Challenge Started Desc", "Challenge completed")
+                                Log.w(
+                                    CHALLENGE_STARTED_DESCRIPTION_FRAGMENT_TAG,
+                                    "Challenge completed"
+                                )
                                 // Show dialog that user got award
                                 val builder =
                                     AlertDialog.Builder(
@@ -131,7 +149,10 @@ class ChallengeStartedDescriptionFragment : Fragment() {
 
                             // Case when not every day is marked
                             if (currentDay == leafArraySize && countMarkedButtons != leafArraySize - 1) {
-                                Log.w("Challenge Started Desc", "Challenge is not completed")
+                                Log.w(
+                                    CHALLENGE_STARTED_DESCRIPTION_FRAGMENT_TAG,
+                                    "Challenge is not completed"
+                                )
                                 // Show dialog that user not got award
                                 val builder =
                                     AlertDialog.Builder(
