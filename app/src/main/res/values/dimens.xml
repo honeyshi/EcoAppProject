@@ -16,4 +16,7 @@
     <dimen name="text_size_week_day">14sp</dimen>
     <dimen name="text_size_working_hours">12sp</dimen>
     <dimen name="text_size_switcher_header">36sp</dimen>
+
+    <dimen name="margin_left_right">24dp</dimen>
+    <dimen name="margin_top_bottom">20dp</dimen>
 </resources>
