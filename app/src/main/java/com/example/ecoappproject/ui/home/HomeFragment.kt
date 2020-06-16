@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
@@ -32,6 +33,13 @@ class HomeFragment : Fragment(), OnArticleItemClickListener {
         savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.fragment_home, container, false)
+
+        root.findViewById<TextView>(R.id.text_view_header_home_fragment).text =
+            getString(R.string.text_view_top_header_home_fragment)
+
+        root.findViewById<View>(R.id.switcher_round_home_fragment)
+            .setBackgroundResource(R.drawable.ic_switch_round_home)
+
         ArticleObject.clearArticleItemList()
         ArticleObject.getArticles(
             requireActivity().applicationContext,
