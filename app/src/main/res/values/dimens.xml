@@ -21,5 +21,6 @@
 
     <dimen name="margin_left_right">24dp</dimen>
     <dimen name="margin_top_bottom">20dp</dimen>
+    <dimen name="margins_card">10dp</dimen>
     <dimen name="map_fragment_schedule_margin">3dp</dimen>
 </resources>
