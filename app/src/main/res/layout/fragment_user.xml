@@ -11,6 +11,7 @@
         android:background="@drawable/ic_user_background"
         app:layout_constraintBottom_toTopOf="@id/bottom_view_user_fragment"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.43"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

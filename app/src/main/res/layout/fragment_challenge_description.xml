@@ -35,7 +35,6 @@
                 android:layout_marginStart="@dimen/margin_left_right"
                 android:layout_marginTop="@dimen/margin_top_bottom"
                 android:layout_marginEnd="@dimen/margin_left_right"
-                android:text="Name"
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/text_size_headers"
                 app:fontFamily="@font/montserrat_regular" />
@@ -47,7 +46,6 @@
                 android:layout_marginStart="@dimen/margin_left_right"
                 android:layout_marginTop="@dimen/margin_top_bottom"
                 android:layout_marginEnd="@dimen/margin_left_right"
-                android:text="Description"
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/text_size_main"
                 app:fontFamily="@font/montserrat_regular" />

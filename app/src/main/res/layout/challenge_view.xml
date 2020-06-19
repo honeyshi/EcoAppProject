@@ -35,7 +35,6 @@
             android:layout_marginLeft="@dimen/margins_card"
             android:layout_marginTop="@dimen/margins_card"
             android:layout_marginBottom="@dimen/margins_card"
-            android:text="Description"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/text_size_main"
             app:fontFamily="@font/montserrat_regular"
