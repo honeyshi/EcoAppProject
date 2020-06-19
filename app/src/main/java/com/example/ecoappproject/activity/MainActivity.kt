@@ -1,10 +1,10 @@
-package com.example.ecoappproject
+package com.example.ecoappproject.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
+import com.example.ecoappproject.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
@@ -14,25 +14,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
-
-        // region Set bottom bar navigation
         val navController = findNavController(R.id.nav_host_fragment)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navigation_home,
-                R.id.navigation_analyze,
-                R.id.navigation_map,
-                R.id.navigation_user
-            )
-        )
-        //setupActionBarWithNavController(navController, appBarConfiguration)
-        //navView.setupWithNavController(navController)
 
         /* Do not show action bar */
         NavigationUI.setupWithNavController(navView, navController)
+    }
 
-        // endregion
+    override fun onBackPressed() {
+        val count = supportFragmentManager.backStackEntryCount
+        if (count == 0)
+            super.onBackPressed()
+        else
+            supportFragmentManager.popBackStack()
     }
 }

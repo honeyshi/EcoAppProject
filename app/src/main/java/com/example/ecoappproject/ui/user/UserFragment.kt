@@ -13,7 +13,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
-import com.example.ecoappproject.LoginActivity
+import com.example.ecoappproject.activity.LoginActivity
 import com.example.ecoappproject.R
 import com.example.ecoappproject.USER_FRAGMENT_TAG
 import com.example.ecoappproject.interfaces.OnArticleItemClickListener

@@ -9,14 +9,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
 import com.example.ecoappproject.HOME_FRAGMENT_TAG
-import com.example.ecoappproject.OnSwipeTouchListener
+import com.example.ecoappproject.classes.OnSwipeTouchListener
 import com.example.ecoappproject.R
 import com.example.ecoappproject.interfaces.OnArticleItemClickListener
 import com.example.ecoappproject.items.ArticleItem
 import com.example.ecoappproject.objects.ArticleObject
+import com.example.ecoappproject.classes.Helper
 import com.example.ecoappproject.ui.articleDescription.ArticleDescriptionFragment
 import com.example.ecoappproject.ui.challenge.ChallengeFragment
 import com.example.ecoappproject.ui.marking.MarkingFragment
@@ -25,6 +25,7 @@ import com.example.ecoappproject.ui.marking.MarkingFragment
 class HomeFragment : Fragment(), OnArticleItemClickListener {
 
     private val homeViewModel: HomeViewModel by activityViewModels()
+    private lateinit var helper: Helper
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
@@ -33,7 +34,7 @@ class HomeFragment : Fragment(), OnArticleItemClickListener {
         savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.fragment_home, container, false)
-
+        helper = Helper(requireActivity())
         root.findViewById<TextView>(R.id.text_view_header_home_fragment).text =
             getString(R.string.text_view_top_header_home_fragment)
 
@@ -51,13 +52,13 @@ class HomeFragment : Fragment(), OnArticleItemClickListener {
             .setOnTouchListener(object :
                 OnSwipeTouchListener(requireActivity().applicationContext) {
                 override fun onSwipeRight() {
-                    Log.w(HOME_FRAGMENT_TAG, "Swipe right")
-                    swipeRightListener()
+                    Log.w(HOME_FRAGMENT_TAG, "Swipe right - Start eco challenges fragment")
+                    helper.replaceFragment(ChallengeFragment())
                 }
 
                 override fun onSwipeLeft() {
-                    Log.w(HOME_FRAGMENT_TAG, "Swipe left")
-                    swipeLeftListener()
+                    Log.w(HOME_FRAGMENT_TAG, "Swipe left - Start eco marking fragment")
+                    helper.replaceFragment(MarkingFragment())
                 }
 
                 override fun onSwipeBottom() {}
@@ -74,7 +75,6 @@ class HomeFragment : Fragment(), OnArticleItemClickListener {
         val articleReadingTime = articleItem?.readingTime
         val articleIsFavourite = articleItem?.favourite?.toBoolean()
         val articleImageUri = articleItem?.imageUri
-        val articleDescriptionFragment = ArticleDescriptionFragment()
 
         Log.w(HOME_FRAGMENT_TAG, "Save data to view model")
         homeViewModel.setArticleName(articleName)
@@ -84,27 +84,6 @@ class HomeFragment : Fragment(), OnArticleItemClickListener {
         homeViewModel.setArticleImageUri(articleImageUri)
 
         Log.w(HOME_FRAGMENT_TAG, "Start description fragment")
-        val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
-        transaction.replace(R.id.nav_host_fragment, articleDescriptionFragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
-    }
-
-    private fun swipeLeftListener() {
-        Log.w(HOME_FRAGMENT_TAG, "Start eco marking fragment")
-        val markingFragment = MarkingFragment()
-        val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
-        transaction.replace(R.id.nav_host_fragment, markingFragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
-    }
-
-    private fun swipeRightListener() {
-        Log.w(HOME_FRAGMENT_TAG, "Start eco challenges fragment")
-        val challengeFragment = ChallengeFragment()
-        val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
-        transaction.replace(R.id.nav_host_fragment, challengeFragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
+        helper.replaceFragment(ArticleDescriptionFragment())
     }
 }

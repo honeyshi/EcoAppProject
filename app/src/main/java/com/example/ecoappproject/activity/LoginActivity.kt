@@ -1,10 +1,12 @@
-package com.example.ecoappproject
+package com.example.ecoappproject.activity
 
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.example.ecoappproject.LOGIN_ACTIVITY_TAG
+import com.example.ecoappproject.R
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient

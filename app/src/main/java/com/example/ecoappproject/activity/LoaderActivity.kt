@@ -1,4 +1,4 @@
-package com.example.ecoappproject
+package com.example.ecoappproject.activity
 
 import android.content.Context
 import android.content.Intent
@@ -8,6 +8,8 @@ import android.os.Handler
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.example.ecoappproject.*
+import com.example.ecoappproject.R
 import com.example.ecoappproject.items.ArticleItem
 import com.example.ecoappproject.items.AwardItem
 import com.example.ecoappproject.items.ChallengeItem

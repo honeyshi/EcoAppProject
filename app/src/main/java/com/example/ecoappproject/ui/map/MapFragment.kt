@@ -22,7 +22,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.ecoappproject.LOCATIONS_DATABASE
 import com.example.ecoappproject.MAP_FRAGMENT_TAG
-import com.example.ecoappproject.OnSwipeTouchListener
+import com.example.ecoappproject.classes.OnSwipeTouchListener
 import com.example.ecoappproject.R
 import com.example.ecoappproject.items.LocationItem
 import com.google.android.gms.location.*
