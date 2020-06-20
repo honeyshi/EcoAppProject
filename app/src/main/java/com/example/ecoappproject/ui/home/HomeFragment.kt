@@ -10,7 +10,6 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.example.ecoappproject.HOME_FRAGMENT_TAG
 import com.example.ecoappproject.classes.OnSwipeTouchListener
 import com.example.ecoappproject.R
 import com.example.ecoappproject.interfaces.OnArticleItemClickListener
@@ -26,6 +25,7 @@ class HomeFragment : Fragment(), OnArticleItemClickListener {
 
     private val homeViewModel: HomeViewModel by activityViewModels()
     private lateinit var helper: Helper
+    private val TAG = HomeFragment::class.simpleName
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
@@ -34,7 +34,7 @@ class HomeFragment : Fragment(), OnArticleItemClickListener {
         savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.fragment_home, container, false)
-        helper = Helper(requireActivity())
+        helper = Helper(parentFragmentManager)
         root.findViewById<TextView>(R.id.text_view_header_home_fragment).text =
             getString(R.string.text_view_top_header_home_fragment)
 
@@ -52,12 +52,12 @@ class HomeFragment : Fragment(), OnArticleItemClickListener {
             .setOnTouchListener(object :
                 OnSwipeTouchListener(requireActivity().applicationContext) {
                 override fun onSwipeRight() {
-                    Log.w(HOME_FRAGMENT_TAG, "Swipe right - Start eco challenges fragment")
+                    Log.w(TAG, "Swipe right - Start eco challenges fragment")
                     helper.replaceFragment(ChallengeFragment())
                 }
 
                 override fun onSwipeLeft() {
-                    Log.w(HOME_FRAGMENT_TAG, "Swipe left - Start eco marking fragment")
+                    Log.w(TAG, "Swipe left - Start eco marking fragment")
                     helper.replaceFragment(MarkingFragment())
                 }
 
@@ -76,14 +76,14 @@ class HomeFragment : Fragment(), OnArticleItemClickListener {
         val articleIsFavourite = articleItem?.favourite?.toBoolean()
         val articleImageUri = articleItem?.imageUri
 
-        Log.w(HOME_FRAGMENT_TAG, "Save data to view model")
+        Log.w(TAG, "Save data to view model")
         homeViewModel.setArticleName(articleName)
         homeViewModel.setArticleReadingTime(articleReadingTime)
         homeViewModel.setArticleDescription(articleDescription)
         homeViewModel.setArticleIsFavourite(articleIsFavourite)
         homeViewModel.setArticleImageUri(articleImageUri)
 
-        Log.w(HOME_FRAGMENT_TAG, "Start description fragment")
+        Log.w(TAG, "Start description fragment")
         helper.replaceFragment(ArticleDescriptionFragment())
     }
 }

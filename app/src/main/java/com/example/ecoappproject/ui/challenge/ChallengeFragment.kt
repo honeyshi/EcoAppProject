@@ -10,7 +10,6 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.example.ecoappproject.CHALLENGE_FRAGMENT_TAG
 import com.example.ecoappproject.classes.OnSwipeTouchListener
 import com.example.ecoappproject.R
 import com.example.ecoappproject.classes.Helper
@@ -24,6 +23,7 @@ class ChallengeFragment : Fragment(), OnChallengeItemClickListener {
 
     private val challengeViewModel: ChallengeViewModel by activityViewModels()
     private lateinit var helper: Helper
+    private val TAG = ChallengeFragment::class.simpleName
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
@@ -32,7 +32,7 @@ class ChallengeFragment : Fragment(), OnChallengeItemClickListener {
         savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.fragment_home, container, false)
-        helper = Helper(requireActivity())
+        helper = Helper(parentFragmentManager)
 
         root.findViewById<TextView>(R.id.text_view_header_home_fragment).text =
             getString(R.string.text_view_top_header_challenge_fragment)
@@ -51,12 +51,12 @@ class ChallengeFragment : Fragment(), OnChallengeItemClickListener {
             .setOnTouchListener(object :
                 OnSwipeTouchListener(requireActivity().applicationContext) {
                 override fun onSwipeRight() {
-                    Log.w(CHALLENGE_FRAGMENT_TAG, "Swipe right - Start eco marking fragment")
+                    Log.w(TAG, "Swipe right - Start eco marking fragment")
                     helper.replaceFragment(MarkingFragment())
                 }
 
                 override fun onSwipeLeft() {
-                    Log.w(CHALLENGE_FRAGMENT_TAG, "Swipe left - Start articles fragment")
+                    Log.w(TAG, "Swipe left - Start articles fragment")
                     helper.replaceFragment(HomeFragment())
                 }
 
@@ -75,14 +75,14 @@ class ChallengeFragment : Fragment(), OnChallengeItemClickListener {
         val challengeImageUri = challengeItem?.imageUri
         val challengeId = challengeItem?.id
 
-        Log.w(CHALLENGE_FRAGMENT_TAG, "Save data to view model")
+        Log.w(TAG, "Save data to view model")
         challengeViewModel.setChallengeName(challengeName)
         challengeViewModel.setChallengeDescription(challengeDescription)
         challengeViewModel.setChallengeImageUri(challengeImageUri)
         challengeViewModel.setChallengeIsStarted(challengeIsStarted)
         challengeViewModel.setChallengeId(challengeId)
 
-        Log.w(CHALLENGE_FRAGMENT_TAG, "Start challenge description fragment")
+        Log.w(TAG, "Start challenge description fragment")
         helper.replaceFragment(ChallengeDescriptionFragment())
     }
 }

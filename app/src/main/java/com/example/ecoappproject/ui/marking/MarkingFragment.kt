@@ -11,7 +11,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
-import com.example.ecoappproject.ECO_MARKING_FRAGMENT_TAG
 import com.example.ecoappproject.classes.OnSwipeTouchListener
 import com.example.ecoappproject.R
 import com.example.ecoappproject.classes.Helper
@@ -23,6 +22,7 @@ import com.example.ecoappproject.ui.home.HomeFragment
 
 class MarkingFragment : Fragment(), OnMarkingItemClickListener {
     private lateinit var helper: Helper
+    private val TAG = MarkingFragment::class.simpleName
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,7 +30,7 @@ class MarkingFragment : Fragment(), OnMarkingItemClickListener {
         savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.fragment_home, container, false)
-        helper = Helper(requireActivity())
+        helper = Helper(parentFragmentManager)
         root.findViewById<TextView>(R.id.text_view_header_home_fragment).text =
             getString(R.string.text_view_top_header_marking_fragment)
 
@@ -48,12 +48,12 @@ class MarkingFragment : Fragment(), OnMarkingItemClickListener {
             .setOnTouchListener(object :
                 OnSwipeTouchListener(requireActivity().applicationContext) {
                 override fun onSwipeRight() {
-                    Log.w(ECO_MARKING_FRAGMENT_TAG, "Swipe right - Start eco articles fragment")
+                    Log.w(TAG, "Swipe right - Start eco articles fragment")
                     helper.replaceFragment(HomeFragment())
                 }
 
                 override fun onSwipeLeft() {
-                    Log.w(ECO_MARKING_FRAGMENT_TAG, "Swipe left - Start challenges fragment")
+                    Log.w(TAG, "Swipe left - Start challenges fragment")
                     helper.replaceFragment(ChallengeFragment())
                 }
 
@@ -66,7 +66,7 @@ class MarkingFragment : Fragment(), OnMarkingItemClickListener {
     }
 
     override fun onMarkingItemClick(markingItem: EcoMarkingItem) {
-        Log.w(ECO_MARKING_FRAGMENT_TAG, "Click on item")
+        Log.w(TAG, "Click on item")
         val builder =
             AlertDialog.Builder(ContextThemeWrapper(requireActivity(), R.style.DialogTheme))
         builder.setTitle(markingItem.name)

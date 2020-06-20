@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
 import com.example.ecoappproject.R
+import com.example.ecoappproject.classes.Helper
 import com.example.ecoappproject.interfaces.OnChallengeItemClickListener
 import com.example.ecoappproject.items.ChallengeItem
 import com.example.ecoappproject.objects.ChallengeObject
@@ -19,6 +20,8 @@ import com.example.ecoappproject.ui.user.UserFragment
 class ChallengeStartedFragment : Fragment(), OnChallengeItemClickListener {
 
     private val challengeViewModel: ChallengeViewModel by activityViewModels()
+    private val TAG = ChallengeStartedFragment::class.simpleName
+    private lateinit var helper: Helper
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,6 +29,7 @@ class ChallengeStartedFragment : Fragment(), OnChallengeItemClickListener {
         savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.fragment_challenge_started, container, false)
+        helper = Helper(parentFragmentManager)
 
         ChallengeObject.clearChallengeItemsList()
         ChallengeObject.getStartedChallenges(
@@ -39,20 +43,17 @@ class ChallengeStartedFragment : Fragment(), OnChallengeItemClickListener {
     }
 
     override fun onChallengeItemClicked(challengeItem: ChallengeItem?) {
-        Log.w("Challenge Started", "Click on challenge item")
+        Log.w(TAG, "Click on challenge item")
         val challengeName = challengeItem?.name
         val challengeStartedDescription = challengeItem?.startedDescription
         val challengeId = challengeItem?.id
 
-        Log.w("Challenge Started", "Save data to view model")
+        Log.w(TAG, "Save data to view model")
         challengeViewModel.setChallengeName(challengeName)
         challengeViewModel.setChallengeStartedDescription(challengeStartedDescription)
         challengeViewModel.setChallengeId(challengeId)
 
-        Log.w("Challenge Started", "Start challenge description fragment")
-        val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
-        transaction.replace(R.id.nav_host_fragment, ChallengeStartedDescriptionFragment())
-        transaction.addToBackStack(null)
-        transaction.commit()
+        Log.w(TAG, "Start challenge description fragment")
+        helper.replaceFragment(ChallengeStartedDescriptionFragment())
     }
 }

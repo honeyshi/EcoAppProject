@@ -19,12 +19,4 @@ class MainActivity : AppCompatActivity() {
         /* Do not show action bar */
         NavigationUI.setupWithNavController(navView, navController)
     }
-
-    override fun onBackPressed() {
-        val count = supportFragmentManager.backStackEntryCount
-        if (count == 0)
-            super.onBackPressed()
-        else
-            supportFragmentManager.popBackStack()
-    }
 }
