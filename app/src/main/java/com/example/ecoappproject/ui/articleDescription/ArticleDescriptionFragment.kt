@@ -14,7 +14,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.example.ecoappproject.ARTICLE_DESCRIPTION_FRAGMENT_TAG
 import com.example.ecoappproject.R
 import com.example.ecoappproject.objects.ArticleObject
 import com.example.ecoappproject.ui.home.HomeViewModel
@@ -27,6 +26,7 @@ class ArticleDescriptionFragment : Fragment() {
 
     private val homeViewModel: HomeViewModel by activityViewModels()
     var isFavourite by Delegates.notNull<Boolean>()
+    private val TAG = ArticleDescriptionFragment::class.simpleName
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -87,7 +87,7 @@ class ArticleDescriptionFragment : Fragment() {
         imageButtonArticleIsFavourite.setOnClickListener {
             // article is favourite - set not favourite
             if (isFavourite) {
-                Log.w(ARTICLE_DESCRIPTION_FRAGMENT_TAG, "Delete from favourites")
+                Log.w(TAG, "Delete from favourites")
                 imageButtonArticleIsFavourite.setImageResource(R.drawable.ic_star_normal)
                 ArticleObject.setArticleIsFavourite(
                     requireActivity().applicationContext,
@@ -104,7 +104,7 @@ class ArticleDescriptionFragment : Fragment() {
             }
             // article is not favourite - set favourite
             else {
-                Log.w(ARTICLE_DESCRIPTION_FRAGMENT_TAG, "Add to favourites")
+                Log.w(TAG, "Add to favourites")
                 imageButtonArticleIsFavourite.setImageResource(R.drawable.ic_star_pressed)
                 ArticleObject.setArticleIsFavourite(
                     requireActivity().applicationContext,

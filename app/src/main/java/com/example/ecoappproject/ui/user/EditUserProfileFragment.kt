@@ -18,7 +18,6 @@ import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
-import com.example.ecoappproject.EDIT_USER_PROFILE_FRAGMENT_TAG
 import com.example.ecoappproject.R
 import com.example.ecoappproject.objects.UserInformationObject
 import com.google.firebase.auth.FirebaseAuth
@@ -34,6 +33,7 @@ class EditUserProfileFragment : Fragment() {
     private val firebaseStorageReference = FirebaseStorage.getInstance().reference
     private val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
     private val PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 101
+    private val TAG = EditUserProfileFragment::class.simpleName
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,7 +66,7 @@ class EditUserProfileFragment : Fragment() {
         // Save information which user has entered when click on save button
         buttonSaveUserProfile.setOnClickListener {
             if (userNameEditText.text.isNotEmpty()) {
-                Log.w(EDIT_USER_PROFILE_FRAGMENT_TAG, "User name is not empty - send to database")
+                Log.w(TAG, "User name is not empty - send to database")
                 UserInformationObject.updateUserTextInformationInDatabase(
                     "userName",
                     userNameEditText.text.toString(),
@@ -75,10 +75,7 @@ class EditUserProfileFragment : Fragment() {
                 userNameTextView.text = userNameEditText.text
             }
             if (userDescriptionEditText.text.isNotEmpty()) {
-                Log.w(
-                    EDIT_USER_PROFILE_FRAGMENT_TAG,
-                    "User description is not empty - send to database"
-                )
+                Log.w(TAG, "User description is not empty - send to database")
                 UserInformationObject.updateUserTextInformationInDatabase(
                     "userDescription",
                     userDescriptionEditText.text.toString(),
@@ -104,7 +101,7 @@ class EditUserProfileFragment : Fragment() {
             }
             // In another way ask for permission
             else {
-                Log.w(EDIT_USER_PROFILE_FRAGMENT_TAG, "There are no permissions so ask")
+                Log.w(TAG, "There are no permissions so ask")
                 requestPermissions(
                     arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
                     PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE
@@ -137,7 +134,7 @@ class EditUserProfileFragment : Fragment() {
     }
 
     private fun uploadImageToStorage() {
-        Log.w(EDIT_USER_PROFILE_FRAGMENT_TAG, "Upload selected image to storage")
+        Log.w(TAG, "Upload selected image to storage")
         val ref =
             firebaseStorageReference.child("users/" + currentUserId.toString())
         ref.putFile(filePath)
@@ -169,14 +166,14 @@ class EditUserProfileFragment : Fragment() {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        Log.w(EDIT_USER_PROFILE_FRAGMENT_TAG, "Handle result of request read storage permission")
+        Log.w(TAG, "Handle result of request read storage permission")
         when (requestCode) {
             PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE -> {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.isNotEmpty()
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED
                 ) {
-                    Log.w(EDIT_USER_PROFILE_FRAGMENT_TAG, "User is able to choose image")
+                    Log.w(TAG, "User is able to choose image")
                     // Let user choose image from storage
                     chooseImageFromGallery()
                 }
@@ -187,7 +184,7 @@ class EditUserProfileFragment : Fragment() {
     private fun setImageUrlToFirebaseDatabase() {
         firebaseStorageReference.child("users/${currentUserId.toString()}").downloadUrl.addOnSuccessListener {
             // Got the download URL and set to firebase
-            Log.w(EDIT_USER_PROFILE_FRAGMENT_TAG, "Set url $it in database")
+            Log.w(TAG, "Set url $it in database")
             UserInformationObject.updateUserTextInformationInDatabase(
                 "imageUrl",
                 it.toString(),

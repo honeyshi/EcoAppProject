@@ -1,10 +1,12 @@
-package com.example.ecoappproject
+package com.example.ecoappproject.activity
 
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.example.ecoappproject.FIRST_TIME_ACTIVITY_TAG
+import com.example.ecoappproject.R
 
 
 class FirstTimeActivity : AppCompatActivity() {

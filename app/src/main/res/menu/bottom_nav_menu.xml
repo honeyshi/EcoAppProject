@@ -4,21 +4,25 @@
     <item
         android:id="@+id/navigation_home"
         android:icon="@drawable/ic_menu_home"
+        android:menuCategory="secondary"
         android:title="@string/title_menu_home" />
 
     <item
         android:id="@+id/navigation_analyze"
         android:icon="@drawable/ic_menu_analyze"
+        android:menuCategory="secondary"
         android:title="@string/title_menu_analyze" />
 
     <item
         android:id="@+id/navigation_map"
         android:icon="@drawable/ic_menu_map"
+        android:menuCategory="secondary"
         android:title="@string/title_menu_map" />
 
     <item
         android:id="@+id/navigation_user"
         android:icon="@drawable/ic_menu_user"
+        android:menuCategory="secondary"
         android:title="@string/title_menu_user" />
 
 </menu>

@@ -21,8 +21,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.ecoappproject.LOCATIONS_DATABASE
-import com.example.ecoappproject.MAP_FRAGMENT_TAG
-import com.example.ecoappproject.OnSwipeTouchListener
+import com.example.ecoappproject.classes.OnSwipeTouchListener
 import com.example.ecoappproject.R
 import com.example.ecoappproject.items.LocationItem
 import com.google.android.gms.location.*
@@ -59,6 +58,7 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
     private val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 102
     private val defaultZoom = 15f
     private var currentZoom = 12f
+    private val TAG = MapFragment::class.simpleName
 
     // region UI elements
     private lateinit var constraintLayoutLocationDescription: ConstraintLayout
@@ -111,7 +111,7 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
             override fun onSwipeLeft() {}
 
             override fun onSwipeBottom() {
-                Log.w(MAP_FRAGMENT_TAG, "Swipe bottom.")
+                Log.w(TAG, "Swipe bottom.")
                 val animate = TranslateAnimation(
                     0.0f,
                     0.0f,
@@ -134,7 +134,7 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
                 ?.toLowerCase(
                     Locale.ENGLISH
                 )
-        Log.w(MAP_FRAGMENT_TAG, "Current week day is $dayLongName")
+        Log.w(TAG, "Current week day is $dayLongName")
         root.findViewWithTag<View>("view_location_current_day_$dayLongName").visibility =
             View.VISIBLE
         // endregion
@@ -175,7 +175,7 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
                 currentZoom = googleMap.cameraPosition.zoom
                 if (currentZoom < googleMap.maxZoomLevel)
                     currentZoom += 1
-                Log.w(MAP_FRAGMENT_TAG, "Current zoom is: $currentZoom")
+                Log.w(TAG, "Current zoom is: $currentZoom")
                 googleMap.animateCamera(CameraUpdateFactory.zoomTo(currentZoom))
             }
 
@@ -183,7 +183,7 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
                 currentZoom = googleMap.cameraPosition.zoom
                 if (currentZoom > googleMap.minZoomLevel)
                     currentZoom -= 1
-                Log.w(MAP_FRAGMENT_TAG, "Current zoom is: $currentZoom")
+                Log.w(TAG, "Current zoom is: $currentZoom")
                 googleMap.animateCamera(CameraUpdateFactory.zoomTo(currentZoom))
             }
             // endregion
@@ -195,7 +195,7 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
     override fun onMarkerClick(marker: Marker?): Boolean {
         val markerTag = marker?.tag.toString()
 
-        Log.w(MAP_FRAGMENT_TAG, "Click on marker with tag $markerTag. Swipe description")
+        Log.w(TAG, "Click on marker with tag $markerTag. Swipe description")
 
         constraintLayoutLocationDescription.visibility = View.VISIBLE
         val animate = TranslateAnimation(
@@ -215,7 +215,7 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val locationItem = dataSnapshot.getValue(LocationItem::class.java)
-                Log.w(MAP_FRAGMENT_TAG, "For this marker location is ${locationItem?.geo}")
+                Log.w(TAG, "For this marker location is ${locationItem?.geo}")
                 textViewLocationAddress.text = locationItem?.address
                 textViewCanRecycle.text = locationItem?.canRecycle
                 textViewMonday.text = locationItem?.monday?.replace('_', '\n')
@@ -229,7 +229,7 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
 
             override fun onCancelled(error: DatabaseError) {
                 // Failed to read value
-                Log.w(MAP_FRAGMENT_TAG, "Failed to read value.", error.toException())
+                Log.w(TAG, "Failed to read value.", error.toException())
             }
         })
         // Return false to indicate that we have not consumed the event and that we wish
@@ -239,7 +239,7 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
     }
 
     private fun getLocationsFromDatabaseAndPutOnMap() {
-        Log.w(MAP_FRAGMENT_TAG, "Get locations from database")
+        Log.w(TAG, "Get locations from database")
         FirebaseApp.initializeApp(requireContext().applicationContext)
         val locationsReference = FirebaseDatabase.getInstance().reference.child(LOCATIONS_DATABASE)
         locationsReference.addListenerForSingleValueEvent(object :
@@ -249,7 +249,7 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
                     val locationItem = location.getValue(LocationItem::class.java)
 
                     if (locationItem?.geo != null) {
-                        Log.w(MAP_FRAGMENT_TAG, "Put location ${locationItem.geo} on map")
+                        Log.w(TAG, "Put location ${locationItem.geo} on map")
                         val locationCoordinateList = locationItem.geo.split(' ')
                         val locationCoordinate = LatLng(
                             locationCoordinateList[0].toDouble(),
@@ -271,7 +271,7 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
 
             override fun onCancelled(error: DatabaseError) {
                 // Failed to read value
-                Log.w(MAP_FRAGMENT_TAG, "Failed to read value.", error.toException())
+                Log.w(TAG, "Failed to read value.", error.toException())
             }
         })
     }
@@ -304,7 +304,7 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
                 updateLocationUI()
             } else {
                 // If location is not granted - ask for permission
-                Log.w(MAP_FRAGMENT_TAG, "There are no permissions")
+                Log.w(TAG, "There are no permissions")
                 requestPermissions(
                     arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                     PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
@@ -320,7 +320,7 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
         permissions: Array<String?>,
         grantResults: IntArray
     ) {
-        Log.w(MAP_FRAGMENT_TAG, "Handle result of locations permission request")
+        Log.w(TAG, "Handle result of locations permission request")
         isLocationPermissionGranted = false
         when (requestCode) {
             PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION -> {
@@ -333,7 +333,7 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
                 }
             }
         }
-        Log.w(MAP_FRAGMENT_TAG, "Update location on request result")
+        Log.w(TAG, "Update location on request result")
         updateLocationUI()
     }
 
@@ -342,7 +342,7 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
     @RequiresApi(Build.VERSION_CODES.M)
     private fun updateLocationUI() {
         Log.w(
-            MAP_FRAGMENT_TAG,
+            TAG,
             "Start updating UI. Permission granted is $isLocationPermissionGranted"
         )
         try {
@@ -366,7 +366,7 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
         */
         try {
             if (isLocationPermissionGranted) {
-                Log.w(MAP_FRAGMENT_TAG, "Location permission is granted - getDeviceLocation()")
+                Log.w(TAG, "Location permission is granted - getDeviceLocation()")
                 locationRequest = LocationRequest().apply {
                     // Sets the desired interval for active location updates.
                     interval = TimeUnit.SECONDS.toMillis(60)
@@ -384,14 +384,14 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
 
                 locationCallback = object : LocationCallback() {
                     override fun onLocationResult(locationResult: LocationResult?) {
-                        Log.w(MAP_FRAGMENT_TAG, "In location callback")
+                        Log.w(TAG, "In location callback")
                         super.onLocationResult(locationResult)
 
                         if (locationResult?.lastLocation != null) {
 
                             val currentLocation = locationResult.lastLocation
                             Log.w(
-                                MAP_FRAGMENT_TAG,
+                                TAG,
                                 "Current location is not null. Move camera to users location"
                             )
                             googleMap.animateCamera(
@@ -402,19 +402,19 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
                                     ), defaultZoom
                                 )
                             )
-                            Log.w(MAP_FRAGMENT_TAG, "Stop getting location")
+                            Log.w(TAG, "Stop getting location")
                             val removeTask =
                                 fusedLocationProviderClient.removeLocationUpdates(locationCallback)
                             removeTask.addOnCompleteListener { task ->
                                 if (task.isSuccessful) {
-                                    Log.w(MAP_FRAGMENT_TAG, "Location Callback removed.")
+                                    Log.w(TAG, "Location Callback removed.")
                                 } else {
-                                    Log.w(MAP_FRAGMENT_TAG, "Failed to remove Location Callback.")
+                                    Log.w(TAG, "Failed to remove Location Callback.")
                                 }
                             }
 
                         } else {
-                            Log.w(MAP_FRAGMENT_TAG, "Current location is null. Using defaults.")
+                            Log.w(TAG, "Current location is null. Using defaults.")
                             googleMap.animateCamera(
                                 CameraUpdateFactory.newLatLngZoom(
                                     defaultLocation,
@@ -431,7 +431,7 @@ class MapFragment : Fragment(), GoogleMap.OnMarkerClickListener {
             } else {
                 // If location is denied - move camera to default location
                 Log.w(
-                    MAP_FRAGMENT_TAG,
+                    TAG,
                     "Location permission is not granted - getDeviceLocation(). Show default location"
                 )
                 googleMap.animateCamera(

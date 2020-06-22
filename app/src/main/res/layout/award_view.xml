@@ -1,29 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginLeft="@dimen/margin_left_right"
+        android:layout_marginTop="@dimen/margin_top_bottom"
+        android:layout_marginRight="@dimen/margin_left_right"
         android:background="@drawable/shape_article_challenge">
 
         <View
             android:id="@+id/switcher_view_decoration_home_fragment"
-            android:layout_width="316dp"
+            android:layout_width="match_parent"
             android:layout_height="107dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
             android:background="@drawable/ic_award_decoration"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -32,61 +27,54 @@
             android:id="@+id/text_view_award_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="22dp"
-            android:layout_marginLeft="22dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginRight="22dp"
-            android:layout_marginEnd="22dp"
-            android:text="Test"
-            android:textSize="@dimen/text_size_main"
+            android:layout_marginStart="@dimen/margin_left_right"
+            android:layout_marginTop="@dimen/margin_top_bottom"
+            android:layout_marginEnd="@dimen/margin_left_right"
             android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_size_main"
             app:fontFamily="@font/montserrat_regular"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/text_view_award_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="22dp"
-            android:layout_marginLeft="22dp"
-            android:layout_marginTop="22dp"
-            android:layout_marginRight="22dp"
-            android:layout_marginEnd="22dp"
-            android:text="Test"
-            android:textSize="@dimen/text_size_main"
+            android:layout_marginStart="@dimen/margin_left_right"
+            android:layout_marginTop="@dimen/margin_top_bottom"
+            android:layout_marginEnd="@dimen/margin_left_right"
             android:textColor="@color/colorBlack50"
+            android:textSize="@dimen/text_size_main"
             app:fontFamily="@font/montserrat_light"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/text_view_award_name"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/text_view_award_name" />
 
         <ProgressBar
             android:id="@+id/progress_bar_award"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="210dp"
             android:layout_height="4dp"
-            android:layout_marginStart="22dp"
-            android:layout_marginLeft="22dp"
+            android:layout_marginStart="@dimen/margin_left_right"
+            android:layout_marginLeft="@dimen/margin_left_right"
             android:layout_marginBottom="11dp"
             android:max="30"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/text_view_award_progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="22dp"
-            android:layout_marginRight="22dp"
+            android:layout_marginEnd="@dimen/margin_left_right"
+            android:layout_marginRight="@dimen/margin_left_right"
             android:layout_marginBottom="11dp"
-            android:text="15/30"
-            android:textSize="@dimen/text_size_main"
             android:textColor="@color/colorBlack50"
+            android:textSize="@dimen/text_size_main"
             app:fontFamily="@font/montserrat_light"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

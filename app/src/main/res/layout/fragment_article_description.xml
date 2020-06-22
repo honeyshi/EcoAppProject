@@ -3,25 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorActivityBackground">
 
     <ImageView
         android:id="@+id/image_view_article_whole"
         android:layout_width="match_parent"
-        android:layout_height="276dp"
-        android:layout_marginStart="0dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginRight="0dp"
+        android:layout_height="0dp"
         android:scaleType="fitXY"
-        android:src="@drawable/image_sample"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHeight_percent="0.4"
+        app:layout_constraintBottom_toTopOf="@id/scroll_view_article_whole"
         tools:srcCompat="@tools:sample/avatars[3]" />
 
     <ScrollView
+        android:id="@+id/scroll_view_article_whole"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -36,42 +34,33 @@
                 android:id="@+id/text_view_article_whole_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="44dp"
-                android:layout_marginLeft="44dp"
-                android:layout_marginTop="14dp"
-                android:layout_marginEnd="44dp"
-                android:layout_marginRight="44dp"
-                android:text="Name"
+                android:layout_marginStart="@dimen/margin_left_right"
+                android:layout_marginTop="@dimen/margin_top_bottom"
+                android:layout_marginEnd="@dimen/margin_left_right"
                 android:textColor="@color/colorPrimary"
-                android:textSize="24sp"
+                android:textSize="@dimen/text_size_headers"
                 app:fontFamily="@font/montserrat_regular" />
 
             <TextView
                 android:id="@+id/text_view_article_whole_reading_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="44dp"
-                android:layout_marginLeft="44dp"
-                android:layout_marginTop="9dp"
-                android:layout_marginEnd="44dp"
-                android:layout_marginRight="44dp"
-                android:text="Reading Time"
+                android:layout_marginStart="@dimen/margin_left_right"
+                android:layout_marginTop="@dimen/margin_top_bottom"
+                android:layout_marginEnd="@dimen/margin_left_right"
                 android:textColor="@color/colorBlack30"
-                android:textSize="16sp"
+                android:textSize="@dimen/text_size_main"
                 app:fontFamily="@font/montserrat_light" />
 
             <TextView
                 android:id="@+id/text_view_article_whole_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="44dp"
-                android:layout_marginLeft="44dp"
-                android:layout_marginTop="18dp"
-                android:layout_marginEnd="44dp"
-                android:layout_marginRight="44dp"
-                android:text="Description"
+                android:layout_marginStart="@dimen/margin_left_right"
+                android:layout_marginTop="@dimen/margin_top_bottom"
+                android:layout_marginEnd="@dimen/margin_left_right"
                 android:textColor="@color/colorBlack"
-                android:textSize="16sp"
+                android:textSize="@dimen/text_size_main"
                 app:fontFamily="@font/montserrat_regular" />
         </LinearLayout>
     </ScrollView>
@@ -80,14 +69,12 @@
         android:id="@+id/image_button_article_whole_star"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="300dp"
-        android:layout_marginLeft="300dp"
-        android:layout_marginTop="249dp"
-        android:layout_marginEnd="38dp"
-        android:layout_marginRight="38dp"
+        android:translationY="@dimen/margin_top_bottom"
+        android:layout_marginEnd="@dimen/margin_left_right"
+        android:layout_marginRight="@dimen/margin_left_right"
         android:background="@drawable/shape_star_button"
         android:src="@drawable/selector_star_button"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/scroll_view_article_whole"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,10 +10,17 @@
     <dimen name="user_fragment_button_height">40dp</dimen>
     <dimen name="user_fragment_button_padding">8dp</dimen>
     <dimen name="user_fragment_button_left_padding">16dp</dimen>
+    <dimen name="map_fragment_schedule_width">45dp</dimen>
+    <dimen name="map_fragment_current_day_height">100dp</dimen>
 
     <dimen name="text_size_headers">24sp</dimen>
     <dimen name="text_size_main">16sp</dimen>
     <dimen name="text_size_week_day">14sp</dimen>
     <dimen name="text_size_working_hours">12sp</dimen>
     <dimen name="text_size_switcher_header">36sp</dimen>
+
+    <dimen name="margin_left_right">24dp</dimen>
+    <dimen name="margin_top_bottom">20dp</dimen>
+    <dimen name="margins_card">10dp</dimen>
+    <dimen name="map_fragment_schedule_margin">3dp</dimen>
 </resources>

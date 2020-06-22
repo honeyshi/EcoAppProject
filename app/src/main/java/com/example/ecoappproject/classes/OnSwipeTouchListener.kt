@@ -1,4 +1,4 @@
-package com.example.ecoappproject
+package com.example.ecoappproject.classes
 
 import android.content.Context
 import android.view.GestureDetector
