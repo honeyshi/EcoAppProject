@@ -43,15 +43,8 @@ class ChallengeStartedFragment : Fragment(), OnChallengeItemClickListener {
     }
 
     override fun onChallengeItemClicked(challengeItem: ChallengeItem?) {
-        Log.w(TAG, "Click on challenge item")
-        val challengeName = challengeItem?.name
-        val challengeStartedDescription = challengeItem?.startedDescription
-        val challengeId = challengeItem?.id
-
         Log.w(TAG, "Save data to view model")
-        challengeViewModel.setChallengeName(challengeName)
-        challengeViewModel.setChallengeStartedDescription(challengeStartedDescription)
-        challengeViewModel.setChallengeId(challengeId)
+        helper.saveChallengeInfoToViewModel(challengeViewModel, challengeItem)
 
         Log.w(TAG, "Start challenge description fragment")
         helper.replaceFragment(ChallengeStartedDescriptionFragment())

@@ -70,18 +70,8 @@ class HomeFragment : Fragment(), OnArticleItemClickListener {
     }
 
     override fun onItemClicked(articleItem: ArticleItem?) {
-        val articleName = articleItem?.header
-        val articleDescription = articleItem?.longDescription
-        val articleReadingTime = articleItem?.readingTime
-        val articleIsFavourite = articleItem?.favourite?.toBoolean()
-        val articleImageUri = articleItem?.imageUri
-
         Log.w(TAG, "Save data to view model")
-        homeViewModel.setArticleName(articleName)
-        homeViewModel.setArticleReadingTime(articleReadingTime)
-        homeViewModel.setArticleDescription(articleDescription)
-        homeViewModel.setArticleIsFavourite(articleIsFavourite)
-        homeViewModel.setArticleImageUri(articleImageUri)
+        helper.saveArticleInfoToViewModel(homeViewModel, articleItem)
 
         Log.w(TAG, "Start description fragment")
         helper.replaceFragment(ArticleDescriptionFragment())
