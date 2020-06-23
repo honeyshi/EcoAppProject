@@ -63,7 +63,7 @@ class AnalyzeFragment : Fragment() {
             /* Split input */
             val inputIngredientList =
                 edit_text_analyze_whole.text.toString()
-                    .replace("\\s", "")
+                    .replace(", ", ",")
                     .split(",").toTypedArray()
 
             /* Check if user input something */
@@ -159,10 +159,11 @@ class AnalyzeFragment : Fragment() {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     for (ingredientName in ingredientList) {
                         /* If ingredient in database add it to list */
-                        if (dataSnapshot.hasChild(ingredientName)) {
-                            Log.w(TAG, "Ingredient $ingredientName in database")
+                        val ingredientSearch = ingredientName.toLowerCase(Locale.getDefault())
+                        if (dataSnapshot.hasChild(ingredientSearch)) {
+                            Log.w(TAG, "Ingredient $ingredientSearch in database")
                             val ingredientItem =
-                                dataSnapshot.child(ingredientName)
+                                dataSnapshot.child(ingredientSearch)
                                     .getValue(IngredientItem::class.java)
                             ingredientItemList.add(ingredientItem)
                             /* Check rating of ingredient */
